@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -7,10 +8,17 @@ import 'package:offline_study_assistant/core/perf.dart';
 /// One benchmark run: a fresh model load, then one full answer.
 @immutable
 class LlmBenchmarkRun {
-  const LlmBenchmarkRun({required this.loadTime, required this.generation});
+  const LlmBenchmarkRun({
+    required this.loadTime,
+    required this.generation,
+    required this.answer,
+  });
 
   final Duration loadTime;
   final GenerationMetrics generation;
+
+  /// The full streamed answer, to compare models on quality too.
+  final String answer;
 
   @override
   String toString() => 'load=${loadTime.inMilliseconds}ms $generation';
@@ -97,6 +105,7 @@ class LlmBenchmark {
       'one happen, and what does each one produce?';
 
   /// Runs the benchmark [runs] times. [onRun] is called after every run.
+  /// [label] (e.g. the model name) prefixes the log lines.
   /// When [isCancelled] returns true, stops before the next run and returns
   /// the runs so far (throws [StateError] if there are none).
   ///
@@ -106,13 +115,15 @@ class LlmBenchmark {
     int runs = 10,
     void Function(int index, LlmBenchmarkRun run)? onRun,
     bool Function()? isCancelled,
+    String label = 'llm',
   }) async {
     final results = <LlmBenchmarkRun>[];
     for (var i = 0; i < runs; i++) {
       if (isCancelled?.call() ?? false) break;
       final result = await _runOnce(prompt);
       results.add(result);
-      Perf.log('llm run ${i + 1}/$runs: $result');
+      Perf.log('$label run ${i + 1}/$runs: $result');
+      if (i == 0) Perf.log('$label answer: ${jsonEncode(result.answer)}');
       onRun?.call(i, result);
     }
     if (results.isEmpty) throw StateError('Benchmark cancelled before a run');
@@ -121,7 +132,7 @@ class LlmBenchmark {
       runs: List.unmodifiable(results),
       peakRssBytes: _peakRssBytes(),
     );
-    Perf.log('llm benchmark: ${result.summary()}');
+    Perf.log('$label benchmark: ${result.summary()}');
     return result;
   }
 
@@ -133,15 +144,21 @@ class LlmBenchmark {
     );
 
     final timer = GenerationTimer(stopwatch: _stopwatch)..start();
-    await for (final _ in _engine.generate(prompt)) {
+    final answer = StringBuffer();
+    await for (final chunk in _engine.generate(prompt)) {
       timer.onChunk();
+      answer.write(chunk);
     }
     final usage = _engine.lastUsage;
     final generation = timer.finish(
       outputTokens: usage?.outputTokens,
       promptTokens: usage?.promptTokens,
     );
-    return LlmBenchmarkRun(loadTime: loadTime, generation: generation);
+    return LlmBenchmarkRun(
+      loadTime: loadTime,
+      generation: generation,
+      answer: answer.toString(),
+    );
   }
 
   static int? _processMaxRss() {

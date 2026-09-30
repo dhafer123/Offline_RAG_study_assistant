@@ -74,7 +74,9 @@ class GemmaLlmEngine implements LlmEngine {
     // `finally` also runs when the listener cancels mid-stream.
     var finished = false;
     try {
-      await session.addQueryChunk(Message.text(text: prompt, isUser: true));
+      await session.addQueryChunk(
+        Message.text(text: _withModelDirectives(prompt), isUser: true),
+      );
       yield* session.getResponseAsync().handleError(
         (Object e, StackTrace st) => Error.throwWithStackTrace(
           LlmException('Generation failed', cause: e),
@@ -94,6 +96,14 @@ class GemmaLlmEngine implements LlmEngine {
       await session.close();
     }
   }
+
+  /// Qwen3's chat template "thinks" (`<think>…</think>`) unless the user turn
+  /// ends with `/no_think`. flutter_gemma only adds it in `InferenceChat`,
+  /// not on the raw session used here.
+  String _withModelDirectives(String prompt) => switch (_config.family) {
+    LlmModelFamily.gemma3 => prompt,
+    LlmModelFamily.qwen3 => '$prompt /no_think',
+  };
 
   @override
   LlmUsage? get lastUsage => _lastUsage;

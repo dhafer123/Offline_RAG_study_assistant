@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:offline_study_assistant/app/providers.dart';
 import 'package:offline_study_assistant/core/ai/llm_engine.dart';
+import 'package:offline_study_assistant/core/perf.dart';
 import 'package:offline_study_assistant/features/benchmark/llm_benchmark.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -49,6 +50,7 @@ class LlmBenchmarkController extends _$LlmBenchmarkController {
     try {
       final result = await benchmark.run(
         runs: runs,
+        label: ref.read(activeLlmModelProvider).name,
         isCancelled: () => _cancelled || !ref.mounted,
         onRun: (_, run) {
           if (!ref.mounted) return;
@@ -67,6 +69,8 @@ class LlmBenchmarkController extends _$LlmBenchmarkController {
         result: result,
       );
     } on Object catch (e) {
+      // The UI shows only the message; the log keeps the underlying cause.
+      Perf.log('llm benchmark failed: $e');
       if (!ref.mounted) return;
       state = LlmBenchmarkState(
         status: _cancelled ? LlmBenchmarkStatus.idle : LlmBenchmarkStatus.error,

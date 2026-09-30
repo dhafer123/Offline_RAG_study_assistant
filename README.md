@@ -55,7 +55,7 @@ The file survives reinstalls (including `flutter run --release`, which uses the 
 
 ### Benchmark
 
-In a release build (`flutter run --release`), tap the speed icon on the Library screen → **Run benchmark**. It reloads the model and answers a fixed prompt 10 times, then shows the medians. Each run is also logged: `adb logcat -s flutter | grep "\[perf\]"`.
+In a release build (`flutter run --release`), tap the speed icon on the Library screen, pick a model, then **Run benchmark**. To compare with Qwen3 0.6B, push [`Qwen3-0.6B.litertlm`](https://huggingface.co/litert-community/Qwen3-0.6B) (public, no access request) to the same `files/models` folder, using the steps above. It reloads the model and answers a fixed prompt 10 times, then shows the medians. Each run is also logged: `adb logcat -s flutter | grep "\[perf\]"`.
 
 ## Development
 

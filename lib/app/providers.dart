@@ -5,12 +5,22 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'providers.g.dart';
 
+/// The model the app runs. Changing it replaces (and unloads) the engine.
 @Riverpod(keepAlive: true)
-LlmModelConfig llmModelConfig(Ref ref) => LlmModelConfig.gemma3Dev;
+class ActiveLlmModel extends _$ActiveLlmModel {
+  @override
+  LlmModelConfig build() => LlmModelConfig.gemma3Dev;
+
+  void select(LlmModelConfig config) {
+    // Same model: keep the loaded engine.
+    if (config.modelPath == state.modelPath) return;
+    state = config;
+  }
+}
 
 @Riverpod(keepAlive: true)
 LlmEngine llmEngine(Ref ref) {
-  final engine = GemmaLlmEngine(ref.watch(llmModelConfigProvider));
+  final engine = GemmaLlmEngine(ref.watch(activeLlmModelProvider));
   ref.onDispose(engine.unload);
   return engine;
 }

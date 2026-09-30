@@ -22,6 +22,14 @@ void main() {
     expect(result.peakRssMb, 512);
   });
 
+  test('keeps the full answer of every run', () async {
+    final engine = FakeLlmEngine(tokens: ['Two ', 'stages.']);
+
+    final result = await LlmBenchmark(engine).run(runs: 2);
+
+    expect(result.runs.map((r) => r.answer), ['Two stages.', 'Two stages.']);
+  });
+
   test('counts chunks when the engine reports no usage', () async {
     final engine = FakeLlmEngine(tokens: ['a', 'b', 'c']);
 

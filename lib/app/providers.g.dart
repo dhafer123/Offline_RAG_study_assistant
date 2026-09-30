@@ -8,36 +8,32 @@ part of 'providers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// The model the app runs. Changing it replaces (and unloads) the engine.
 
-@ProviderFor(llmModelConfig)
-final llmModelConfigProvider = LlmModelConfigProvider._();
+@ProviderFor(ActiveLlmModel)
+final activeLlmModelProvider = ActiveLlmModelProvider._();
 
-final class LlmModelConfigProvider
-    extends $FunctionalProvider<LlmModelConfig, LlmModelConfig, LlmModelConfig>
-    with $Provider<LlmModelConfig> {
-  LlmModelConfigProvider._()
+/// The model the app runs. Changing it replaces (and unloads) the engine.
+final class ActiveLlmModelProvider
+    extends $NotifierProvider<ActiveLlmModel, LlmModelConfig> {
+  /// The model the app runs. Changing it replaces (and unloads) the engine.
+  ActiveLlmModelProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'llmModelConfigProvider',
+        name: r'activeLlmModelProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$llmModelConfigHash();
+  String debugGetCreateSourceHash() => _$activeLlmModelHash();
 
   @$internal
   @override
-  $ProviderElement<LlmModelConfig> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  LlmModelConfig create(Ref ref) {
-    return llmModelConfig(ref);
-  }
+  ActiveLlmModel create() => ActiveLlmModel();
 
   /// {@macro riverpod.override_with_value}
   Override overrideWithValue(LlmModelConfig value) {
@@ -48,7 +44,27 @@ final class LlmModelConfigProvider
   }
 }
 
-String _$llmModelConfigHash() => r'2f38b3debbe150afdf8c249446c4fdfdd12ff0b0';
+String _$activeLlmModelHash() => r'ac19a68c733f5c449b103a79583767becf1e0df8';
+
+/// The model the app runs. Changing it replaces (and unloads) the engine.
+
+abstract class _$ActiveLlmModel extends $Notifier<LlmModelConfig> {
+  LlmModelConfig build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<LlmModelConfig, LlmModelConfig>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<LlmModelConfig, LlmModelConfig>,
+              LlmModelConfig,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}
 
 @ProviderFor(llmEngine)
 final llmEngineProvider = LlmEngineProvider._();
@@ -89,4 +105,4 @@ final class LlmEngineProvider
   }
 }
 
-String _$llmEngineHash() => r'3ae55d81ffdcce7e15b978fd7f9c19e89dd66bce';
+String _$llmEngineHash() => r'c5346c75d0faef83c4beb1f65b47ad173b1bf44f';

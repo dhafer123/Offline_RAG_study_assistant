@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:offline_study_assistant/app/providers.dart';
+import 'package:offline_study_assistant/core/ai/llm_model_config.dart';
 import 'package:offline_study_assistant/features/benchmark/llm_benchmark.dart';
 import 'package:offline_study_assistant/features/benchmark/llm_benchmark_controller.dart';
 
@@ -11,6 +13,7 @@ class LlmBenchmarkScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(llmBenchmarkControllerProvider);
     final controller = ref.read(llmBenchmarkControllerProvider.notifier);
+    final model = ref.watch(activeLlmModelProvider);
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -21,6 +24,21 @@ class LlmBenchmarkScreen extends ConsumerWidget {
           Text(
             'Unloads and reloads the model, then answers a fixed prompt, '
             '${state.totalRuns} times. Use a release build.',
+          ),
+          const SizedBox(height: 16),
+          DropdownButton<LlmModelConfig>(
+            value: model,
+            isExpanded: true,
+            items: [
+              for (final config in LlmModelConfig.devModels)
+                DropdownMenuItem(value: config, child: Text(config.name)),
+            ],
+            onChanged: state.isRunning
+                ? null
+                : (config) {
+                    if (config == null) return;
+                    ref.read(activeLlmModelProvider.notifier).select(config);
+                  },
           ),
           const SizedBox(height: 16),
           Row(
@@ -111,6 +129,12 @@ class _ResultCard extends StatelessWidget {
               ' · prompt tokens: ${result.promptTokens ?? '–'}',
             ),
             Text('Peak RSS: ${result.peakRssMb ?? '–'} MB'),
+            const SizedBox(height: 8),
+            Text(
+              'Answer (run 1)',
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
+            SelectableText(result.runs.first.answer),
             const SizedBox(height: 8),
             TextButton.icon(
               icon: const Icon(Icons.copy),
