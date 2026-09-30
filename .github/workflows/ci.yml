@@ -30,7 +30,7 @@ jobs:
       # Generated *.g.dart files are committed; fail if they are stale.
       - name: Check generated code is up to date
         run: |
-          dart run build_runner build --delete-conflicting-outputs
+          dart run build_runner build --force-jit --delete-conflicting-outputs
           git diff --exit-code -- '*.g.dart'
 
       - name: Analyze

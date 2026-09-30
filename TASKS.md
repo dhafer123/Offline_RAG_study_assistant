@@ -23,6 +23,7 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
 - [ ] **1.3 LlmEngine interface + Gemma implementation**
   `LlmEngine` has `load()`, `generate(prompt) -> Stream<String>` and `unload()`. The implementation uses flutter_gemma, following its README for the installed version.
   *Done when:* a debug screen streams an answer to a hardcoded prompt on the real phone.
+  *Notes:* flutter_gemma 0.16.5 (1.x needs Dart 3.12). Model loads from a file pushed with adb until 1.6 (see README). build_runner now needs `--force-jit` because flutter_gemma uses native-asset build hooks.
 
 - [ ] **1.4 Perf helper + first measurements**
   Measure time to first token, tokens/sec and load time. Record peak RAM from the Android Studio profiler. Release build only.

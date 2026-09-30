@@ -27,9 +27,23 @@ Measured on a real device in release mode: see [docs/METRICS.md](docs/METRICS.md
 
 ```bash
 flutter pub get
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build --force-jit --delete-conflicting-outputs
 flutter run --release
 ```
+
+### Model file (development)
+
+Until the in-app model download lands, push the model to the phone by hand:
+
+1. Request access to [litert-community/Gemma3-1B-IT](https://huggingface.co/litert-community/Gemma3-1B-IT) on Hugging Face and download `Gemma3-1B-IT_multi-prefill-seq_q4_ekv4096.litertlm`.
+2. Install and open the app once, then push the file into its storage folder:
+
+```bash
+adb shell mkdir -p /sdcard/Android/data/com.dhafer.offline_study_assistant/files/models
+adb push Gemma3-1B-IT_multi-prefill-seq_q4_ekv4096.litertlm /sdcard/Android/data/com.dhafer.offline_study_assistant/files/models/
+```
+
+3. Tap the bug icon on the Library screen → **Generate**.
 
 ## Development
 

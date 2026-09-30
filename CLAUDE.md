@@ -86,7 +86,7 @@ docs/          METRICS.md, architecture diagram, screenshots
 
 ```bash
 flutter pub get
-dart run build_runner build --delete-conflicting-outputs   # drift / riverpod / freezed codegen
+dart run build_runner build --force-jit --delete-conflicting-outputs   # drift / riverpod / freezed codegen
 flutter analyze
 flutter test
 flutter run --release        # always measure performance in release mode, on a real device
