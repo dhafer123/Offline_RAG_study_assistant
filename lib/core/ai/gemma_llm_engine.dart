@@ -11,6 +11,7 @@ class GemmaLlmEngine implements LlmEngine {
   final LlmModelConfig _config;
   InferenceModel? _model;
   Future<void>? _loading;
+  LlmUsage? _lastUsage;
 
   @override
   bool get isLoaded => _model != null;
@@ -53,6 +54,7 @@ class GemmaLlmEngine implements LlmEngine {
   Stream<String> generate(String prompt) async* {
     final model = _model;
     if (model == null) throw const LlmException('Model is not loaded');
+    _lastUsage = null;
 
     final InferenceModelSession session;
     try {
@@ -80,6 +82,7 @@ class GemmaLlmEngine implements LlmEngine {
         ),
       );
       finished = true;
+      _lastUsage = _usageOf(session);
     } finally {
       if (!finished) {
         try {
@@ -89,6 +92,23 @@ class GemmaLlmEngine implements LlmEngine {
         }
       }
       await session.close();
+    }
+  }
+
+  @override
+  LlmUsage? get lastUsage => _lastUsage;
+
+  /// Real token counts from LiteRT-LM's benchmark info (read before closing).
+  static LlmUsage? _usageOf(InferenceModelSession session) {
+    try {
+      final metrics = session.getSessionMetrics();
+      if (metrics.outputTokens <= 0) return null;
+      return LlmUsage(
+        promptTokens: metrics.inputTokens,
+        outputTokens: metrics.outputTokens,
+      );
+    } on Object {
+      return null;
     }
   }
 

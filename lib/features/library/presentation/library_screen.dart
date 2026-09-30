@@ -13,6 +13,11 @@ class LibraryScreen extends StatelessWidget {
         title: const Text('Library'),
         actions: [
           IconButton(
+            tooltip: 'LLM benchmark',
+            icon: const Icon(Icons.speed),
+            onPressed: () => context.push(AppRoutes.llmBenchmark),
+          ),
+          IconButton(
             tooltip: 'LLM debug',
             icon: const Icon(Icons.bug_report_outlined),
             onPressed: () => context.push(AppRoutes.llmDebug),

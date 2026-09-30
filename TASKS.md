@@ -25,9 +25,10 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
   *Done when:* a debug screen streams an answer to a hardcoded prompt on the real phone.
   *Notes:* flutter_gemma 0.16.5 (1.x needs Dart 3.12). Model loads from a file pushed with adb until 1.6 (see README). build_runner now needs `--force-jit` because flutter_gemma uses native-asset build hooks. Default backend is CPU: on the 4 GB test phone the GPU path hit ~1.7 GB RSS + 0.5 GB swap and was killed by lmkd at the first decode step; CPU streams fine with maxTokens 4096.
 
-- [ ] **1.4 Perf helper + first measurements**
+- [x] **1.4 Perf helper + first measurements**
   Measure time to first token, tokens/sec and load time. Record peak RAM from the Android Studio profiler. Release build only.
   *Done when:* `docs/METRICS.md` has the numbers (median of 10 runs), the phone model and the date.
+  *Notes:* `Perf` + `GenerationTimer` in `lib/core/perf.dart`; benchmark screen (speed icon on Library). `LlmEngine.lastUsage` exposes real token counts from LiteRT-LM. Peak RAM from `ProcessInfo.maxRss` + `dumpsys meminfo`, not the Android Studio profiler. Release builds needed R8 keep rules (`android/app/proguard-rules.pro`). Median: 0.86 s load, 4.41 s TTFT, 8.38 tok/s, ~1.17 GB peak.
 
 - [ ] **1.5 Model comparison (only if 1.4 is slow)**
   Run the same measurements with Qwen3 0.6B, then pick the default model.
@@ -146,5 +147,6 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
 ## Notes
 
 - 2026-09-30: LLM runs on CPU by default (GPU backend OOM-killed on the 4 GB Galaxy A16).
+- 2026-09-30: Gemma 3 1B reaches 8.4 tok/s on CPU (Gate 1 needs 5), so 1.5 (Qwen3 comparison) is optional. Gemma 3 1B stays the default.
 
 <!-- Add a short dated line whenever a decision changes the plan, e.g. "2026-10-05: switched to Qwen3 0.6B, Gemma 3 1B only reached 3 tok/s." -->

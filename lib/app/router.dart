@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:offline_study_assistant/features/benchmark/presentation/llm_benchmark_screen.dart';
 import 'package:offline_study_assistant/features/benchmark/presentation/llm_debug_screen.dart';
 import 'package:offline_study_assistant/features/library/presentation/library_screen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -8,6 +9,7 @@ part 'router.g.dart';
 abstract final class AppRoutes {
   static const library = '/';
   static const llmDebug = '/debug/llm';
+  static const llmBenchmark = '/debug/llm-benchmark';
 }
 
 @Riverpod(keepAlive: true)
@@ -22,6 +24,10 @@ GoRouter router(Ref ref) {
       GoRoute(
         path: AppRoutes.llmDebug,
         builder: (context, state) => const LlmDebugScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.llmBenchmark,
+        builder: (context, state) => const LlmBenchmarkScreen(),
       ),
     ],
   );

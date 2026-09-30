@@ -19,6 +19,18 @@ abstract interface class LlmEngine {
 
   /// Frees the model's memory. Safe to call when not loaded.
   Future<void> unload();
+
+  /// Token counts of the last generation that ran to completion, when the
+  /// runtime reports them. Null before the first one, or after a failed or
+  /// cancelled one.
+  LlmUsage? get lastUsage;
+}
+
+class LlmUsage {
+  const LlmUsage({required this.promptTokens, required this.outputTokens});
+
+  final int promptTokens;
+  final int outputTokens;
 }
 
 class LlmException implements Exception {

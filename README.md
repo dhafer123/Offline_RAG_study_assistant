@@ -53,6 +53,10 @@ The file survives reinstalls (including `flutter run --release`, which uses the 
 
 3. Tap the bug icon on the Library screen → **Generate**.
 
+### Benchmark
+
+In a release build (`flutter run --release`), tap the speed icon on the Library screen → **Run benchmark**. It reloads the model and answers a fixed prompt 10 times, then shows the medians. Each run is also logged: `adb logcat -s flutter | grep "\[perf\]"`.
+
 ## Development
 
 ```bash
