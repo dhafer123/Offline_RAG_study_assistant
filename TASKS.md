@@ -35,9 +35,10 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
   *Done when:* the decision and the numbers are in METRICS.md.
   *Notes:* Gemma 3 1B stays the default: 8.38 vs 3.10 tok/s, 4.41 vs 8.09 s to the first token, ~600 MB less RAM than Qwen3 0.6B (the loadable file is INT8). The INT4 Qwen3 file needs LiteRT-LM 0.17+ (flutter_gemma 0.16.5 bundles 0.12.0). The benchmark screen has a model picker; `GemmaLlmEngine` appends `/no_think` for Qwen3.
 
-- [ ] **1.6 ModelManager**
+- [x] **1.6 ModelManager**
   First-launch download with a progress bar, resume after interruption, checksum check, and a Wi-Fi-only option. Handle states: not downloaded → downloading → ready → error.
   *Done when:* a fresh install downloads the model, then the app works in airplane mode.
+  *Notes:* Model hosted on this repo's `models-v1` GitHub release (Gemma is gated on Hugging Face; a token can't ship in the app), with NOTICE + Gemma terms in `docs/model_license/`. Own `dart:io` downloader (HTTP Range resume, manual redirects), SHA-256 in an isolate, `.sha256` marker so startup doesn't re-hash. Setup screen gates all routes until ready. New deps: crypto, path_provider, shared_preferences, connectivity_plus. Added INTERNET to the main manifest. **Pending:** the release asset isn't uploaded yet, so the fresh-install → airplane-mode check on the phone hasn't been run.
 
 **Gate 1:** at least 5 tok/s on your phone and no crash, with the chosen model.
 

@@ -45,7 +45,7 @@ final class LlmBenchmarkControllerProvider
 }
 
 String _$llmBenchmarkControllerHash() =>
-    r'c276f62db1d57f46bc1584d45ab1f2cfd188dde8';
+    r'12e95359d12d52eda67c129f88210e755e3601cd';
 
 /// Runs [LlmBenchmark] from the benchmark screen (task 1.4).
 

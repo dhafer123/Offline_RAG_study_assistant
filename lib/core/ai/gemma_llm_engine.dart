@@ -6,9 +6,13 @@ import 'package:offline_study_assistant/core/ai/llm_model_config.dart';
 
 /// [LlmEngine] backed by flutter_gemma (LiteRT-LM).
 class GemmaLlmEngine implements LlmEngine {
-  GemmaLlmEngine(this._config);
+  GemmaLlmEngine(this._config, {required String modelPath})
+    : _modelPath = modelPath;
 
   final LlmModelConfig _config;
+
+  /// Absolute path to the config's `.litertlm` file.
+  final String _modelPath;
   InferenceModel? _model;
   Future<void>? _loading;
   LlmUsage? _lastUsage;
@@ -23,8 +27,8 @@ class GemmaLlmEngine implements LlmEngine {
   }
 
   Future<void> _load() async {
-    if (!File(_config.modelPath).existsSync()) {
-      throw LlmException('Model file not found at ${_config.modelPath}');
+    if (!File(_modelPath).existsSync()) {
+      throw LlmException('Model file not found at $_modelPath');
     }
     try {
       await FlutterGemma.initialize();
@@ -34,7 +38,7 @@ class GemmaLlmEngine implements LlmEngine {
           LlmModelFamily.qwen3 => ModelType.qwen3,
         },
         fileType: ModelFileType.litertlm,
-      ).fromFile(_config.modelPath).install();
+      ).fromFile(_modelPath).install();
       _model = await FlutterGemma.getActiveModel(
         maxTokens: _config.maxTokens,
         preferredBackend: switch (_config.backend) {

@@ -7,12 +7,14 @@ void main() {
   late ProviderContainer container;
 
   setUp(() {
-    container = ProviderContainer();
+    container = ProviderContainer(
+      overrides: [modelsDirectoryProvider.overrideWithValue('/models')],
+    );
     addTearDown(container.dispose);
   });
 
   test('defaults to Gemma 3 1B', () {
-    expect(container.read(activeLlmModelProvider), LlmModelConfig.gemma3Dev);
+    expect(container.read(activeLlmModelProvider), LlmModelConfig.gemma3);
   });
 
   test('selecting another model replaces the engine', () {
@@ -20,9 +22,9 @@ void main() {
 
     container
         .read(activeLlmModelProvider.notifier)
-        .select(LlmModelConfig.qwen3Dev);
+        .select(LlmModelConfig.qwen3);
 
-    expect(container.read(activeLlmModelProvider), LlmModelConfig.qwen3Dev);
+    expect(container.read(activeLlmModelProvider), LlmModelConfig.qwen3);
     expect(container.read(llmEngineProvider), isNot(same(gemmaEngine)));
   });
 
@@ -31,7 +33,7 @@ void main() {
 
     container
         .read(activeLlmModelProvider.notifier)
-        .select(LlmModelConfig.gemma3Dev);
+        .select(LlmModelConfig.gemma3);
 
     expect(container.read(llmEngineProvider), same(engine));
   });

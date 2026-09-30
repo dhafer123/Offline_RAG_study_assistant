@@ -31,9 +31,12 @@ dart run build_runner build --force-jit --delete-conflicting-outputs
 flutter run --release
 ```
 
-### Model file (development)
+### Model file
 
-Until the in-app model download lands, copy the model into the app's private storage by hand (debug build required for `run-as`):
+On first launch the app downloads the model (557 MB, Wi-Fi only by default) from this repo's [`models-v1` release](https://github.com/dhafer123/Offline_RAG_study_assistant/releases/tag/models-v1), checks its SHA-256, and then works offline. Interrupted downloads resume.
+Gemma is provided under and subject to the Gemma Terms of Use found at ai.google.dev/gemma/terms (see [docs/model_license](docs/model_license/)).
+
+To skip the download during development, copy the file into the app's private storage by hand (debug build required for `run-as`); the app verifies it once on the next launch:
 
 1. Request access to [litert-community/Gemma3-1B-IT](https://huggingface.co/litert-community/Gemma3-1B-IT) on Hugging Face and download `Gemma3-1B-IT_multi-prefill-seq_q4_ekv4096.litertlm`.
 2. Install the app (`flutter run`), then:

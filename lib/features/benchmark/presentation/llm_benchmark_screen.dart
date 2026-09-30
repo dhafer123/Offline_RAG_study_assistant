@@ -30,7 +30,7 @@ class LlmBenchmarkScreen extends ConsumerWidget {
             value: model,
             isExpanded: true,
             items: [
-              for (final config in LlmModelConfig.devModels)
+              for (final config in LlmModelConfig.benchmarkModels)
                 DropdownMenuItem(value: config, child: Text(config.name)),
             ],
             onChanged: state.isRunning

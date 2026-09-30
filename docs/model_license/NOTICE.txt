@@ -1,0 +1,14 @@
+Gemma is provided under and subject to the Gemma Terms of Use found at ai.google.dev/gemma/terms
+
+The model file distributed with this project
+(Gemma3-1B-IT_multi-prefill-seq_q4_ekv4096.litertlm, from
+huggingface.co/litert-community/Gemma3-1B-IT) is unmodified.
+
+Use of Gemma is subject to the use restrictions in Section 3.2 of the Gemma
+Terms of Use, including the Gemma Prohibited Use Policy
+(ai.google.dev/gemma/prohibited_use_policy). By downloading or using the model
+you agree to these restrictions.
+
+Copies of both documents are included:
+- GEMMA_TERMS_OF_USE.txt
+- GEMMA_PROHIBITED_USE_POLICY.txt
