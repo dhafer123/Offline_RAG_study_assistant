@@ -94,5 +94,6 @@ flutter run --release        # always measure performance in release mode, on a 
 
 ## Test device
 
-- Phone: `<model, RAM, Android version>` (fill in)
+- Phone: Samsung Galaxy A16 (SM-A165F), MediaTek Helio G99 (MT6789), 4 GB RAM (3.7 GB usable), Android 16
+- Memory is the main constraint: the GPU backend gets OOM-killed, so the LLM runs on CPU.
 - All performance numbers must come from this device, in release mode.

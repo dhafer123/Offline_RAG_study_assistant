@@ -9,7 +9,7 @@ class LlmModelConfig {
   const LlmModelConfig({
     required this.modelPath,
     this.family = LlmModelFamily.gemma3,
-    this.backend = LlmBackend.gpu,
+    this.backend = LlmBackend.cpu,
     this.maxTokens = 4096,
     this.temperature = 0.2,
     this.topK = 40,

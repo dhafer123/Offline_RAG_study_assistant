@@ -3,7 +3,7 @@
 Put this file at `docs/METRICS.md` in the repo.
 All numbers: release build, real device, median of 10 runs unless noted.
 
-**Device:** <model, RAM, Android version>
+**Device:** Samsung Galaxy A16 (SM-A165F), MediaTek Helio G99 (MT6789), 4 GB RAM, Android 16
 
 ## LLM speed
 

@@ -20,10 +20,10 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
   *Done when:* the badge in the README is green.
   *Notes:* Flutter pinned to 3.38.9 in CI. The workflow also checks `dart format` and that the committed `*.g.dart` files are up to date.
 
-- [ ] **1.3 LlmEngine interface + Gemma implementation**
+- [x] **1.3 LlmEngine interface + Gemma implementation**
   `LlmEngine` has `load()`, `generate(prompt) -> Stream<String>` and `unload()`. The implementation uses flutter_gemma, following its README for the installed version.
   *Done when:* a debug screen streams an answer to a hardcoded prompt on the real phone.
-  *Notes:* flutter_gemma 0.16.5 (1.x needs Dart 3.12). Model loads from a file pushed with adb until 1.6 (see README). build_runner now needs `--force-jit` because flutter_gemma uses native-asset build hooks.
+  *Notes:* flutter_gemma 0.16.5 (1.x needs Dart 3.12). Model loads from a file pushed with adb until 1.6 (see README). build_runner now needs `--force-jit` because flutter_gemma uses native-asset build hooks. Default backend is CPU: on the 4 GB test phone the GPU path hit ~1.7 GB RSS + 0.5 GB swap and was killed by lmkd at the first decode step; CPU streams fine with maxTokens 4096.
 
 - [ ] **1.4 Perf helper + first measurements**
   Measure time to first token, tokens/sec and load time. Record peak RAM from the Android Studio profiler. Release build only.
@@ -144,5 +144,7 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
 - Arabic and Darija questions
 
 ## Notes
+
+- 2026-09-30: LLM runs on CPU by default (GPU backend OOM-killed on the 4 GB Galaxy A16).
 
 <!-- Add a short dated line whenever a decision changes the plan, e.g. "2026-10-05: switched to Qwen3 0.6B, Gemma 3 1B only reached 3 tok/s." -->
