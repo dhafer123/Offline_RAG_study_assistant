@@ -15,9 +15,10 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
   *Done when:* the app runs, and `flutter analyze` and `flutter test` pass.
   *Notes:* very_good_analysis (without `public_member_api_docs`). Riverpod stays at flutter_riverpod 3.1 / riverpod_annotation 4.0 because newer versions need a newer Dart SDK than Flutter 3.38.9. Generated `*.g.dart` files are committed so CI doesn't need build_runner. Android + iOS platforms only.
 
-- [ ] **1.2 CI**
+- [x] **1.2 CI**
   GitHub Actions workflow running `flutter analyze` and `flutter test` on push and on pull requests.
   *Done when:* the badge in the README is green.
+  *Notes:* Flutter pinned to 3.38.9 in CI. The workflow also checks `dart format` and that the committed `*.g.dart` files are up to date.
 
 - [ ] **1.3 LlmEngine interface + Gemma implementation**
   `LlmEngine` has `load()`, `generate(prompt) -> Stream<String>` and `unload()`. The implementation uses flutter_gemma, following its README for the installed version.
