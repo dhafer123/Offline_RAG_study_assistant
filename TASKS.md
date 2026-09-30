@@ -10,7 +10,7 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
 
 ## Week 1 (Oct 1–7): prove the model runs on the phone
 
-- [ ] **1.1 Project setup**
+- [x] **1.1 Project setup**
   Flutter project, folder layout from CLAUDE.md, Riverpod, go_router, lints (`very_good_analysis` or `flutter_lints`), `.gitignore` that excludes model files, and a README stub.
   *Done when:* the app runs, and `flutter analyze` and `flutter test` pass.
   *Notes:* very_good_analysis (without `public_member_api_docs`). Riverpod stays at flutter_riverpod 3.1 / riverpod_annotation 4.0 because newer versions need a newer Dart SDK than Flutter 3.38.9. Generated `*.g.dart` files are committed so CI doesn't need build_runner. Android + iOS platforms only.
