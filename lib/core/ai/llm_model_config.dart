@@ -30,11 +30,11 @@ class LlmModelConfig {
   static const gemma3FileName =
       'Gemma3-1B-IT_multi-prefill-seq_q4_ekv4096.litertlm';
 
-  /// App-specific external storage: readable without permissions, and
-  /// reachable with `adb push`. Temporary until the ModelManager (task 1.6)
-  /// downloads the model itself.
+  /// The app's internal files dir (always readable by the app). Filled with
+  /// `adb shell run-as` during development; temporary until the ModelManager
+  /// (task 1.6) downloads the model itself.
   static const devModelDir =
-      '/storage/emulated/0/Android/data/com.dhafer.offline_study_assistant/files/models';
+      '/data/user/0/com.dhafer.offline_study_assistant/files/models';
 
   /// Gemma 3 1B int4, pushed to [devModelDir] during development.
   static const gemma3Dev = LlmModelConfig(

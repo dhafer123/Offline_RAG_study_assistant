@@ -33,15 +33,23 @@ flutter run --release
 
 ### Model file (development)
 
-Until the in-app model download lands, push the model to the phone by hand:
+Until the in-app model download lands, copy the model into the app's private storage by hand (debug build required for `run-as`):
 
 1. Request access to [litert-community/Gemma3-1B-IT](https://huggingface.co/litert-community/Gemma3-1B-IT) on Hugging Face and download `Gemma3-1B-IT_multi-prefill-seq_q4_ekv4096.litertlm`.
-2. Install and open the app once, then push the file into its storage folder:
+2. Install the app (`flutter run`), then:
 
 ```bash
-adb shell mkdir -p /sdcard/Android/data/com.dhafer.offline_study_assistant/files/models
-adb push Gemma3-1B-IT_multi-prefill-seq_q4_ekv4096.litertlm /sdcard/Android/data/com.dhafer.offline_study_assistant/files/models/
+F=Gemma3-1B-IT_multi-prefill-seq_q4_ekv4096.litertlm
+P=com.dhafer.offline_study_assistant
+adb push $F /data/local/tmp/$F
+adb shell chmod 644 /data/local/tmp/$F
+adb shell run-as $P mkdir -p files/models
+adb shell run-as $P cp /data/local/tmp/$F files/models/$F
+adb shell rm /data/local/tmp/$F
 ```
+
+On Git Bash for Windows, run `export MSYS_NO_PATHCONV=1` first so the device paths aren't rewritten.
+The file survives reinstalls (including `flutter run --release`, which uses the same debug signing key) but not an uninstall.
 
 3. Tap the bug icon on the Library screen → **Generate**.
 
