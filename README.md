@@ -1,5 +1,7 @@
 # Offline Study Assistant
 
+[![CI](https://github.com/dhafer123/Offline_RAG_study_assistant/actions/workflows/ci.yml/badge.svg)](https://github.com/dhafer123/Offline_RAG_study_assistant/actions/workflows/ci.yml)
+
 Ask questions about your course PDFs and get answers that cite their pages, **fully offline**.
 Retrieval (vector search + BM25, fused with RRF) and generation (Gemma 3 1B) both run on the phone.
 Tap a citation to open the PDF at that page.
