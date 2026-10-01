@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:offline_study_assistant/core/ai/embedder.dart';
 import 'package:offline_study_assistant/core/ai/file_model_manager.dart';
+import 'package:offline_study_assistant/core/ai/gemma_embedder.dart';
 import 'package:offline_study_assistant/core/ai/gemma_llm_engine.dart';
 import 'package:offline_study_assistant/core/ai/llm_engine.dart';
 import 'package:offline_study_assistant/core/ai/llm_model_config.dart';
@@ -9,8 +11,14 @@ import 'package:offline_study_assistant/core/ai/model_manager.dart';
 import 'package:offline_study_assistant/core/ai/model_spec.dart';
 import 'package:offline_study_assistant/core/db/app_database.dart';
 import 'package:offline_study_assistant/core/db/document_store.dart';
+import 'package:offline_study_assistant/core/db/sqlite_vector_index.dart';
+import 'package:offline_study_assistant/core/db/vector_index.dart';
 import 'package:offline_study_assistant/core/net/network_monitor.dart';
+import 'package:offline_study_assistant/core/pdf/pdf_text_extractor.dart';
+import 'package:offline_study_assistant/core/pdf/pdfrx_text_extractor.dart';
 import 'package:offline_study_assistant/core/settings/app_settings.dart';
+import 'package:offline_study_assistant/features/chat/retrieval_service.dart';
+import 'package:offline_study_assistant/features/library/ingestion_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'providers.g.dart';
@@ -25,13 +33,54 @@ String modelsDirectory(Ref ref) =>
 String databasePath(Ref ref) =>
     throw UnimplementedError('Override databasePathProvider in main()');
 
-/// Documents, chunks and the full-text index. Opened lazily on first query.
+/// Absolute path of the folder holding the user's PDFs. Set in `main()`.
 @Riverpod(keepAlive: true)
-DocumentStore documentStore(Ref ref) {
+String pdfsDirectory(Ref ref) =>
+    throw UnimplementedError('Override pdfsDirectoryProvider in main()');
+
+/// The SQLite database. Opened lazily on first query.
+@Riverpod(keepAlive: true)
+AppDatabase appDatabase(Ref ref) {
   final db = AppDatabase.open(ref.watch(databasePathProvider));
   ref.onDispose(db.close);
   return db;
 }
+
+/// Documents, chunks and the full-text index.
+@Riverpod(keepAlive: true)
+DocumentStore documentStore(Ref ref) => ref.watch(appDatabaseProvider);
+
+/// Chunk embeddings, stored in the same database.
+@Riverpod(keepAlive: true)
+VectorIndex vectorIndex(Ref ref) =>
+    SqliteVectorIndex(ref.watch(appDatabaseProvider));
+
+@Riverpod(keepAlive: true)
+Embedder embedder(Ref ref) {
+  final embedder = GemmaEmbedder(
+    modelsDirectory: ref.watch(modelsDirectoryProvider),
+  );
+  ref.onDispose(embedder.unload);
+  return embedder;
+}
+
+@Riverpod(keepAlive: true)
+PdfTextExtractor pdfTextExtractor(Ref ref) => PdfrxTextExtractor();
+
+@Riverpod(keepAlive: true)
+IngestionService ingestionService(Ref ref) => IngestionService(
+  extractor: ref.watch(pdfTextExtractorProvider),
+  store: ref.watch(documentStoreProvider),
+  embedder: ref.watch(embedderProvider),
+  index: ref.watch(vectorIndexProvider),
+);
+
+@Riverpod(keepAlive: true)
+RetrievalService retrievalService(Ref ref) => RetrievalService(
+  embedder: ref.watch(embedderProvider),
+  index: ref.watch(vectorIndexProvider),
+  store: ref.watch(documentStoreProvider),
+);
 
 /// Loaded in `main()` so reads are synchronous.
 @Riverpod(keepAlive: true)

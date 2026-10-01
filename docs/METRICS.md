@@ -48,6 +48,25 @@ Notes:
 
 | Date | Document | Pages | Chunks | Indexing time (s) |
 |---|---|---|---|---|
+| 2026-10-01 | `ps_game` (project report, FR, LaTeX) | 34 | 35 | 81.8 (embedding 81.4) |
+| 2026-10-01 | `etat_de_l_art` (FR, LaTeX) | 4 | 9 | 22.2 (embedding 22.1) |
+| 2026-10-01 | `03_rag_architecture` (EN) | 2 | 3 | 6.9 |
+| 2026-10-01 | `02_rag_basics` (EN) | 1 | 2 | 4.7 |
+| 2026-10-01 | `01_ai_fundamentals` (EN) | 1 | 1 | 2.7 |
+
+Single runs (task 2.5, retrieval debug screen), not medians; the 100-page measurement comes with task 2.6. Extraction, cleaning, chunking and saving take under 0.5 s even for 34 pages: **embedding is ~99% of indexing time.**
+
+## Embeddings and vector search
+
+| Date | Model | Per chunk (s) | Search: embed question + top-5 (s) | Peak RAM while indexing (MB) |
+|---|---|---|---|---|
+| 2026-10-01 | EmbeddingGemma 300M, seq512 (`embeddinggemma-300M_seq512_mixed-precision.tflite`), CPU | 2.35 | 2.15 | ~536 RSS |
+
+- **Per chunk:** total embedding time / chunks over the 5 PDFs above (117.4 s / 50 chunks; per document 2.32–2.61 s). Includes loading the model on the first document.
+- **Search:** median of 5 queries (2.13–2.38 s), from the Search tap to the results; nearly all of it is embedding the question, since the brute-force search over 50 vectors is negligible. Inputs are padded to 512 tokens, so a short question costs as much as a full chunk.
+- **Single-threaded:** `top -H` during indexing shows one thread at 100% while the other 7 cores idle. flutter_gemma 0.16.5 always runs embeddings on CPU with LiteRT's default options and doesn't expose a thread count. Options if 2.6 needs faster indexing: the seq256 model (about half the work, but it truncates 250-word chunks), shorter chunks, or a newer flutter_gemma.
+- **RAM:** `dumpsys meminfo` right after indexing 35 chunks (embedder loaded, LLM not loaded): 476 MB PSS / 536 MB RSS. Not measured with the LLM loaded at the same time yet.
+- **Quality, spot checks (vector only):** "How does the NPC generate its dialogues?" → `ps_game` p. 28 (0.57); "Quel moteur de jeu a été utilisé pour le projet" → `ps_game` p. 27, the Godot section (0.57); "What are common challenges of RAG systems?" → `03_rag_architecture` p. 1 (0.58). Weak: "probleme du demarrage a froid" (typed without accents) ranks the right page, `etat_de_l_art` p. 1, only 5th (0.15). Exact-term queries like this are what FTS5 keyword search (3.1) should fix. Recall@5 comes with 2.8.
 
 ## Retrieval (50 answerable questions)
 

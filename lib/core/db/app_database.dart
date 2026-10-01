@@ -72,6 +72,14 @@ class AppDatabase extends GeneratedDatabase implements DocumentStore {
         INSERT INTO chunks_fts (rowid, text) VALUES (new.id, new.text);
       END''',
     ],
+    // v2: chunk embeddings (see SqliteVectorIndex).
+    [
+      '''
+      CREATE TABLE chunk_vectors (
+        chunk_id INTEGER PRIMARY KEY REFERENCES chunks (id) ON DELETE CASCADE,
+        vector BLOB NOT NULL
+      )''',
+    ],
   ];
 
   final DateTime Function() _clock;

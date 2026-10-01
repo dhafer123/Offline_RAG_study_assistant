@@ -56,6 +56,21 @@ The file survives reinstalls (including `flutter run --release`, which uses the 
 
 3. Tap the bug icon on the Library screen → **Generate**.
 
+### Retrieval debug (embeddings + vector search)
+
+Not downloaded by the app yet either. Request access to [litert-community/embeddinggemma-300m](https://huggingface.co/litert-community/embeddinggemma-300m), download `embeddinggemma-300M_seq512_mixed-precision.tflite` and `sentencepiece.model`, and copy both to `files/models` with the same commands as above. Then copy a few PDFs to `files/pdfs`:
+
+```bash
+F=notes.pdf
+adb push "$F" /data/local/tmp/"$F"
+adb shell chmod 644 /data/local/tmp/"$F"
+adb shell run-as $P mkdir -p files/pdfs
+adb shell run-as $P cp /data/local/tmp/"$F" files/pdfs/"$F"
+adb shell rm /data/local/tmp/"$F"
+```
+
+Tap the search icon on the Library screen, **Index** a PDF, then type a question and **Search**: it shows the 5 closest chunks with document, page and cosine similarity. Indexing and search times are logged with `[perf]`.
+
 ### Benchmark
 
 In a release build (`flutter run --release`), tap the speed icon on the Library screen, pick a model, then **Run benchmark**. To compare with Qwen3 0.6B, push [`Qwen3-0.6B.litertlm`](https://huggingface.co/litert-community/Qwen3-0.6B) (public, no access request) to the same `files/models` folder, using the steps above. It reloads the model and answers a fixed prompt 10 times, then shows the medians. Each run is also logged: `adb logcat -s flutter | grep "\[perf\]"`.

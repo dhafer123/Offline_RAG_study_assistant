@@ -100,17 +100,109 @@ final class DatabasePathProvider
 
 String _$databasePathHash() => r'1de6cd32a5776631efc7fdca011775575cd96c33';
 
-/// Documents, chunks and the full-text index. Opened lazily on first query.
+/// Absolute path of the folder holding the user's PDFs. Set in `main()`.
+
+@ProviderFor(pdfsDirectory)
+final pdfsDirectoryProvider = PdfsDirectoryProvider._();
+
+/// Absolute path of the folder holding the user's PDFs. Set in `main()`.
+
+final class PdfsDirectoryProvider
+    extends $FunctionalProvider<String, String, String>
+    with $Provider<String> {
+  /// Absolute path of the folder holding the user's PDFs. Set in `main()`.
+  PdfsDirectoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'pdfsDirectoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$pdfsDirectoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<String> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  String create(Ref ref) {
+    return pdfsDirectory(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<String>(value),
+    );
+  }
+}
+
+String _$pdfsDirectoryHash() => r'784a5d74feb55501d830997db19545be0a2e9d44';
+
+/// The SQLite database. Opened lazily on first query.
+
+@ProviderFor(appDatabase)
+final appDatabaseProvider = AppDatabaseProvider._();
+
+/// The SQLite database. Opened lazily on first query.
+
+final class AppDatabaseProvider
+    extends $FunctionalProvider<AppDatabase, AppDatabase, AppDatabase>
+    with $Provider<AppDatabase> {
+  /// The SQLite database. Opened lazily on first query.
+  AppDatabaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'appDatabaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$appDatabaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<AppDatabase> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  AppDatabase create(Ref ref) {
+    return appDatabase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AppDatabase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AppDatabase>(value),
+    );
+  }
+}
+
+String _$appDatabaseHash() => r'265ab7dac9666e52b0f3603fb596a227a7322103';
+
+/// Documents, chunks and the full-text index.
 
 @ProviderFor(documentStore)
 final documentStoreProvider = DocumentStoreProvider._();
 
-/// Documents, chunks and the full-text index. Opened lazily on first query.
+/// Documents, chunks and the full-text index.
 
 final class DocumentStoreProvider
     extends $FunctionalProvider<DocumentStore, DocumentStore, DocumentStore>
     with $Provider<DocumentStore> {
-  /// Documents, chunks and the full-text index. Opened lazily on first query.
+  /// Documents, chunks and the full-text index.
   DocumentStoreProvider._()
     : super(
         from: null,
@@ -144,7 +236,232 @@ final class DocumentStoreProvider
   }
 }
 
-String _$documentStoreHash() => r'00adf8815ac82659bb656df306e22ba5a335885c';
+String _$documentStoreHash() => r'69013fb9ba250c450dd8061bca7800e1687a6fc9';
+
+/// Chunk embeddings, stored in the same database.
+
+@ProviderFor(vectorIndex)
+final vectorIndexProvider = VectorIndexProvider._();
+
+/// Chunk embeddings, stored in the same database.
+
+final class VectorIndexProvider
+    extends $FunctionalProvider<VectorIndex, VectorIndex, VectorIndex>
+    with $Provider<VectorIndex> {
+  /// Chunk embeddings, stored in the same database.
+  VectorIndexProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'vectorIndexProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$vectorIndexHash();
+
+  @$internal
+  @override
+  $ProviderElement<VectorIndex> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  VectorIndex create(Ref ref) {
+    return vectorIndex(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(VectorIndex value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<VectorIndex>(value),
+    );
+  }
+}
+
+String _$vectorIndexHash() => r'cfac6cbd347d4c4fc407f262158c5e0a7318495b';
+
+@ProviderFor(embedder)
+final embedderProvider = EmbedderProvider._();
+
+final class EmbedderProvider
+    extends $FunctionalProvider<Embedder, Embedder, Embedder>
+    with $Provider<Embedder> {
+  EmbedderProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'embedderProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$embedderHash();
+
+  @$internal
+  @override
+  $ProviderElement<Embedder> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  Embedder create(Ref ref) {
+    return embedder(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Embedder value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Embedder>(value),
+    );
+  }
+}
+
+String _$embedderHash() => r'5a1d7b75217e5fb2a5deb85522cba5124f2fba15';
+
+@ProviderFor(pdfTextExtractor)
+final pdfTextExtractorProvider = PdfTextExtractorProvider._();
+
+final class PdfTextExtractorProvider
+    extends
+        $FunctionalProvider<
+          PdfTextExtractor,
+          PdfTextExtractor,
+          PdfTextExtractor
+        >
+    with $Provider<PdfTextExtractor> {
+  PdfTextExtractorProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'pdfTextExtractorProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$pdfTextExtractorHash();
+
+  @$internal
+  @override
+  $ProviderElement<PdfTextExtractor> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  PdfTextExtractor create(Ref ref) {
+    return pdfTextExtractor(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(PdfTextExtractor value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<PdfTextExtractor>(value),
+    );
+  }
+}
+
+String _$pdfTextExtractorHash() => r'49f038bdbf331a5957f3ab4c3bbafc7da59135a0';
+
+@ProviderFor(ingestionService)
+final ingestionServiceProvider = IngestionServiceProvider._();
+
+final class IngestionServiceProvider
+    extends
+        $FunctionalProvider<
+          IngestionService,
+          IngestionService,
+          IngestionService
+        >
+    with $Provider<IngestionService> {
+  IngestionServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'ingestionServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$ingestionServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<IngestionService> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  IngestionService create(Ref ref) {
+    return ingestionService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(IngestionService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<IngestionService>(value),
+    );
+  }
+}
+
+String _$ingestionServiceHash() => r'71e791a48f6a6fab926cddb5242c7f18fc05f853';
+
+@ProviderFor(retrievalService)
+final retrievalServiceProvider = RetrievalServiceProvider._();
+
+final class RetrievalServiceProvider
+    extends
+        $FunctionalProvider<
+          RetrievalService,
+          RetrievalService,
+          RetrievalService
+        >
+    with $Provider<RetrievalService> {
+  RetrievalServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'retrievalServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$retrievalServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<RetrievalService> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  RetrievalService create(Ref ref) {
+    return retrievalService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(RetrievalService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<RetrievalService>(value),
+    );
+  }
+}
+
+String _$retrievalServiceHash() => r'703a3d8823e49f53ae67dda0327021214949df7f';
 
 /// Loaded in `main()` so reads are synchronous.
 

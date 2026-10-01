@@ -33,8 +33,14 @@ void main() {
     expect(await _userVersion(db), db.schemaVersion);
     expect(
       await _names(db, 'table'),
-      containsAll(<String>['documents', 'chunks', 'chunks_fts']),
+      containsAll(<String>[
+        'documents',
+        'chunks',
+        'chunks_fts',
+        'chunk_vectors',
+      ]),
     );
+    expect(await _columns(db, 'chunk_vectors'), ['chunk_id', 'vector']);
     expect(await _columns(db, 'documents'), [
       'id',
       'title',
@@ -82,6 +88,29 @@ void main() {
     expect(await _userVersion(second), second.schemaVersion);
     expect((await second.getDocument(docId))?.title, 'Algo');
     expect(await second.searchKeyword('dijkstra'), hasLength(1));
+  });
+
+  test('a v1 database (task 2.1) upgrades to v2 and keeps its data', () async {
+    final dir = await Directory.systemTemp.createTemp('study_db_');
+    addTearDown(() => dir.delete(recursive: true));
+    final file = File('${dir.path}/study.db');
+
+    final v1 = AppDatabase(
+      NativeDatabase(file),
+      steps: AppDatabase.migrationSteps.sublist(0, 1),
+    );
+    final docId = await v1.insertDocument(title: 'Algo', path: '/a.pdf');
+    await v1.insertChunks(docId, const [
+      NewChunk(page: 1, ordinal: 0, text: 'dijkstra shortest path'),
+    ]);
+    await v1.close();
+
+    final v2 = AppDatabase(NativeDatabase(file));
+    addTearDown(v2.close);
+
+    expect(await _userVersion(v2), 2);
+    expect(await _names(v2, 'table'), contains('chunk_vectors'));
+    expect(await v2.searchKeyword('dijkstra'), hasLength(1));
   });
 
   test('upgrading runs only the missing steps and keeps data', () async {
