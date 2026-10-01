@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offline_study_assistant/features/benchmark/retrieval_eval.dart';
 import 'package:offline_study_assistant/features/benchmark/retrieval_eval_controller.dart';
+import 'package:offline_study_assistant/features/chat/retrieval_service.dart';
 
 class RetrievalEvalScreen extends ConsumerWidget {
   const RetrievalEvalScreen({super.key});
@@ -20,9 +21,23 @@ class RetrievalEvalScreen extends ConsumerWidget {
         children: [
           const Text(
             'Runs every question of eval/questions.json through retrieval '
-            '(top $defaultEvalK, '
-            '${RetrievalEvalController.method}) against the indexed '
-            'documents, then exports the results as JSON.',
+            '(top $defaultEvalK) against the indexed documents, then exports '
+            'the results as JSON.',
+          ),
+          const SizedBox(height: 16),
+          SegmentedButton<RetrievalMode>(
+            segments: const [
+              ButtonSegment(value: RetrievalMode.vector, label: Text('Vector')),
+              ButtonSegment(
+                value: RetrievalMode.keyword,
+                label: Text('Keyword'),
+              ),
+              ButtonSegment(value: RetrievalMode.hybrid, label: Text('Hybrid')),
+            ],
+            selected: {state.mode},
+            onSelectionChanged: running
+                ? null
+                : (selected) => controller.selectMode(selected.single),
           ),
           const SizedBox(height: 16),
           FilledButton(
@@ -45,7 +60,7 @@ class RetrievalEvalScreen extends ConsumerWidget {
           if (state.summary case final summary?) ...[
             const SizedBox(height: 24),
             Text(
-              'Recall@${summary.k}: '
+              '${state.mode.name} · Recall@${summary.k}: '
               '${(summary.recall * 100).toStringAsFixed(1)}% '
               '(${summary.found}/${summary.answerable})',
               style: theme.textTheme.headlineSmall,
@@ -85,12 +100,15 @@ class _MissTile extends StatelessWidget {
 
   final QuestionResult result;
 
+  static String _similarity(EvalHit hit) =>
+      hit.similarity?.toStringAsFixed(2) ?? 'keyword';
+
   @override
   Widget build(BuildContext context) {
     final q = result.question;
     final got = [
       for (final h in result.hits.take(3))
-        '${h.documentTitle} p.${h.page} (${h.similarity.toStringAsFixed(2)})',
+        '${h.documentTitle} p.${h.page} (${_similarity(h)})',
     ].join(', ');
     return ListTile(
       contentPadding: EdgeInsets.zero,

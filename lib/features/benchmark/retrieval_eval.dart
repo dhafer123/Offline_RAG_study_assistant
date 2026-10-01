@@ -85,26 +85,34 @@ class EvalHit {
   const EvalHit({
     required this.documentTitle,
     required this.page,
-    required this.similarity,
     required this.chunkId,
+    required this.score,
+    this.similarity,
   });
 
   factory EvalHit.from(RetrievedChunk chunk) => EvalHit(
     documentTitle: chunk.documentTitle,
     page: chunk.page,
-    similarity: chunk.similarity,
     chunkId: chunk.chunk.id,
+    score: chunk.score,
+    similarity: chunk.similarity,
   );
 
   final String documentTitle;
   final int page;
-  final double similarity;
   final int chunkId;
+
+  /// Ranking score (see `RetrievedChunk.score`).
+  final double score;
+
+  /// Cosine similarity, null for a keyword-only match.
+  final double? similarity;
 
   Map<String, Object?> toJson() => {
     'doc': documentTitle,
     'page': page,
-    'similarity': _round4(similarity),
+    'score': _round6(score),
+    'similarity': similarity == null ? null : _round4(similarity!),
     'chunk_id': chunkId,
   };
 }
@@ -142,7 +150,12 @@ class QuestionResult {
   /// Whether a correct chunk is within the first [k].
   bool foundWithin(int k) => (rank ?? k + 1) <= k;
 
-  double? get topSimilarity => hits.isEmpty ? null : hits.first.similarity;
+  /// Best cosine similarity among the hits (what the "not found" gate
+  /// looks at), null if no hit has one.
+  double? get topSimilarity => hits
+      .map((h) => h.similarity)
+      .nonNulls
+      .fold<double?>(null, (best, s) => best == null || s > best ? s : best);
 
   Map<String, Object?> toJson() => {
     'id': question.id,
@@ -258,8 +271,7 @@ class RetrievalEvalSummary {
       'median=${medianLatency.inMilliseconds}ms';
 }
 
-/// Retrieves the top [k] chunks for a question (vector-only today, hybrid in
-/// task 3.1).
+/// Retrieves the top [k] chunks for a question.
 typedef EvalRetriever =
     Future<List<RetrievedChunk>> Function(String question, int k);
 
@@ -306,3 +318,6 @@ Map<String, Object?> retrievalEvalReport({
 };
 
 double _round4(double x) => double.parse(x.toStringAsFixed(4));
+
+// RRF scores are around 1/61 ≈ 0.016, so 4 decimals would hide the order.
+double _round6(double x) => double.parse(x.toStringAsFixed(6));

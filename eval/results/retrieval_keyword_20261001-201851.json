@@ -1,0 +1,3028 @@
+{
+  "created": "2026-10-01T19:18:51.543203Z",
+  "method": "keyword",
+  "k": 5,
+  "indexed_documents": [
+    "distractor_report_120p",
+    "03_rag_architecture.pdf",
+    "02_rag_basics.pdf",
+    "01_ai_fundamentals.pdf",
+    "etat_de_l_art.pdf",
+    "ps_game__Copy_.pdf"
+  ],
+  "summary": {
+    "k": 5,
+    "answerable": 50,
+    "found": 30,
+    "recall_at_k": 0.6,
+    "mrr": 0.4923,
+    "median_latency_ms": 4,
+    "by_lang": {
+      "en": {
+        "found": 12,
+        "total": 26,
+        "recall": 0.4615
+      },
+      "fr": {
+        "found": 18,
+        "total": 24,
+        "recall": 0.75
+      }
+    },
+    "by_doc": {
+      "01_ai_fundamentals": {
+        "found": 2,
+        "total": 3,
+        "recall": 0.6667
+      },
+      "02_rag_basics": {
+        "found": 3,
+        "total": 4,
+        "recall": 0.75
+      },
+      "03_rag_architecture": {
+        "found": 5,
+        "total": 7,
+        "recall": 0.7143
+      },
+      "etat_de_l_art": {
+        "found": 7,
+        "total": 12,
+        "recall": 0.5833
+      },
+      "ps_game__Copy_": {
+        "found": 13,
+        "total": 24,
+        "recall": 0.5417
+      }
+    }
+  },
+  "results": [
+    {
+      "id": "q01",
+      "lang": "fr",
+      "question": "Quels jeux existants ont été analysés dans l'étude de l'existant du projet NeoQuest ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        12,
+        14
+      ],
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 5,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 11,
+          "score": 30.880325,
+          "similarity": null,
+          "chunk_id": 11
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 15,
+          "score": 24.73376,
+          "similarity": null,
+          "chunk_id": 15
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 29,
+          "score": 20.715771,
+          "similarity": null,
+          "chunk_id": 30
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 27,
+          "score": 19.019356,
+          "similarity": null,
+          "chunk_id": 27
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "score": 18.436426,
+          "similarity": null,
+          "chunk_id": 28
+        }
+      ]
+    },
+    {
+      "id": "q02",
+      "lang": "en",
+      "question": "In which year was Hollow Knight released, according to the game report?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        12,
+        13
+      ],
+      "rank": 2,
+      "top_similarity": null,
+      "latency_ms": 11,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 4,
+          "score": 11.640608,
+          "similarity": null,
+          "chunk_id": 4
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 12,
+          "score": 11.228331,
+          "similarity": null,
+          "chunk_id": 12
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 13,
+          "score": 9.175612,
+          "similarity": null,
+          "chunk_id": 13
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 14,
+          "score": 9.028261,
+          "similarity": null,
+          "chunk_id": 14
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 7,
+          "score": 8.052422,
+          "similarity": null,
+          "chunk_id": 7
+        }
+      ]
+    },
+    {
+      "id": "q03",
+      "lang": "fr",
+      "question": "Quels défauts le rapport reproche-t-il à Hollow Knight ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        14
+      ],
+      "rank": 2,
+      "top_similarity": null,
+      "latency_ms": 9,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 12,
+          "score": 13.310613,
+          "similarity": null,
+          "chunk_id": 12
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 14,
+          "score": 11.412924,
+          "similarity": null,
+          "chunk_id": 14
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 5,
+          "score": 10.576337,
+          "similarity": null,
+          "chunk_id": 5
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 7,
+          "score": 9.743955,
+          "similarity": null,
+          "chunk_id": 7
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 13,
+          "score": 9.175612,
+          "similarity": null,
+          "chunk_id": 13
+        }
+      ]
+    },
+    {
+      "id": "q04",
+      "lang": "en",
+      "question": "What weakness does the report see in Terraria for new players?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        14
+      ],
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 19,
+      "hits": [
+        {
+          "doc": "distractor_report_120p",
+          "page": 120,
+          "score": 7.453471,
+          "similarity": null,
+          "chunk_id": 182
+        },
+        {
+          "doc": "01_ai_fundamentals.pdf",
+          "page": 1,
+          "score": 6.448249,
+          "similarity": null,
+          "chunk_id": 45
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 13,
+          "score": 6.254736,
+          "similarity": null,
+          "chunk_id": 13
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 46,
+          "score": 5.884486,
+          "similarity": null,
+          "chunk_id": 102
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 57,
+          "score": 5.697233,
+          "similarity": null,
+          "chunk_id": 113
+        }
+      ]
+    },
+    {
+      "id": "q05",
+      "lang": "fr",
+      "question": "Quels sont les événements Scrum utilisés pour organiser le développement du jeu ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        14
+      ],
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 5,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 15,
+          "score": 23.200643,
+          "similarity": null,
+          "chunk_id": 15
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 18,
+          "score": 22.155837,
+          "similarity": null,
+          "chunk_id": 18
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 17,
+          "score": 18.436176,
+          "similarity": null,
+          "chunk_id": 17
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 16,
+          "score": 17.650629,
+          "similarity": null,
+          "chunk_id": 16
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 10,
+          "score": 17.543859,
+          "similarity": null,
+          "chunk_id": 10
+        }
+      ]
+    },
+    {
+      "id": "q06",
+      "lang": "en",
+      "question": "What is the sprint retrospective used for in the project's methodology?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        14
+      ],
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 4,
+      "hits": [
+        {
+          "doc": "distractor_report_120p",
+          "page": 29,
+          "score": 12.479486,
+          "similarity": null,
+          "chunk_id": 83
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 29,
+          "score": 9.268642,
+          "similarity": null,
+          "chunk_id": 82
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 27,
+          "score": 8.013808,
+          "similarity": null,
+          "chunk_id": 79
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 6,
+          "score": 6.419307,
+          "similarity": null,
+          "chunk_id": 56
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 16,
+          "score": 6.40747,
+          "similarity": null,
+          "chunk_id": 67
+        }
+      ]
+    },
+    {
+      "id": "q07",
+      "lang": "fr",
+      "question": "Quel est le rôle du GameManager dans NeoQuest 2D ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        16,
+        17
+      ],
+      "rank": 1,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 16,
+          "score": 22.233625,
+          "similarity": null,
+          "chunk_id": 16
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 23,
+          "score": 18.295833,
+          "similarity": null,
+          "chunk_id": 23
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 19,
+          "score": 15.768074,
+          "similarity": null,
+          "chunk_id": 19
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 9,
+          "score": 13.829823,
+          "similarity": null,
+          "chunk_id": 9
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 15,
+          "score": 13.343999,
+          "similarity": null,
+          "chunk_id": 15
+        }
+      ]
+    },
+    {
+      "id": "q08",
+      "lang": "en",
+      "question": "Which Godot nodes are given as an example of how the UI manager is built?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        17
+      ],
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 9,
+      "hits": [
+        {
+          "doc": "distractor_report_120p",
+          "page": 64,
+          "score": 11.091386,
+          "similarity": null,
+          "chunk_id": 120
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 113,
+          "score": 10.128143,
+          "similarity": null,
+          "chunk_id": 173
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 19,
+          "score": 9.519329,
+          "similarity": null,
+          "chunk_id": 71
+        },
+        {
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "score": 9.452502,
+          "similarity": null,
+          "chunk_id": 47
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 112,
+          "score": 8.573174,
+          "similarity": null,
+          "chunk_id": 172
+        }
+      ]
+    },
+    {
+      "id": "q09",
+      "lang": "fr",
+      "question": "Quels exemples de LLM, distant ou local, sont cités pour générer les réponses des NPC ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        17
+      ],
+      "rank": 2,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "score": 28.375754,
+          "similarity": null,
+          "chunk_id": 29
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 17,
+          "score": 27.713477,
+          "similarity": null,
+          "chunk_id": 17
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "score": 19.708646,
+          "similarity": null,
+          "chunk_id": 28
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 18,
+          "score": 18.735059,
+          "similarity": null,
+          "chunk_id": 18
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 30,
+          "score": 17.735673,
+          "similarity": null,
+          "chunk_id": 31
+        }
+      ]
+    },
+    {
+      "id": "q10",
+      "lang": "en",
+      "question": "Which services are listed as examples for saving the player's progress in the cloud?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        17
+      ],
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 9,
+      "hits": [
+        {
+          "doc": "01_ai_fundamentals.pdf",
+          "page": 1,
+          "score": 7.317245,
+          "similarity": null,
+          "chunk_id": 45
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 29,
+          "score": 7.239061,
+          "similarity": null,
+          "chunk_id": 83
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 93,
+          "score": 6.714307,
+          "similarity": null,
+          "chunk_id": 152
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 41,
+          "score": 6.690945,
+          "similarity": null,
+          "chunk_id": 97
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 94,
+          "score": 6.673266,
+          "similarity": null,
+          "chunk_id": 153
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "lang": "en",
+      "question": "Which non-functional requirement is about how fast the NPC dialogues must be produced?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        18
+      ],
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 3,
+      "hits": [
+        {
+          "doc": "distractor_report_120p",
+          "page": 33,
+          "score": 11.005746,
+          "similarity": null,
+          "chunk_id": 88
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 61,
+          "score": 9.411207,
+          "similarity": null,
+          "chunk_id": 117
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 63,
+          "score": 9.359711,
+          "similarity": null,
+          "chunk_id": 119
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 111,
+          "score": 9.293249,
+          "similarity": null,
+          "chunk_id": 170
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 33,
+          "score": 9.126419,
+          "similarity": null,
+          "chunk_id": 89
+        }
+      ]
+    },
+    {
+      "id": "q12",
+      "lang": "fr",
+      "question": "Dans le cas d'utilisation de collecte d'objets, quel est le scénario alternatif ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        19
+      ],
+      "rank": 1,
+      "top_similarity": null,
+      "latency_ms": 8,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 19,
+          "score": 40.999813,
+          "similarity": null,
+          "chunk_id": 19
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 20,
+          "score": 30.466077,
+          "similarity": null,
+          "chunk_id": 20
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 7,
+          "score": 20.573269,
+          "similarity": null,
+          "chunk_id": 7
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 21,
+          "score": 20.066102,
+          "similarity": null,
+          "chunk_id": 21
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "score": 18.154663,
+          "similarity": null,
+          "chunk_id": 28
+        }
+      ]
+    },
+    {
+      "id": "q13",
+      "lang": "en",
+      "question": "What condition must hold before the player can start a conversation with an NPC?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        20
+      ],
+      "rank": 1,
+      "top_similarity": null,
+      "latency_ms": 10,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 20,
+          "score": 13.310007,
+          "similarity": null,
+          "chunk_id": 20
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 54,
+          "score": 9.143983,
+          "similarity": null,
+          "chunk_id": 110
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 21,
+          "score": 8.186348,
+          "similarity": null,
+          "chunk_id": 21
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 33,
+          "score": 7.185598,
+          "similarity": null,
+          "chunk_id": 89
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 104,
+          "score": 7.182879,
+          "similarity": null,
+          "chunk_id": 163
+        }
+      ]
+    },
+    {
+      "id": "q14",
+      "lang": "fr",
+      "question": "Que faut-il avant de pouvoir lancer ou charger une partie ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        21
+      ],
+      "rank": 1,
+      "top_similarity": null,
+      "latency_ms": 3,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 21,
+          "score": 21.138267,
+          "similarity": null,
+          "chunk_id": 21
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 23,
+          "score": 15.519068,
+          "similarity": null,
+          "chunk_id": 23
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 29,
+          "score": 12.791397,
+          "similarity": null,
+          "chunk_id": 30
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 30,
+          "score": 12.020785,
+          "similarity": null,
+          "chunk_id": 31
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 31,
+          "score": 10.973047,
+          "similarity": null,
+          "chunk_id": 32
+        }
+      ]
+    },
+    {
+      "id": "q15",
+      "lang": "en",
+      "question": "Why did the team pick Godot 4 to build the game?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        27
+      ],
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 9,
+      "hits": [
+        {
+          "doc": "distractor_report_120p",
+          "page": 29,
+          "score": 9.428734,
+          "similarity": null,
+          "chunk_id": 82
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 45,
+          "score": 7.303655,
+          "similarity": null,
+          "chunk_id": 101
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 4,
+          "score": 6.863447,
+          "similarity": null,
+          "chunk_id": 4
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 28,
+          "score": 5.76544,
+          "similarity": null,
+          "chunk_id": 81
+        },
+        {
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "score": 4.911453,
+          "similarity": null,
+          "chunk_id": 46
+        }
+      ]
+    },
+    {
+      "id": "q16",
+      "lang": "fr",
+      "question": "À quel langage de programmation GDScript est-il comparé ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        27
+      ],
+      "rank": 3,
+      "top_similarity": null,
+      "latency_ms": 9,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 9,
+          "score": 13.575287,
+          "similarity": null,
+          "chunk_id": 9
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "score": 10.959751,
+          "similarity": null,
+          "chunk_id": 28
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 27,
+          "score": 10.573029,
+          "similarity": null,
+          "chunk_id": 27
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 32,
+          "score": 10.57065,
+          "similarity": null,
+          "chunk_id": 33
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 29,
+          "score": 10.117724,
+          "similarity": null,
+          "chunk_id": 30
+        }
+      ]
+    },
+    {
+      "id": "q17",
+      "lang": "en",
+      "question": "Which Godot class does the intelligent NPC extend?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        27
+      ],
+      "rank": 1,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 27,
+          "score": 9.067166,
+          "similarity": null,
+          "chunk_id": 27
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 3,
+          "score": 8.073477,
+          "similarity": null,
+          "chunk_id": 3
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 6,
+          "score": 7.896173,
+          "similarity": null,
+          "chunk_id": 6
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 17,
+          "score": 7.155047,
+          "similarity": null,
+          "chunk_id": 17
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 26,
+          "score": 6.201251,
+          "similarity": null,
+          "chunk_id": 26
+        }
+      ]
+    },
+    {
+      "id": "q18",
+      "lang": "fr",
+      "question": "Quels signaux permettent au NPC de savoir que le joueur entre ou sort de sa zone d'interaction ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        27,
+        28
+      ],
+      "rank": 1,
+      "top_similarity": null,
+      "latency_ms": 8,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 27,
+          "score": 27.219628,
+          "similarity": null,
+          "chunk_id": 27
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "score": 24.989302,
+          "similarity": null,
+          "chunk_id": 28
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 30,
+          "score": 24.624367,
+          "similarity": null,
+          "chunk_id": 31
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "score": 22.715975,
+          "similarity": null,
+          "chunk_id": 29
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 17,
+          "score": 19.627593,
+          "similarity": null,
+          "chunk_id": 17
+        }
+      ]
+    },
+    {
+      "id": "q19",
+      "lang": "en",
+      "question": "How does the NPC call the remote LLM without freezing the game loop?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        28
+      ],
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 8,
+      "hits": [
+        {
+          "doc": "distractor_report_120p",
+          "page": 33,
+          "score": 7.484425,
+          "similarity": null,
+          "chunk_id": 88
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 4,
+          "score": 6.863447,
+          "similarity": null,
+          "chunk_id": 4
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 24,
+          "score": 5.424012,
+          "similarity": null,
+          "chunk_id": 76
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 20,
+          "score": 5.361831,
+          "similarity": null,
+          "chunk_id": 20
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 33,
+          "score": 5.264567,
+          "similarity": null,
+          "chunk_id": 89
+        }
+      ]
+    },
+    {
+      "id": "q20",
+      "lang": "fr",
+      "question": "Quels sont les avantages d'un modèle de langage local par rapport à l'API distante pour les dialogues ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        28
+      ],
+      "rank": 1,
+      "top_similarity": null,
+      "latency_ms": 3,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "score": 34.920347,
+          "similarity": null,
+          "chunk_id": 29
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "score": 34.508209,
+          "similarity": null,
+          "chunk_id": 28
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "score": 26.53903,
+          "similarity": null,
+          "chunk_id": 41
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 29,
+          "score": 25.472161,
+          "similarity": null,
+          "chunk_id": 30
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "score": 24.074275,
+          "similarity": null,
+          "chunk_id": 42
+        }
+      ]
+    },
+    {
+      "id": "q21",
+      "lang": "en",
+      "question": "What does the NPC say if the request to the language model fails or returns invalid JSON?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        29
+      ],
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 6,
+      "hits": [
+        {
+          "doc": "distractor_report_120p",
+          "page": 113,
+          "score": 15.706528,
+          "similarity": null,
+          "chunk_id": 173
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 107,
+          "score": 14.100635,
+          "similarity": null,
+          "chunk_id": 166
+        },
+        {
+          "doc": "01_ai_fundamentals.pdf",
+          "page": 1,
+          "score": 11.747751,
+          "similarity": null,
+          "chunk_id": 45
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 108,
+          "score": 10.880709,
+          "similarity": null,
+          "chunk_id": 167
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 115,
+          "score": 10.44132,
+          "similarity": null,
+          "chunk_id": 175
+        }
+      ]
+    },
+    {
+      "id": "q22",
+      "lang": "fr",
+      "question": "Quelles optimisations ont été mises en place pour garder le jeu fluide ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        29
+      ],
+      "rank": 1,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 29,
+          "score": 25.520892,
+          "similarity": null,
+          "chunk_id": 30
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "score": 21.538872,
+          "similarity": null,
+          "chunk_id": 28
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 31,
+          "score": 18.721017,
+          "similarity": null,
+          "chunk_id": 32
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 32,
+          "score": 14.690637,
+          "similarity": null,
+          "chunk_id": 33
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "score": 14.126942,
+          "similarity": null,
+          "chunk_id": 36
+        }
+      ]
+    },
+    {
+      "id": "q23",
+      "lang": "en",
+      "question": "What kinds of NPC roles are suggested as a future improvement?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        30
+      ],
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "distractor_report_120p",
+          "page": 28,
+          "score": 8.713656,
+          "similarity": null,
+          "chunk_id": 81
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 29,
+          "score": 6.971076,
+          "similarity": null,
+          "chunk_id": 82
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 76,
+          "score": 6.930598,
+          "similarity": null,
+          "chunk_id": 133
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 77,
+          "score": 6.592691,
+          "similarity": null,
+          "chunk_id": 134
+        },
+        {
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "score": 5.630882,
+          "similarity": null,
+          "chunk_id": 46
+        }
+      ]
+    },
+    {
+      "id": "q24",
+      "lang": "fr",
+      "question": "Sur quelles plateformes le jeu pourrait-il être exporté à l'avenir ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        31
+      ],
+      "rank": 1,
+      "top_similarity": null,
+      "latency_ms": 8,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 31,
+          "score": 23.890957,
+          "similarity": null,
+          "chunk_id": 32
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 30,
+          "score": 18.398818,
+          "similarity": null,
+          "chunk_id": 31
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "score": 14.617248,
+          "similarity": null,
+          "chunk_id": 28
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 9,
+          "score": 13.121355,
+          "similarity": null,
+          "chunk_id": 9
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 32,
+          "score": 12.583695,
+          "similarity": null,
+          "chunk_id": 33
+        }
+      ]
+    },
+    {
+      "id": "q25",
+      "lang": "fr",
+      "question": "Quelles sont les trois grandes familles d'approches de recommandation ?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        1
+      ],
+      "rank": 1,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "score": 26.463613,
+          "similarity": null,
+          "chunk_id": 36
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "score": 19.730843,
+          "similarity": null,
+          "chunk_id": 37
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 2,
+          "score": 19.243398,
+          "similarity": null,
+          "chunk_id": 39
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 2,
+          "score": 17.462981,
+          "similarity": null,
+          "chunk_id": 40
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "score": 17.212956,
+          "similarity": null,
+          "chunk_id": 38
+        }
+      ]
+    },
+    {
+      "id": "q26",
+      "lang": "en",
+      "question": "What problem does collaborative filtering face when a new user has little data?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        1,
+        2
+      ],
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 12,
+      "hits": [
+        {
+          "doc": "distractor_report_120p",
+          "page": 20,
+          "score": 15.98526,
+          "similarity": null,
+          "chunk_id": 72
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 19,
+          "score": 12.249963,
+          "similarity": null,
+          "chunk_id": 71
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 22,
+          "score": 10.070303,
+          "similarity": null,
+          "chunk_id": 74
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 21,
+          "score": 9.5349,
+          "similarity": null,
+          "chunk_id": 73
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 24,
+          "score": 8.908553,
+          "similarity": null,
+          "chunk_id": 76
+        }
+      ]
+    },
+    {
+      "id": "q27",
+      "lang": "fr",
+      "question": "Pourquoi la recommandation basée sur le contenu convient-elle bien à l'éducation ?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        1
+      ],
+      "rank": 1,
+      "top_similarity": null,
+      "latency_ms": 6,
+      "hits": [
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "score": 24.481025,
+          "similarity": null,
+          "chunk_id": 37
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 2,
+          "score": 24.479621,
+          "similarity": null,
+          "chunk_id": 40
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 5,
+          "score": 23.192295,
+          "similarity": null,
+          "chunk_id": 55
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "score": 21.308486,
+          "similarity": null,
+          "chunk_id": 36
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "score": 18.045069,
+          "similarity": null,
+          "chunk_id": 38
+        }
+      ]
+    },
+    {
+      "id": "q28",
+      "lang": "en",
+      "question": "Which teaching-related factors do educational recommenders consider that e-commerce recommenders do not?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        1
+      ],
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "distractor_report_120p",
+          "page": 21,
+          "score": 8.967865,
+          "similarity": null,
+          "chunk_id": 73
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 64,
+          "score": 7.698677,
+          "similarity": null,
+          "chunk_id": 120
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 65,
+          "score": 7.575412,
+          "similarity": null,
+          "chunk_id": 122
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 68,
+          "score": 6.985732,
+          "similarity": null,
+          "chunk_id": 125
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 24,
+          "score": 6.874725,
+          "similarity": null,
+          "chunk_id": 76
+        }
+      ]
+    },
+    {
+      "id": "q29",
+      "lang": "fr",
+      "question": "D'après le tableau comparatif, quelles sont les limites de l'approche content-based ?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        2
+      ],
+      "rank": 1,
+      "top_similarity": null,
+      "latency_ms": 6,
+      "hits": [
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 2,
+          "score": 26.127452,
+          "similarity": null,
+          "chunk_id": 39
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "score": 19.36701,
+          "similarity": null,
+          "chunk_id": 41
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "score": 19.237177,
+          "similarity": null,
+          "chunk_id": 42
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "score": 19.23237,
+          "similarity": null,
+          "chunk_id": 36
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "score": 18.652631,
+          "similarity": null,
+          "chunk_id": 38
+        }
+      ]
+    },
+    {
+      "id": "q30",
+      "lang": "en",
+      "question": "What is the main downside of hybrid recommendation systems?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        2
+      ],
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "distractor_report_120p",
+          "page": 79,
+          "score": 7.556581,
+          "similarity": null,
+          "chunk_id": 136
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 22,
+          "score": 7.177008,
+          "similarity": null,
+          "chunk_id": 74
+        },
+        {
+          "doc": "01_ai_fundamentals.pdf",
+          "page": 1,
+          "score": 7.092186,
+          "similarity": null,
+          "chunk_id": 45
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 15,
+          "score": 7.072702,
+          "similarity": null,
+          "chunk_id": 66
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 26,
+          "score": 6.691566,
+          "similarity": null,
+          "chunk_id": 78
+        }
+      ]
+    },
+    {
+      "id": "q31",
+      "lang": "fr",
+      "question": "Avec quelles technologies l'application mobile et le serveur du système de recommandation sont-ils construits ?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        2
+      ],
+      "rank": 1,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 2,
+          "score": 25.159523,
+          "similarity": null,
+          "chunk_id": 40
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "score": 24.367248,
+          "similarity": null,
+          "chunk_id": 42
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 5,
+          "score": 23.012734,
+          "similarity": null,
+          "chunk_id": 55
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "score": 21.65205,
+          "similarity": null,
+          "chunk_id": 36
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "score": 20.806658,
+          "similarity": null,
+          "chunk_id": 37
+        }
+      ]
+    },
+    {
+      "id": "q32",
+      "lang": "en",
+      "question": "Which learner data does the proposed app analyse to recommend content?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        2,
+        3
+      ],
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 6,
+      "hits": [
+        {
+          "doc": "distractor_report_120p",
+          "page": 26,
+          "score": 6.150353,
+          "similarity": null,
+          "chunk_id": 78
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 29,
+          "score": 5.738189,
+          "similarity": null,
+          "chunk_id": 83
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 62,
+          "score": 5.45791,
+          "similarity": null,
+          "chunk_id": 118
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 24,
+          "score": 5.035045,
+          "similarity": null,
+          "chunk_id": 76
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 25,
+          "score": 5.013967,
+          "similarity": null,
+          "chunk_id": 77
+        }
+      ]
+    },
+    {
+      "id": "q33",
+      "lang": "fr",
+      "question": "Qu'estime le modèle de prédiction comportementale ?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        3
+      ],
+      "rank": 1,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "score": 20.060113,
+          "similarity": null,
+          "chunk_id": 41
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 5,
+          "score": 15.687526,
+          "similarity": null,
+          "chunk_id": 55
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "score": 11.630993,
+          "similarity": null,
+          "chunk_id": 29
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "score": 11.342863,
+          "similarity": null,
+          "chunk_id": 28
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 3,
+          "score": 11.014577,
+          "similarity": null,
+          "chunk_id": 3
+        }
+      ]
+    },
+    {
+      "id": "q34",
+      "lang": "en",
+      "question": "How are the scores of the different AI models merged into one ranking?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        3
+      ],
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 3,
+      "hits": [
+        {
+          "doc": "distractor_report_120p",
+          "page": 22,
+          "score": 13.241966,
+          "similarity": null,
+          "chunk_id": 74
+        },
+        {
+          "doc": "01_ai_fundamentals.pdf",
+          "page": 1,
+          "score": 12.216474,
+          "similarity": null,
+          "chunk_id": 45
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 42,
+          "score": 10.052608,
+          "similarity": null,
+          "chunk_id": 98
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 39,
+          "score": 8.193312,
+          "similarity": null,
+          "chunk_id": 95
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 36,
+          "score": 8.1086,
+          "similarity": null,
+          "chunk_id": 92
+        }
+      ]
+    },
+    {
+      "id": "q35",
+      "lang": "fr",
+      "question": "À quoi sert le troisième modèle d'intelligence artificielle du système ?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        3
+      ],
+      "rank": 3,
+      "top_similarity": null,
+      "latency_ms": 5,
+      "hits": [
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 2,
+          "score": 18.532951,
+          "similarity": null,
+          "chunk_id": 40
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 5,
+          "score": 18.029839,
+          "similarity": null,
+          "chunk_id": 55
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "score": 16.365088,
+          "similarity": null,
+          "chunk_id": 42
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 29,
+          "score": 15.710704,
+          "similarity": null,
+          "chunk_id": 30
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 31,
+          "score": 15.391685,
+          "similarity": null,
+          "chunk_id": 32
+        }
+      ]
+    },
+    {
+      "id": "q36",
+      "lang": "en",
+      "question": "Who is the author of the cited paper on hybrid recommender systems?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        3
+      ],
+      "rank": 4,
+      "top_similarity": null,
+      "latency_ms": 3,
+      "hits": [
+        {
+          "doc": "distractor_report_120p",
+          "page": 120,
+          "score": 13.404985,
+          "similarity": null,
+          "chunk_id": 182
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 22,
+          "score": 9.470418,
+          "similarity": null,
+          "chunk_id": 74
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 21,
+          "score": 8.92989,
+          "similarity": null,
+          "chunk_id": 73
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "score": 8.349394,
+          "similarity": null,
+          "chunk_id": 43
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 26,
+          "score": 6.230972,
+          "similarity": null,
+          "chunk_id": 78
+        }
+      ]
+    },
+    {
+      "id": "q37",
+      "lang": "en",
+      "question": "What are the main building blocks of a typical RAG application?",
+      "answerable": true,
+      "doc": "03_rag_architecture",
+      "pages": [
+        1
+      ],
+      "rank": 1,
+      "top_similarity": null,
+      "latency_ms": 7,
+      "hits": [
+        {
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "score": 15.451106,
+          "similarity": null,
+          "chunk_id": 48
+        },
+        {
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "score": 11.379318,
+          "similarity": null,
+          "chunk_id": 46
+        },
+        {
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "score": 7.529417,
+          "similarity": null,
+          "chunk_id": 47
+        },
+        {
+          "doc": "01_ai_fundamentals.pdf",
+          "page": 1,
+          "score": 6.588206,
+          "similarity": null,
+          "chunk_id": 45
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 73,
+          "score": 4.927627,
+          "similarity": null,
+          "chunk_id": 130
+        }
+      ]
+    },
+    {
+      "id": "q38",
+      "lang": "fr",
+      "question": "Selon la source, quels traitements l'ingestion des documents peut-elle demander ?",
+      "answerable": true,
+      "doc": "03_rag_architecture",
+      "pages": [
+        1
+      ],
+      "rank": 2,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "score": 17.829791,
+          "similarity": null,
+          "chunk_id": 43
+        },
+        {
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "score": 15.518811,
+          "similarity": null,
+          "chunk_id": 48
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 18,
+          "score": 15.156386,
+          "similarity": null,
+          "chunk_id": 18
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "score": 14.175663,
+          "similarity": null,
+          "chunk_id": 29
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "score": 12.444798,
+          "similarity": null,
+          "chunk_id": 38
+        }
+      ]
+    },
+    {
+      "id": "q39",
+      "lang": "en",
+      "question": "Besides combining semantic and keyword search, what can narrow down retrieval results?",
+      "answerable": true,
+      "doc": "03_rag_architecture",
+      "pages": [
+        1
+      ],
+      "rank": 1,
+      "top_similarity": null,
+      "latency_ms": 6,
+      "hits": [
+        {
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "score": 23.058634,
+          "similarity": null,
+          "chunk_id": 49
+        },
+        {
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "score": 22.715076,
+          "similarity": null,
+          "chunk_id": 48
+        },
+        {
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "score": 10.39464,
+          "similarity": null,
+          "chunk_id": 46
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 117,
+          "score": 6.27444,
+          "similarity": null,
+          "chunk_id": 177
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 116,
+          "score": 5.706273,
+          "similarity": null,
+          "chunk_id": 176
+        }
+      ]
+    },
+    {
+      "id": "q40",
+      "lang": "fr",
+      "question": "Sur quels critères peut-on évaluer un système RAG ?",
+      "answerable": true,
+      "doc": "03_rag_architecture",
+      "pages": [
+        1
+      ],
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "score": 10.069184,
+          "similarity": null,
+          "chunk_id": 41
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 20,
+          "score": 8.256216,
+          "similarity": null,
+          "chunk_id": 20
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 27,
+          "score": 8.220523,
+          "similarity": null,
+          "chunk_id": 27
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 5,
+          "score": 8.167892,
+          "similarity": null,
+          "chunk_id": 55
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 14,
+          "score": 7.700754,
+          "similarity": null,
+          "chunk_id": 14
+        }
+      ]
+    },
+    {
+      "id": "q41",
+      "lang": "en",
+      "question": "Why is retrieving a lot of text a risk for a RAG system?",
+      "answerable": true,
+      "doc": "03_rag_architecture",
+      "pages": [
+        1
+      ],
+      "rank": 2,
+      "top_similarity": null,
+      "latency_ms": 6,
+      "hits": [
+        {
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "score": 16.574923,
+          "similarity": null,
+          "chunk_id": 46
+        },
+        {
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "score": 11.173866,
+          "similarity": null,
+          "chunk_id": 48
+        },
+        {
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "score": 9.260561,
+          "similarity": null,
+          "chunk_id": 49
+        },
+        {
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "score": 7.930512,
+          "similarity": null,
+          "chunk_id": 47
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 117,
+          "score": 5.750723,
+          "similarity": null,
+          "chunk_id": 178
+        }
+      ]
+    },
+    {
+      "id": "q42",
+      "lang": "en",
+      "question": "List some practical techniques that improve a RAG system.",
+      "answerable": true,
+      "doc": "03_rag_architecture",
+      "pages": [
+        2
+      ],
+      "rank": 1,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "03_rag_architecture.pdf",
+          "page": 2,
+          "score": 10.009301,
+          "similarity": null,
+          "chunk_id": 50
+        },
+        {
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "score": 9.717918,
+          "similarity": null,
+          "chunk_id": 48
+        },
+        {
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "score": 8.707642,
+          "similarity": null,
+          "chunk_id": 46
+        },
+        {
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "score": 8.196446,
+          "similarity": null,
+          "chunk_id": 47
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 118,
+          "score": 7.839893,
+          "similarity": null,
+          "chunk_id": 180
+        }
+      ]
+    },
+    {
+      "id": "q43",
+      "lang": "fr",
+      "question": "Que vérifie le critère de groundedness lors de l'évaluation ?",
+      "answerable": true,
+      "doc": "03_rag_architecture",
+      "pages": [
+        1
+      ],
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 29,
+          "score": 13.46063,
+          "similarity": null,
+          "chunk_id": 30
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 30,
+          "score": 10.891801,
+          "similarity": null,
+          "chunk_id": 31
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 31,
+          "score": 10.662013,
+          "similarity": null,
+          "chunk_id": 32
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "score": 10.448597,
+          "similarity": null,
+          "chunk_id": 38
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 2,
+          "score": 10.359112,
+          "similarity": null,
+          "chunk_id": 2
+        }
+      ]
+    },
+    {
+      "id": "q44",
+      "lang": "en",
+      "question": "What is the difference between RAG and fine-tuning?",
+      "answerable": true,
+      "doc": "02_rag_basics",
+      "pages": [
+        1
+      ],
+      "rank": 1,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "score": 18.872859,
+          "similarity": null,
+          "chunk_id": 47
+        },
+        {
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "score": 9.977898,
+          "similarity": null,
+          "chunk_id": 46
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 66,
+          "score": 6.675177,
+          "similarity": null,
+          "chunk_id": 123
+        },
+        {
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "score": 5.410924,
+          "similarity": null,
+          "chunk_id": 48
+        },
+        {
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "score": 4.31766,
+          "similarity": null,
+          "chunk_id": 49
+        }
+      ]
+    },
+    {
+      "id": "q45",
+      "lang": "fr",
+      "question": "Combien de documents de politique interne l'entreprise de l'exemple possède-t-elle ?",
+      "answerable": true,
+      "doc": "02_rag_basics",
+      "pages": [
+        1
+      ],
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 6,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 17,
+          "score": 13.375313,
+          "similarity": null,
+          "chunk_id": 17
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 31,
+          "score": 9.099622,
+          "similarity": null,
+          "chunk_id": 32
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "score": 7.890022,
+          "similarity": null,
+          "chunk_id": 36
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 2,
+          "score": 7.879023,
+          "similarity": null,
+          "chunk_id": 40
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "score": 7.75861,
+          "similarity": null,
+          "chunk_id": 43
+        }
+      ]
+    },
+    {
+      "id": "q46",
+      "lang": "en",
+      "question": "Why would a team use RAG instead of retraining its model?",
+      "answerable": true,
+      "doc": "02_rag_basics",
+      "pages": [
+        1
+      ],
+      "rank": 1,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "score": 19.70767,
+          "similarity": null,
+          "chunk_id": 46
+        },
+        {
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "score": 8.611066,
+          "similarity": null,
+          "chunk_id": 48
+        },
+        {
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "score": 7.86971,
+          "similarity": null,
+          "chunk_id": 47
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 3,
+          "score": 7.743254,
+          "similarity": null,
+          "chunk_id": 53
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 28,
+          "score": 7.505496,
+          "similarity": null,
+          "chunk_id": 81
+        }
+      ]
+    },
+    {
+      "id": "q47",
+      "lang": "fr",
+      "question": "Dans le pipeline RAG de base, où les embeddings sont-ils enregistrés ?",
+      "answerable": true,
+      "doc": "02_rag_basics",
+      "pages": [
+        1
+      ],
+      "rank": 5,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "score": 18.1363,
+          "similarity": null,
+          "chunk_id": 37
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "score": 17.711318,
+          "similarity": null,
+          "chunk_id": 42
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "score": 16.729144,
+          "similarity": null,
+          "chunk_id": 43
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 19,
+          "score": 16.5164,
+          "similarity": null,
+          "chunk_id": 19
+        },
+        {
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "score": 16.278631,
+          "similarity": null,
+          "chunk_id": 46
+        }
+      ]
+    },
+    {
+      "id": "q48",
+      "lang": "en",
+      "question": "What are the common kinds of machine learning?",
+      "answerable": true,
+      "doc": "01_ai_fundamentals",
+      "pages": [
+        1
+      ],
+      "rank": 1,
+      "top_similarity": null,
+      "latency_ms": 5,
+      "hits": [
+        {
+          "doc": "01_ai_fundamentals.pdf",
+          "page": 1,
+          "score": 12.975351,
+          "similarity": null,
+          "chunk_id": 45
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 120,
+          "score": 6.856019,
+          "similarity": null,
+          "chunk_id": 182
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 42,
+          "score": 6.016028,
+          "similarity": null,
+          "chunk_id": 98
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 19,
+          "score": 5.605105,
+          "similarity": null,
+          "chunk_id": 70
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 19,
+          "score": 5.5844,
+          "similarity": null,
+          "chunk_id": 71
+        }
+      ]
+    },
+    {
+      "id": "q49",
+      "lang": "fr",
+      "question": "Pourquoi relie-t-on souvent un modèle d'IA à des sources de connaissances externes ?",
+      "answerable": true,
+      "doc": "01_ai_fundamentals",
+      "pages": [
+        1
+      ],
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 3,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "score": 15.947592,
+          "similarity": null,
+          "chunk_id": 29
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "score": 15.629785,
+          "similarity": null,
+          "chunk_id": 42
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 9,
+          "score": 14.984333,
+          "similarity": null,
+          "chunk_id": 9
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 5,
+          "score": 14.292145,
+          "similarity": null,
+          "chunk_id": 55
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "score": 13.808027,
+          "similarity": null,
+          "chunk_id": 41
+        }
+      ]
+    },
+    {
+      "id": "q50",
+      "lang": "en",
+      "question": "What does deep learning rely on to capture complex patterns?",
+      "answerable": true,
+      "doc": "01_ai_fundamentals",
+      "pages": [
+        1
+      ],
+      "rank": 1,
+      "top_similarity": null,
+      "latency_ms": 5,
+      "hits": [
+        {
+          "doc": "01_ai_fundamentals.pdf",
+          "page": 1,
+          "score": 21.807486,
+          "similarity": null,
+          "chunk_id": 45
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 23,
+          "score": 10.861205,
+          "similarity": null,
+          "chunk_id": 75
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 21,
+          "score": 10.166297,
+          "similarity": null,
+          "chunk_id": 73
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 24,
+          "score": 9.669982,
+          "similarity": null,
+          "chunk_id": 76
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 39,
+          "score": 7.799808,
+          "similarity": null,
+          "chunk_id": 95
+        }
+      ]
+    },
+    {
+      "id": "u01",
+      "lang": "fr",
+      "question": "Combien coûte une licence du moteur Unity ?",
+      "answerable": false,
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 29,
+          "score": 8.557944,
+          "similarity": null,
+          "chunk_id": 30
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 32,
+          "score": 8.548397,
+          "similarity": null,
+          "chunk_id": 33
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 5,
+          "score": 8.31144,
+          "similarity": null,
+          "chunk_id": 55
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 3,
+          "score": 8.287077,
+          "similarity": null,
+          "chunk_id": 3
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 27,
+          "score": 8.121461,
+          "similarity": null,
+          "chunk_id": 27
+        }
+      ]
+    },
+    {
+      "id": "u02",
+      "lang": "en",
+      "question": "How many levels does NeoQuest 2D contain?",
+      "answerable": false,
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "distractor_report_120p",
+          "page": 69,
+          "score": 11.095989,
+          "similarity": null,
+          "chunk_id": 126
+        },
+        {
+          "doc": "01_ai_fundamentals.pdf",
+          "page": 1,
+          "score": 7.577814,
+          "similarity": null,
+          "chunk_id": 45
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 7,
+          "score": 7.377569,
+          "similarity": null,
+          "chunk_id": 7
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 1,
+          "score": 7.368129,
+          "similarity": null,
+          "chunk_id": 1
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 24,
+          "score": 7.167261,
+          "similarity": null,
+          "chunk_id": 24
+        }
+      ]
+    },
+    {
+      "id": "u03",
+      "lang": "en",
+      "question": "What chunk size, in tokens, does the RAG guide recommend?",
+      "answerable": false,
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 6,
+      "hits": [
+        {
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "score": 9.898583,
+          "similarity": null,
+          "chunk_id": 48
+        },
+        {
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "score": 9.727325,
+          "similarity": null,
+          "chunk_id": 46
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 120,
+          "score": 6.903909,
+          "similarity": null,
+          "chunk_id": 182
+        },
+        {
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "score": 6.455363,
+          "similarity": null,
+          "chunk_id": 47
+        },
+        {
+          "doc": "01_ai_fundamentals.pdf",
+          "page": 1,
+          "score": 5.06223,
+          "similarity": null,
+          "chunk_id": 45
+        }
+      ]
+    },
+    {
+      "id": "u04",
+      "lang": "fr",
+      "question": "Quelle base vectorielle, comme Pinecone ou FAISS, est conseillée pour un système RAG ?",
+      "answerable": false,
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 19,
+          "score": 13.435007,
+          "similarity": null,
+          "chunk_id": 19
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 29,
+          "score": 11.967325,
+          "similarity": null,
+          "chunk_id": 30
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "score": 11.778735,
+          "similarity": null,
+          "chunk_id": 37
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 18,
+          "score": 11.650428,
+          "similarity": null,
+          "chunk_id": 18
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "score": 11.460398,
+          "similarity": null,
+          "chunk_id": 29
+        }
+      ]
+    },
+    {
+      "id": "u05",
+      "lang": "en",
+      "question": "What accuracy did the educational recommendation system reach in its evaluation?",
+      "answerable": false,
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "distractor_report_120p",
+          "page": 93,
+          "score": 9.346458,
+          "similarity": null,
+          "chunk_id": 152
+        },
+        {
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "score": 8.211668,
+          "similarity": null,
+          "chunk_id": 49
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 70,
+          "score": 7.881303,
+          "similarity": null,
+          "chunk_id": 127
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 71,
+          "score": 7.499159,
+          "similarity": null,
+          "chunk_id": 128
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 45,
+          "score": 6.959209,
+          "similarity": null,
+          "chunk_id": 101
+        }
+      ]
+    },
+    {
+      "id": "u06",
+      "lang": "fr",
+      "question": "Quel modèle de reranking, par exemple un cross-encoder, est recommandé ?",
+      "answerable": false,
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 6,
+      "hits": [
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "score": 13.670361,
+          "similarity": null,
+          "chunk_id": 41
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "score": 12.643802,
+          "similarity": null,
+          "chunk_id": 42
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "score": 11.938213,
+          "similarity": null,
+          "chunk_id": 28
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 9,
+          "score": 11.783294,
+          "similarity": null,
+          "chunk_id": 9
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 5,
+          "score": 11.741468,
+          "similarity": null,
+          "chunk_id": 55
+        }
+      ]
+    },
+    {
+      "id": "u07",
+      "lang": "en",
+      "question": "Who introduced the transformer architecture?",
+      "answerable": false,
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 2,
+      "hits": [
+        {
+          "doc": "distractor_report_120p",
+          "page": 54,
+          "score": 4.27072,
+          "similarity": null,
+          "chunk_id": 110
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 32,
+          "score": 4.264258,
+          "similarity": null,
+          "chunk_id": 86
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 29,
+          "score": 4.136538,
+          "similarity": null,
+          "chunk_id": 83
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 118,
+          "score": 3.97423,
+          "similarity": null,
+          "chunk_id": 179
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 78,
+          "score": 3.290511,
+          "similarity": null,
+          "chunk_id": 135
+        }
+      ]
+    },
+    {
+      "id": "u08",
+      "lang": "fr",
+      "question": "Combien de joueurs ont participé aux tests du jeu NeoQuest ?",
+      "answerable": false,
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 1,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 2,
+          "score": 20.15007,
+          "similarity": null,
+          "chunk_id": 2
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 31,
+          "score": 14.778467,
+          "similarity": null,
+          "chunk_id": 32
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 32,
+          "score": 12.94611,
+          "similarity": null,
+          "chunk_id": 33
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "score": 12.750028,
+          "similarity": null,
+          "chunk_id": 28
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 24,
+          "score": 11.720508,
+          "similarity": null,
+          "chunk_id": 24
+        }
+      ]
+    },
+    {
+      "id": "u09",
+      "lang": "en",
+      "question": "Which version of Django REST Framework does the recommendation backend use?",
+      "answerable": false,
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 7,
+      "hits": [
+        {
+          "doc": "distractor_report_120p",
+          "page": 42,
+          "score": 17.030075,
+          "similarity": null,
+          "chunk_id": 98
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 39,
+          "score": 12.865997,
+          "similarity": null,
+          "chunk_id": 95
+        },
+        {
+          "doc": "distractor_report_120p",
+          "page": 41,
+          "score": 11.586543,
+          "similarity": null,
+          "chunk_id": 97
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "score": 11.566138,
+          "similarity": null,
+          "chunk_id": 42
+        },
+        {
+          "doc": "etat_de_l_art.pdf",
+          "page": 2,
+          "score": 11.11943,
+          "similarity": null,
+          "chunk_id": 40
+        }
+      ]
+    },
+    {
+      "id": "u10",
+      "lang": "fr",
+      "question": "En quelle année le jeu Celeste est-il sorti ?",
+      "answerable": false,
+      "rank": null,
+      "top_similarity": null,
+      "latency_ms": 1,
+      "hits": [
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 16,
+          "score": 15.039533,
+          "similarity": null,
+          "chunk_id": 16
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 23,
+          "score": 14.482477,
+          "similarity": null,
+          "chunk_id": 23
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "score": 12.982783,
+          "similarity": null,
+          "chunk_id": 28
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 9,
+          "score": 12.342595,
+          "similarity": null,
+          "chunk_id": 9
+        },
+        {
+          "doc": "ps_game__Copy_.pdf",
+          "page": 29,
+          "score": 12.194559,
+          "similarity": null,
+          "chunk_id": 30
+        }
+      ]
+    }
+  ]
+}

@@ -77,10 +77,13 @@ Single runs, not medians: the first row through the Library screen (task 2.6), t
 
 Questions: `eval/questions.json` (50 answerable + 10 unanswerable, 5 PDFs, 31 EN / 29 FR). They were written by Claude at the author's request, not by hand; see the file's `method` field for how bias toward the retriever was limited.
 
-| Date | Method | Recall@5 |
-|---|---|---|
-| 2026-10-01 | Vector only | **90.0%** (45/50) |
-| | Hybrid (vector + FTS5, RRF) | |
+| Date | Method | Recall@5 | MRR | Same-language (26) | Cross-language (24) |
+|---|---|---|---|---|---|
+| 2026-10-01 | Vector only | **90.0%** (45/50) | 0.687 | 25 | 20 |
+| 2026-10-01 | Keyword only (FTS5 BM25) | 60.0% (30/50) | 0.492 | 24 | 6 |
+| 2026-10-01 | Hybrid (vector + FTS5, RRF k = 60) | 84.0% (42/50) | 0.649 | **26** | 16 |
+
+Hybrid is **6 points worse** than vector only overall (−3 questions): it fixes the exact-term questions but loses cross-language ones. See the hybrid section below.
 
 **Vector only (task 2.8)**, retrieval eval screen, release build, single run (deterministic: same index, same questions): `eval/results/retrieval_vector_20261001-123211.json`.
 
@@ -91,6 +94,17 @@ Questions: `eval/questions.json` (50 answerable + 10 unanswerable, 5 PDFs, 31 EN
 - **Misses:** q05/q06 (Scrum events, sprint retrospective): the distractor report also describes Scrum and outranks the right page. q36 (author of the hybrid recommender paper): reference list chunks of both documents compete. q43 (French "groundedness" question on an English document): weak cross-language match, top similarity 0.27. q11 (performance requirement): matched the latency section (p. 28) instead of the requirements page (p. 18). Exact terms (Burke, groundedness, rétrospective) are what FTS5 should add in 3.1.
 - **Median 2.13 s per question**, nearly all of it embedding the question.
 - **For the "not found" gate (3.3/3.7):** best similarity per question, answerable median 0.506 (min 0.265), unanswerable median 0.475 (max 0.592). The two ranges overlap a lot: a similarity threshold alone will either refuse many answerable questions or let most unanswerable ones through.
+
+**Hybrid (task 3.1)**, same index, same build, same session, release build. Vector top 20 + FTS5 top 20 (question words OR-ed, BM25), fused with RRF (k = 60), top 5 kept. Files: `eval/results/retrieval_hybrid_20261001-201612.json`, plus `retrieval_vector_20261001-201837.json` (vector re-run in the same session: identical ranks to the 2.8 run, so the index hadn't changed) and `retrieval_keyword_20261001-201851.json`.
+
+- **Recall@5 84.0% (42/50), MRR 0.649** vs 90.0% / 0.687 for vector only. Rank 1 for 27 questions, 2 for 6, 3 for 4, 4–5 for 5; 8 misses.
+- **Gained (4):** q05 (Scrum events, now rank 5), q11 (performance requirement, 4), q36 (author "Burke", 4), q43 ("groundedness", 3). Moved up: q38 4→1; q13, q27, q39, q47 2→1; q09, q22 3→2; q31, q42 5→3. Moved down but still found: q04, q19, q45 1→2; q40 1→3; q32 2→5.
+- **Lost (7):** q10, q21, q26, q28, q30, q34, q49, all found by vector only at rank 1–3, and all 7 cross-language (EN question on a FR document, or the reverse for q49). FTS5 finds none of their right chunks (keyword-only: 6/24 on cross-language questions).
+- **Why:** with k = 60 and two lists of 20, a chunk in *both* lists scores at least 2/80 = 0.025, more than a chunk at rank 1 of a single list (1/61 = 0.016). When the keyword list is noise (matches on common words of the question), the chunks that happen to be in both lists push the right vector-only hits out of the top 5. Only 5 of the 300 hybrid hits are keyword-only chunks; the damage comes from the overlap, not from keyword-only chunks.
+- By language: EN 19/26, FR 23/24. By document: `01_ai_fundamentals` 2/3, `02_rag_basics` 4/4, `03_rag_architecture` 7/7, `etat_de_l_art` 8/12, `ps_game` 21/24. `etat_de_l_art` (FR) is asked mostly in English, hence its drop.
+- **Latency:** median 2.11 s per question (vector 2.10 s): FTS5 takes ~4 ms (keyword-only median), so hybrid costs nothing measurable.
+- **Possible fixes (not done in 3.1, to avoid tuning on the only eval set):** drop stop words from the FTS5 query, weight the vector list higher in the fusion, or only fuse the keyword list when its best BM25 score is strong. Any of them should be checked on new questions, not just these 50.
+- **For the gate (3.3):** the best similarity among the hybrid top 5 differs from the vector top 1 on 11 of 60 questions (vector top 1 left out of the top 5). The gate should read the vector search's top similarity, not the fused list's.
 
 ## Answers (50 answerable + 10 unanswerable)
 

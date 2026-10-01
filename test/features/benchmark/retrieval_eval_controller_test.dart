@@ -10,6 +10,7 @@ import 'package:offline_study_assistant/core/db/document_store.dart';
 import 'package:offline_study_assistant/core/db/sqlite_vector_index.dart';
 import 'package:offline_study_assistant/core/db/vector_index.dart';
 import 'package:offline_study_assistant/features/benchmark/retrieval_eval_controller.dart';
+import 'package:offline_study_assistant/features/chat/retrieval_service.dart';
 
 import '../../helpers/fake_embedder.dart';
 
@@ -85,10 +86,41 @@ void main() {
 
     final file = File(state.exportPath!);
     expect(file.parent.path, exportDir.path);
-    expect(file.uri.pathSegments.last, startsWith('retrieval_vector_'));
+    expect(file.uri.pathSegments.last, startsWith('retrieval_hybrid_'));
     final report = jsonDecode(file.readAsStringSync()) as Map<String, dynamic>;
+    expect(report['method'], 'hybrid');
     expect(report['indexed_documents'], ['game.pdf']);
     expect((report['summary'] as Map)['recall_at_k'], 0.5);
+  });
+
+  test('evaluates the selected mode', () async {
+    final container = ProviderContainer(
+      overrides: [
+        evalQuestionsSourceProvider.overrideWith((ref) async => _questions),
+        documentStoreProvider.overrideWithValue(db),
+        vectorIndexProvider.overrideWithValue(
+          SqliteVectorIndex(db, dimension: embedder.dimension),
+        ),
+        embedderProvider.overrideWithValue(embedder),
+        exportDirectoryProvider.overrideWithValue(exportDir.path),
+      ],
+    );
+    addTearDown(container.dispose);
+    container.listen(retrievalEvalControllerProvider, (_, _) {});
+    final controller = container.read(retrievalEvalControllerProvider.notifier)
+      ..selectMode(RetrievalMode.keyword);
+
+    await controller.run();
+    final state = container.read(retrievalEvalControllerProvider);
+
+    expect(state.mode, RetrievalMode.keyword);
+    expect(state.status, RetrievalEvalStatus.done);
+    expect(embedder.loadCalls, 0);
+    expect(File(state.exportPath!).uri.pathSegments.last, contains('keyword'));
+    final report =
+        jsonDecode(File(state.exportPath!).readAsStringSync())
+            as Map<String, dynamic>;
+    expect(report['method'], 'keyword');
   });
 
   test('reports a broken questions file as an error', () async {

@@ -23,11 +23,12 @@ const _unanswerable = EvalQuestion(
   answerable: false,
 );
 
-EvalHit hit(String title, int page, [double similarity = 0.5]) => EvalHit(
+EvalHit hit(String title, int page, [double? similarity = 0.5]) => EvalHit(
   documentTitle: title,
   page: page,
-  similarity: similarity,
   chunkId: page,
+  score: 0.0163934,
+  similarity: similarity,
 );
 
 QuestionResult result(
@@ -44,6 +45,7 @@ RetrievedChunk retrieved(String title, int page, double similarity) =>
     RetrievedChunk(
       chunk: Chunk(id: page, docId: 1, page: page, ordinal: 0, text: 't'),
       documentTitle: title,
+      score: similarity,
       similarity: similarity,
     );
 
@@ -107,6 +109,18 @@ void main() {
       expect(result(_answerable, const []).topSimilarity, isNull);
     });
 
+    test('takes the best similarity of any hit, skipping keyword-only', () {
+      final r = result(_answerable, [
+        hit('a', 1, null),
+        hit('a', 2, 0.4),
+        hit('a', 3, 0.6),
+      ]);
+
+      expect(r.topSimilarity, 0.6);
+      expect(r.toJson()['hits'], contains(containsPair('similarity', null)));
+      expect(result(_answerable, [hit('a', 1, null)]).topSimilarity, isNull);
+    });
+
     test('serializes rank, top similarity and hits', () {
       final json = result(_answerable, [
         hit('ps_game__Copy_.pdf', 27, 0.612345),
@@ -118,6 +132,7 @@ void main() {
       expect((json['hits']! as List).single, {
         'doc': 'ps_game__Copy_.pdf',
         'page': 27,
+        'score': 0.016393,
         'similarity': 0.6123,
         'chunk_id': 27,
       });

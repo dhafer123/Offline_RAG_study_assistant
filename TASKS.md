@@ -92,9 +92,10 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
 
 ## Week 3 (Oct 15–21): answers with citations
 
-- [ ] **3.1 Keyword search + RRF**
+- [x] **3.1 Keyword search + RRF**
   FTS5 top 20 plus vector top 20, merged by RRF (k = 60) into the top 5, in a pure `rrf.dart` file with unit tests.
   *Done when:* hybrid Recall@5 and its gain over vector-only are in METRICS.md.
+  *Notes:* Generic `reciprocalRankFusion` in `lib/features/chat/rrf.dart` (ranks only, deterministic tie-breaks). `RetrievalService.retrieve` takes a `RetrievalMode` (vector / keyword / hybrid, hybrid by default); `RetrievedChunk.similarity` is now nullable (keyword-only match) and `score` holds the ranking score. Retrieval eval screen has a mode picker; the mode goes into the JSON file name. **The gain is negative: hybrid Recall@5 = 84.0% vs 90.0% vector-only** (keyword-only 60.0%). Hybrid is 26/26 on same-language questions but 16/24 cross-language (vector 20/24): when FTS5 has no real match, chunks in both top 20s outrank the right vector hits. Not tuned here, to avoid fitting the only eval set; options in METRICS.md. The 3.3 gate should use the vector top-1 similarity, not the fused list's.
 
 - [ ] **3.2 Prompt builder**
   Numbered sources, rules (answer only from the sources, cite `[n]`, answer in the question's language, say you don't know if the answer isn't there), and a token budget that trims the sources.
@@ -162,5 +163,7 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
 - 2026-10-01: vectors live in our own SQLite table with brute-force cosine instead of flutter_gemma_rag_sqlite (incompatible with flutter_gemma 0.16.5). Embedding takes 2.35 s per chunk on one core: watch the 100-page indexing time in 2.6.
 - 2026-10-01: drift without code generation (drift_dev conflicts with riverpod_generator on Flutter 3.38.9). Typed drift tables can come back after a Flutter upgrade.
 - 2026-09-30: Gemma 3 1B reaches 8.4 tok/s on CPU (Gate 1 needs 5). Compared with Qwen3 0.6B anyway (1.5): Gemma 3 1B stays the default.
+
+- 2026-10-01: hybrid retrieval (3.1) scored below vector-only (84% vs 90% Recall@5) because about half the eval questions are cross-language. Hybrid stays the default for now, as planned; decide before 3.5 whether to keep it, fix the keyword side, or switch to vector-only.
 
 <!-- Add a short dated line whenever a decision changes the plan, e.g. "2026-10-05: switched to Qwen3 0.6B, Gemma 3 1B only reached 3 tok/s." -->

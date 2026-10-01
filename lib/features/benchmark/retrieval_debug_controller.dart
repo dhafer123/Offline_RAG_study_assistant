@@ -37,7 +37,7 @@ class RetrievalDebugState {
   final IngestionResult? lastIngestion;
   final List<RetrievedChunk> results;
 
-  /// Embedding the question plus the vector search.
+  /// Embedding the question plus the search.
   final Duration? searchTime;
   final String? errorMessage;
 

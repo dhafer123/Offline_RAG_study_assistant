@@ -7,6 +7,7 @@ import 'package:offline_study_assistant/app/providers.dart';
 import 'package:offline_study_assistant/core/ai/embedder.dart';
 import 'package:offline_study_assistant/core/perf.dart';
 import 'package:offline_study_assistant/features/benchmark/retrieval_eval.dart';
+import 'package:offline_study_assistant/features/chat/retrieval_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'retrieval_eval_controller.g.dart';
@@ -21,6 +22,7 @@ enum RetrievalEvalStatus { idle, running, done, error }
 @immutable
 class RetrievalEvalState {
   const RetrievalEvalState({
+    this.mode = RetrievalMode.hybrid,
     this.status = RetrievalEvalStatus.idle,
     this.done = 0,
     this.total = 0,
@@ -30,6 +32,8 @@ class RetrievalEvalState {
     this.errorMessage,
   });
 
+  /// The retrieval method being (or last) evaluated.
+  final RetrievalMode mode;
   final RetrievalEvalStatus status;
   final int done;
   final int total;
@@ -49,38 +53,48 @@ class RetrievalEvalState {
 }
 
 /// Runs every question of the eval set through retrieval and exports the
-/// results as JSON (task 2.8).
+/// results as JSON (tasks 2.8 and 3.1).
 @riverpod
 class RetrievalEvalController extends _$RetrievalEvalController {
-  /// Retrieval method recorded in the report; becomes configurable with
-  /// hybrid search (task 3.1).
-  static const method = 'vector';
-
   @override
   RetrievalEvalState build() => const RetrievalEvalState();
 
+  /// Picks the method the next run evaluates; clears the last results.
+  void selectMode(RetrievalMode mode) {
+    if (state.status == RetrievalEvalStatus.running) return;
+    state = RetrievalEvalState(mode: mode);
+  }
+
   Future<void> run() async {
     if (state.status == RetrievalEvalStatus.running) return;
-    state = const RetrievalEvalState(status: RetrievalEvalStatus.running);
+    final mode = state.mode;
+    state = RetrievalEvalState(
+      mode: mode,
+      status: RetrievalEvalStatus.running,
+    );
     try {
       final questions = parseEvalQuestions(
         await ref.read(evalQuestionsSourceProvider.future),
       );
       if (!ref.mounted) return;
       state = RetrievalEvalState(
+        mode: mode,
         status: RetrievalEvalStatus.running,
         total: questions.length,
       );
 
       // Load the model first so the first question's latency is comparable.
-      await ref.read(embedderProvider).load();
+      if (mode != RetrievalMode.keyword) {
+        await ref.read(embedderProvider).load();
+      }
       final retrieval = ref.read(retrievalServiceProvider);
       final results = await runRetrievalEval(
         questions,
-        (question, k) => retrieval.retrieve(question, k: k),
+        (question, k) => retrieval.retrieve(question, k: k, mode: mode),
         onProgress: (done, total) {
           if (ref.mounted) {
             state = RetrievalEvalState(
+              mode: mode,
               status: RetrievalEvalStatus.running,
               done: done,
               total: total,
@@ -89,19 +103,20 @@ class RetrievalEvalController extends _$RetrievalEvalController {
         },
       );
       final summary = RetrievalEvalSummary.of(results);
-      Perf.log('retrieval eval ($method): $summary');
+      Perf.log('retrieval eval (${mode.name}): $summary');
 
       final docs = await ref.read(documentStoreProvider).listDocuments();
       final now = DateTime.now();
       final report = retrievalEvalReport(
-        method: method,
+        method: mode.name,
         createdAt: now,
         indexedDocuments: [for (final d in docs) d.title],
         results: results,
       );
-      final path = await _export(report, now);
+      final path = await _export(report, mode, now);
       if (!ref.mounted) return;
       state = RetrievalEvalState(
+        mode: mode,
         status: RetrievalEvalStatus.done,
         done: results.length,
         total: results.length,
@@ -112,13 +127,18 @@ class RetrievalEvalController extends _$RetrievalEvalController {
     } on Object catch (e) {
       if (!ref.mounted) return;
       state = RetrievalEvalState(
+        mode: mode,
         status: RetrievalEvalStatus.error,
         errorMessage: e is EmbedderException ? e.message : '$e',
       );
     }
   }
 
-  Future<String> _export(Map<String, Object?> report, DateTime now) async {
+  Future<String> _export(
+    Map<String, Object?> report,
+    RetrievalMode mode,
+    DateTime now,
+  ) async {
     final dir = Directory(ref.read(exportDirectoryProvider));
     await dir.create(recursive: true);
     final stamp = now
@@ -127,7 +147,7 @@ class RetrievalEvalController extends _$RetrievalEvalController {
         .first
         .replaceAll(RegExp('[-:]'), '')
         .replaceAll('T', '-');
-    final file = File('${dir.path}/retrieval_${method}_$stamp.json');
+    final file = File('${dir.path}/retrieval_${mode.name}_$stamp.json');
     await file.writeAsString(
       const JsonEncoder.withIndent('  ').convert(report),
     );

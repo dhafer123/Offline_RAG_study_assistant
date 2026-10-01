@@ -138,7 +138,8 @@ class _RetrievalDebugScreenState extends ConsumerState<RetrievalDebugScreen> {
                   children: [
                     Text(
                       '[${i + 1}] ${r.documentTitle} · p. ${r.page} · '
-                      '${r.similarity.toStringAsFixed(3)}',
+                      'cos ${r.similarity?.toStringAsFixed(3) ?? '–'} · '
+                      'rrf ${r.score.toStringAsFixed(4)}',
                       style: theme.textTheme.labelLarge,
                     ),
                     const SizedBox(height: 4),

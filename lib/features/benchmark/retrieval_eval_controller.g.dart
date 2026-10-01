@@ -48,17 +48,17 @@ String _$evalQuestionsSourceHash() =>
     r'a4fb421212699c6eb4c597eaee5254d783f69409';
 
 /// Runs every question of the eval set through retrieval and exports the
-/// results as JSON (task 2.8).
+/// results as JSON (tasks 2.8 and 3.1).
 
 @ProviderFor(RetrievalEvalController)
 final retrievalEvalControllerProvider = RetrievalEvalControllerProvider._();
 
 /// Runs every question of the eval set through retrieval and exports the
-/// results as JSON (task 2.8).
+/// results as JSON (tasks 2.8 and 3.1).
 final class RetrievalEvalControllerProvider
     extends $NotifierProvider<RetrievalEvalController, RetrievalEvalState> {
   /// Runs every question of the eval set through retrieval and exports the
-  /// results as JSON (task 2.8).
+  /// results as JSON (tasks 2.8 and 3.1).
   RetrievalEvalControllerProvider._()
     : super(
         from: null,
@@ -87,10 +87,10 @@ final class RetrievalEvalControllerProvider
 }
 
 String _$retrievalEvalControllerHash() =>
-    r'1918c4927396d7d3b234ade21d023a5ef5ca7351';
+    r'41a20bd81d33da6c01e37c28b43bb52993ddcd1c';
 
 /// Runs every question of the eval set through retrieval and exports the
-/// results as JSON (task 2.8).
+/// results as JSON (tasks 2.8 and 3.1).
 
 abstract class _$RetrievalEvalController extends $Notifier<RetrievalEvalState> {
   RetrievalEvalState build();
