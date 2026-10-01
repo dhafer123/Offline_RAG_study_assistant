@@ -56,9 +56,10 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
   *Done when:* it works on 3 of your real course PDFs, with a test using a small fixture PDF.
   *Notes:* pdfrx 2.2.24 (newer needs a newer Dart). `PdfTextExtractor` interface in `lib/core/pdf/`; a page with fewer than 20 letters/digits is flagged textless, and `isScanned` means no page has text. Fixture built by `tool/make_fixture_pdf.dart`. Host tests load pdfium through `test/helpers/pdfium.dart` because `pdfrxInitialize()` hangs on Windows (start-up race in pdfrx_engine 0.3.9); `pdfium_dart` is a dev dependency for that. The extractor checks the `%PDF-` header itself because pdfrx on Windows reports every open failure as a password error. Checked on 3 course PDFs (1–2 pages each, digital, clean text) with `REAL_PDFS_DIR=... flutter test test/core/pdf/real_pdfs_test.dart`; none was scanned. pdfrx adds ~17 MB to the APK (pdfium for 3 ABIs + 4 MB WASM, to strip in 4.7).
 
-- [ ] **2.3 Text cleaner**
+- [x] **2.3 Text cleaner**
   Remove repeated headers and footers and page numbers, rejoin hyphenated line breaks, and normalize whitespace.
   *Done when:* unit tests cover each rule.
+  *Notes:* Pure functions in `lib/features/library/text_cleaner.dart`; `cleanPages` keeps one entry per page. Headers/footers = lines on the top or bottom 2 lines of at least half the pages (digits ignored, min 3 pages), so recurring headings like "Chapitre N" stay. Page numbers are only removed from a page's first or last line. Added rules found in real PDFs: LaTeX spacing accents ("g´en´eral" → "général", orphan "A ... `" → "À"), pdfium's U+0002 marker inside words it rejoined after hyphenation (70 in two PDFs), control characters, ligatures and TOC dot leaders. Checked on the 5 PDFs in `Desktop/pdfs`: only page numbers were removed, no stray accents or control characters left.
 
 - [ ] **2.4 Chunker**
   About 250 words with about 50 words of overlap, never across a page, and keep page + ordinal.
