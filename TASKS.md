@@ -46,9 +46,10 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
 
 ## Week 2 (Oct 8–14): indexing and retrieval
 
-- [ ] **2.1 Database schema (drift)**
+- [x] **2.1 Database schema (drift)**
   Tables `documents` (id, title, path, pageCount, indexedAt, status) and `chunks` (id, docId, page, ordinal, text), plus an FTS5 virtual table over the chunk text.
   *Done when:* there's a migration test and the insert and query tests pass.
+  *Notes:* drift runtime only (new dep: `drift`); `drift_dev` can't resolve next to riverpod_generator on Flutter 3.38.9 (analyzer/meta pins), so the schema is SQL steps in `AppDatabase.migrationSteps` and queries are hand-written. `DocumentStore` interface in `lib/core/db/`. External-content FTS5 table `chunks_fts` (`unicode61 remove_diacritics 2`) kept in sync by triggers; chunks cascade-delete with their document. `ordinal` is the chunk's position in the whole document, pages are 1-based. `buildFtsQuery` turns a question into quoted OR terms so user text is never parsed as FTS5 syntax.
 
 - [ ] **2.2 PDF text extraction**
   pdfrx extracts text per page. Detect empty pages (scanned PDFs) and flag them.
@@ -149,6 +150,7 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
 ## Notes
 
 - 2026-09-30: LLM runs on CPU by default (GPU backend OOM-killed on the 4 GB Galaxy A16).
+- 2026-10-01: drift without code generation (drift_dev conflicts with riverpod_generator on Flutter 3.38.9). Typed drift tables can come back after a Flutter upgrade.
 - 2026-09-30: Gemma 3 1B reaches 8.4 tok/s on CPU (Gate 1 needs 5). Compared with Qwen3 0.6B anyway (1.5): Gemma 3 1B stays the default.
 
 <!-- Add a short dated line whenever a decision changes the plan, e.g. "2026-10-05: switched to Qwen3 0.6B, Gemma 3 1B only reached 3 tok/s." -->

@@ -17,6 +17,7 @@ Future<void> main() async {
       overrides: [
         // On Android: /data/user/0/<package>/files/models.
         modelsDirectoryProvider.overrideWithValue('${supportDir.path}/models'),
+        databasePathProvider.overrideWithValue('${supportDir.path}/study.db'),
         appSettingsProvider.overrideWithValue(settings),
       ],
       child: const App(),

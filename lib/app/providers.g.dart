@@ -54,6 +54,98 @@ final class ModelsDirectoryProvider
 
 String _$modelsDirectoryHash() => r'4aeea588a570bcdd81a14037c2f38dfe45056483';
 
+/// Absolute path of the SQLite database file. Set in `main()`.
+
+@ProviderFor(databasePath)
+final databasePathProvider = DatabasePathProvider._();
+
+/// Absolute path of the SQLite database file. Set in `main()`.
+
+final class DatabasePathProvider
+    extends $FunctionalProvider<String, String, String>
+    with $Provider<String> {
+  /// Absolute path of the SQLite database file. Set in `main()`.
+  DatabasePathProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'databasePathProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$databasePathHash();
+
+  @$internal
+  @override
+  $ProviderElement<String> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  String create(Ref ref) {
+    return databasePath(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<String>(value),
+    );
+  }
+}
+
+String _$databasePathHash() => r'1de6cd32a5776631efc7fdca011775575cd96c33';
+
+/// Documents, chunks and the full-text index. Opened lazily on first query.
+
+@ProviderFor(documentStore)
+final documentStoreProvider = DocumentStoreProvider._();
+
+/// Documents, chunks and the full-text index. Opened lazily on first query.
+
+final class DocumentStoreProvider
+    extends $FunctionalProvider<DocumentStore, DocumentStore, DocumentStore>
+    with $Provider<DocumentStore> {
+  /// Documents, chunks and the full-text index. Opened lazily on first query.
+  DocumentStoreProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'documentStoreProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$documentStoreHash();
+
+  @$internal
+  @override
+  $ProviderElement<DocumentStore> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  DocumentStore create(Ref ref) {
+    return documentStore(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(DocumentStore value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<DocumentStore>(value),
+    );
+  }
+}
+
+String _$documentStoreHash() => r'00adf8815ac82659bb656df306e22ba5a335885c';
+
 /// Loaded in `main()` so reads are synchronous.
 
 @ProviderFor(appSettings)

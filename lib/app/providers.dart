@@ -7,6 +7,8 @@ import 'package:offline_study_assistant/core/ai/llm_model_config.dart';
 import 'package:offline_study_assistant/core/ai/model_downloader.dart';
 import 'package:offline_study_assistant/core/ai/model_manager.dart';
 import 'package:offline_study_assistant/core/ai/model_spec.dart';
+import 'package:offline_study_assistant/core/db/app_database.dart';
+import 'package:offline_study_assistant/core/db/document_store.dart';
 import 'package:offline_study_assistant/core/net/network_monitor.dart';
 import 'package:offline_study_assistant/core/settings/app_settings.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -17,6 +19,19 @@ part 'providers.g.dart';
 @Riverpod(keepAlive: true)
 String modelsDirectory(Ref ref) =>
     throw UnimplementedError('Override modelsDirectoryProvider in main()');
+
+/// Absolute path of the SQLite database file. Set in `main()`.
+@Riverpod(keepAlive: true)
+String databasePath(Ref ref) =>
+    throw UnimplementedError('Override databasePathProvider in main()');
+
+/// Documents, chunks and the full-text index. Opened lazily on first query.
+@Riverpod(keepAlive: true)
+DocumentStore documentStore(Ref ref) {
+  final db = AppDatabase.open(ref.watch(databasePathProvider));
+  ref.onDispose(db.close);
+  return db;
+}
 
 /// Loaded in `main()` so reads are synchronous.
 @Riverpod(keepAlive: true)
