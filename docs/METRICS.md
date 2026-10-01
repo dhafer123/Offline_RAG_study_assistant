@@ -154,6 +154,29 @@ Hybrid is **6 points worse** than vector only overall (−3 questions): it fixes
 - The token estimate was 1.08–1.23× the reported count on these prompts (template included), so it errs on the safe side.
 - **Decision (2026-10-01): prompt budget 2,000 → 1,000 estimated tokens**, to stay in the 1,024 step. Check on the phone, same question as in 3.3 ("Why did the team pick Godot 4 to build the game?"): 3 sources, 910 real prompt tokens (999 estimated), **time to first token 18.4 s instead of 49.3 s**, 26.6 s in total. The answer was correct, in English, and cited only [1] (the Godot page), where the 5-source answer had cited [1]–[3] one per sentence.
 
+## "Not found" gate threshold (task 3.7)
+
+2026-10-01. The gate refuses a question when the best vector similarity is below the threshold, without calling the LLM. With vector retrieval that's the top-1 similarity, recorded for all 60 eval questions in `eval/results/retrieval_vector_20261001-201837.json` (same 6-document index as the app), so the threshold was chosen from that run.
+
+The 10 unanswerable questions are 4 off-topic (u01 Unity price, u05 accuracy results, u07 transformers, u10 Celeste) and 6 near misses (the topic is in the documents, the asked fact isn't). "In the prompt" means the right page was in the top 3, about what fits the 1,000-token prompt.
+
+| Threshold | Answerable refused | …of which answer was in the prompt | Unanswerable refused | Off-topic refused | Near misses refused |
+|---|---|---|---|---|---|
+| 0.26 | 0/50 | 0 | 1/10 | 1/4 | 0/6 |
+| **0.30** | **2/50 (4%)** | **1** | **2/10 (20%)** | **2/4** | **0/6** |
+| 0.32 | 2/50 | 1 | 3/10 | 3/4 | 0/6 |
+| 0.36 | 5/50 | 3 | 3/10 | 3/4 | 0/6 |
+| 0.40 | 9/50 | 7 | 3/10 | 3/4 | 0/6 |
+| 0.46 | 16/50 | 13 | 5/10 | 3/4 | 2/6 |
+| 0.52 | 28/50 | 24 | 8/10 | 3/4 | 5/6 |
+
+- **Chosen: 0.30** (the value set provisionally in 3.3). Refusal rate: **20% of unanswerable questions (2/10), 4% of answerable ones (2/50)**. Of the 2 answerable refusals, only q45 (French question on an English document, right page at rank 1, similarity 0.265) loses an answer; q43 (0.272) was a retrieval miss anyway.
+- **Why not higher:** a gate refusal is final and instant, while an unanswerable question that passes still meets the prompt's "reply Not found" rule. Refusing an answerable question costs more than letting an unanswerable one through. Above 0.34 the real losses grow quickly (3 at 0.36, 7 at 0.40) and no further off-topic question is caught until 0.54.
+- **Why not 0.26 or 0.32:** both sit within ~0.01 of an answerable question (q45 at 0.265, q38 at 0.323); with 60 questions that's noise. 0.30 has 0.023–0.028 of margin to the nearest answerable questions on both sides.
+- **Near misses can't be gated by similarity:** they score like answerable questions (0.41–0.59) because the topic really is there. Catching them is the model's job; its own refusal rate is measured with the full answer benchmark (4.1–4.2).
+- **The gate saves time too:** a refusal comes after retrieval only (~2.2–4.5 s), instead of ~20 s before the model's first word.
+- Both answerable questions below the threshold are French questions on English documents: cross-language similarities run lower. A per-language threshold would need more questions than this set has.
+
 ## Answers (50 answerable + 10 unanswerable)
 
 | Date | Correct | Partial | Wrong | Citation accuracy | Correct refusals (of 10) |

@@ -122,9 +122,10 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
   *Done when:* it opens on the correct page.
   *Notes:* `PdfViewerScreen` (route `/viewer/:docId?page=&chunk=`) resolves the document and chunk through `viewerTargetProvider` (clear messages for a deleted document or missing file; Riverpod's auto-retry is off for it). pdfrx stays behind `PdfPageViewer` in `lib/core/pdf/`. The cited chunk is highlighted: `locatePassage` (pure, tested) finds the cleaned chunk text in the page's raw text by comparing only letters and digits, accents folded and ligatures expanded, anchored on the chunk's first and last 24 of them; `mergeLineRects` turns the character boxes into one box per line, painted in highlighter yellow. pdfrx_engine 0.3.9's `loadStructuredText` returns empty text for a page that isn't loaded yet (its `ensureLoaded` flag is ignored), so the viewer waits for the page first. A page chip opens the viewer directly; an inline marker opens the passage sheet, which has an "Open page" button. Checked on the phone: "Which Godot class does the intelligent NPC extend?" → chip `ps_game__Copy_.pdf · p. 27` → opens on PDF page 27 (printed "26") with the chunk highlighted and the page number left out, as in the chunk.
 
-- [ ] **3.7 Tune the gate threshold**
+- [x] **3.7 Tune the gate threshold**
   Use the 10 unanswerable and 50 answerable questions to pick the threshold.
   *Done when:* the chosen value and the refusal rate are in METRICS.md.
+  *Notes:* Chosen from the vector eval run's top-1 similarities (the gate's input, same index), no new phone run needed. **Threshold stays 0.30**: refuses 2/10 unanswerable (both off-topic) and 2/50 answerable (only q45 loses an answer that was in the prompt). No threshold catches the 6 near misses without refusing many answerable questions, so the gate only screens off-topic questions and the prompt's "Not found" rule handles the rest; the model's own refusal rate comes with 4.1–4.2. Table and reasoning in METRICS.md.
 
 **Gate 3:** a cited answer works end to end in airplane mode.
 

@@ -10,13 +10,15 @@ class AnswerConfig {
     this.promptBudget = defaultPromptBudget,
   });
 
-  /// Provisional "not found" gate threshold (task 3.3); task 3.7 tunes it.
+  /// "Not found" gate threshold, chosen in task 3.7 (docs/METRICS.md).
   ///
-  /// On the eval set's vector run (`eval/results/retrieval_vector_*.json`)
-  /// it refuses 2 of the 10 unanswerable questions and 2 of the 50
-  /// answerable ones (best similarities 0.265 and 0.272, both French
-  /// questions on English documents). The two groups overlap a lot, so the
-  /// prompt's "reply Not found" rule is the second line of defense.
+  /// On the eval set it refuses 2 of the 10 unanswerable questions (both
+  /// off-topic) and 2 of the 50 answerable ones, only one of which had its
+  /// answer among the sources the prompt would have held. No threshold
+  /// catches the near misses (topic present, fact absent) without refusing
+  /// many answerable questions, so the gate only screens out clearly
+  /// off-topic questions; the prompt's "reply Not found" rule handles the
+  /// rest.
   static const defaultSimilarityThreshold = 0.30;
 
   /// Below this cosine similarity of the best chunk, the question is
