@@ -61,9 +61,10 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
   *Done when:* unit tests cover each rule.
   *Notes:* Pure functions in `lib/features/library/text_cleaner.dart`; `cleanPages` keeps one entry per page. Headers/footers = lines on the top or bottom 2 lines of at least half the pages (digits ignored, min 3 pages), so recurring headings like "Chapitre N" stay. Page numbers are only removed from a page's first or last line. Added rules found in real PDFs: LaTeX spacing accents ("g´en´eral" → "général", orphan "A ... `" → "À"), pdfium's U+0002 marker inside words it rejoined after hyphenation (70 in two PDFs), control characters, ligatures and TOC dot leaders. Checked on the 5 PDFs in `Desktop/pdfs`: only page numbers were removed, no stray accents or control characters left.
 
-- [ ] **2.4 Chunker**
+- [x] **2.4 Chunker**
   About 250 words with about 50 words of overlap, never across a page, and keep page + ordinal.
   *Done when:* unit tests cover short pages, long pages and empty pages.
+  *Notes:* Pure `chunkPages` in `lib/features/library/chunker.dart`, returning `NewChunk`s ready for `insertChunks`. A page of up to 250 words is one chunk; longer pages get equal-size windows (max 250 words, exactly 50 shared) so there's no short leftover chunk (260 words → 2 × 155). Chunk text is the original slice of the page, line breaks kept. Empty pages give no chunk; ordinals stay contiguous. On the 5 PDFs: 50 chunks, median 126–200 words, max 242; pages with only a caption or title give small chunks (min 9 words).
 
 - [ ] **2.5 Embedder + VectorIndex**
   `Embedder` interface with an EmbeddingGemma implementation, and `VectorIndex` wrapping flutter_gemma_rag_sqlite (`add`, `search(vector, k)`, `deleteByDoc`).
