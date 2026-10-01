@@ -152,6 +152,7 @@ Hybrid is **6 points worse** than vector only overall (−3 questions): it fixes
 - Decoding speed doesn't depend on prompt size: 8.3–8.9 tok/s (6.5 in the 126 s outlier run, the first at 2,496 tokens: probably memory pressure or thermal throttling).
 - **Consequence for the prompt budget:** keep the real prompt at or under 1,024 tokens (~17 s), or under 512 (~8.5 s), and fill the step: going from 3 to 4 sources inside the same step is free. The 2,000-token budget from 3.2 always lands in the 2,560 step (~44 s).
 - The token estimate was 1.08–1.23× the reported count on these prompts (template included), so it errs on the safe side.
+- **Decision (2026-10-01): prompt budget 2,000 → 1,000 estimated tokens**, to stay in the 1,024 step. Check on the phone, same question as in 3.3 ("Why did the team pick Godot 4 to build the game?"): 3 sources, 910 real prompt tokens (999 estimated), **time to first token 18.4 s instead of 49.3 s**, 26.6 s in total. The answer was correct, in English, and cited only [1] (the Godot page), where the 5-source answer had cited [1]–[3] one per sentence.
 
 ## Answers (50 answerable + 10 unanswerable)
 

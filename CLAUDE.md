@@ -49,7 +49,7 @@ Core (LlmEngine, Embedder, AppDatabase, VectorIndex)  <- flutter_gemma, drift, s
 1. Embed the question.
 2. Take the vector top 5. (Hybrid FTS5 + RRF exists as `RetrievalMode.hybrid` but is off: it scored 84% vs 90% Recall@5, see task 3.1.)
 3. Gate: if the best similarity is below the threshold, answer "Not found in your documents" without calling the LLM.
-4. Build the prompt with sources numbered [1]–[5], within a budget of about 2,000 tokens.
+4. Build the prompt with sources numbered [1]–[5], within a budget of about 1,000 tokens (the model's 1,024-token prefill step: ~17 s to the first token, against ~44 s above it).
 5. Stream the answer at low temperature.
 6. Parse the `[n]` markers and turn them into citation chips (document + page).
 

@@ -2,12 +2,16 @@ import 'package:flutter/foundation.dart';
 import 'package:offline_study_assistant/features/chat/question_language.dart';
 import 'package:offline_study_assistant/features/chat/retrieval_service.dart';
 
-/// Token budget of the whole prompt (instructions, sources and question).
+/// Token budget of the whole prompt (instructions, sources and question), in
+/// [estimateTokens] units.
 ///
-/// The model's context is 4096 tokens (`LlmModelConfig.maxTokens`), shared
-/// by the prompt and the answer; 2000 leaves the answer room and keeps time to
-/// first token low on the phone's CPU.
-const defaultPromptBudget = 2000;
+/// The model pads every prompt up to one of its fixed prefill sizes (256,
+/// 512, 1024, 2560 tokens), and time to first token follows the padded size:
+/// ~8.5 s up to 512, ~17 s up to 1024, ~44 s up to 2560 on the test phone
+/// (docs/METRICS.md). 1000 estimated tokens is at most ~930 real ones (the
+/// estimate ran 1.08–1.23× the real count, chat template included), so the
+/// prompt stays in the 1024 step with room for about 4 sources.
+const defaultPromptBudget = 1000;
 
 /// What the model must reply when the sources don't hold the answer. Also
 /// what the "not found" gate shows (task 3.3), so both read the same.

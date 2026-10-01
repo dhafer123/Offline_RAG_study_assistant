@@ -168,6 +168,6 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
 
 - 2026-10-01: switched the app to vector-only retrieval (`defaultRetrievalMode`): hybrid (3.1) scored 84% vs 90% Recall@5 because about half the eval questions are cross-language. The hybrid code stays and can still be run from the retrieval eval screen.
 
-- 2026-10-01: a full 5-source prompt (1,200–1,600 tokens) takes 45–49 s to the first token on the A16's CPU. Measured TTFT against prompt size (sweep on the LLM benchmark screen): it's a staircase set by the model's prefill sizes, ~4 s ≤ 256 tokens, ~8.5 s ≤ 512, ~17 s ≤ 1,024, ~44 s ≤ 2,560 (METRICS.md). The prompt budget should target one of these steps before the chat screen (3.5).
+- 2026-10-01: a full 5-source prompt (1,200–1,600 tokens) takes 45–49 s to the first token on the A16's CPU. Measured TTFT against prompt size (sweep on the LLM benchmark screen): it's a staircase set by the model's prefill sizes, ~4 s ≤ 256 tokens, ~8.5 s ≤ 512, ~17 s ≤ 1,024, ~44 s ≤ 2,560 (METRICS.md). Budget lowered from 2,000 to 1,000 estimated tokens (≤ 1,024 real, about 3–4 sources): the 3.3 Godot question went from 49 s to 18 s to the first token.
 
 <!-- Add a short dated line whenever a decision changes the plan, e.g. "2026-10-05: switched to Qwen3 0.6B, Gemma 3 1B only reached 3 tok/s." -->
