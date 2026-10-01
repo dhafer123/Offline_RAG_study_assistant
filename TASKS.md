@@ -107,9 +107,10 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
   *Done when:* an unanswerable question returns "Not found in your documents" without calling the LLM.
   *Notes:* `AnswerService.answer(question)` streams sealed `AnswerEvent`s: `AnswerNotFound` alone, or `AnswerSources` (the numbered sources, for chips) → `AnswerToken`s → `AnswerDone` (text, load time, `GenerationMetrics`); cancelling stops generation, and failures become `AnswerException` with a user-facing message. The gate compares the best vector similarity to `AnswerConfig.similarityThreshold` (`answerConfigProvider`), **0.30 for now**: on the eval set it refuses 2/10 unanswerable and 2/50 answerable questions; 3.7 tunes it. The LLM loads only once the gate passes. Retrieval debug screen has an **Answer** button until the chat screen. On the phone: "Who introduced the transformer architecture?" → best 0.252 → "Not found in your documents.", LLM not called. Two answerable questions were answered correctly in the right language, but **time to first token was 45–49 s** for 1,200–1,600 prompt tokens (CPU prefill); see METRICS.md.
 
-- [ ] **3.4 Citation parser**
+- [x] **3.4 Citation parser**
   Turn `[n]` markers into chunk → document + page. Drop numbers that match no source.
   *Done when:* unit tests cover `[1]`, `[1][3]`, `[1, 2]`, `[7]` (invalid) and no citations.
+  *Notes:* Pure `parseCitations(answer, sources)` in `lib/features/chat/citation_parser.dart`: `[n]` is `sources[n - 1]` of the `AnswerPrompt`. Returns reading-order segments (`TextSegment` / `CitationSegment`, so 3.5 can draw chips inline) and the distinct cited sources in order of first citation. Also reads `[1-3]`, `[1; 3]`, `[1 and 3]`, `[Source 2]`; merges `[1] [3]`; drops invalid numbers (an emptied marker goes with the space before it). `streaming: true` hides a marker that isn't closed yet (`... engine [1`). Checked on a real answer from the phone.
 
 - [ ] **3.5 Chat screen**
   Question input, streamed answer, citation chips, a stop button, and a loading state while the model loads.
