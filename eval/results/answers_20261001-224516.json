@@ -1,0 +1,3343 @@
+{
+  "created": "2026-10-01T21:45:16.285031Z",
+  "model": "Gemma 3 1B",
+  "config": {
+    "similarity_threshold": 0.3,
+    "top_k": 5,
+    "prompt_budget": 1000
+  },
+  "indexed_documents": [
+    "distractor_report_120p",
+    "03_rag_architecture.pdf",
+    "02_rag_basics.pdf",
+    "01_ai_fundamentals.pdf",
+    "etat_de_l_art.pdf",
+    "ps_game__Copy_.pdf"
+  ],
+  "complete": true,
+  "summary": {
+    "questions": 60,
+    "answerable": 50,
+    "unanswerable": 10,
+    "errors": 0,
+    "gate_refused_answerable": 2,
+    "gate_refused_unanswerable": 2,
+    "model_not_found_answerable": 2,
+    "model_not_found_unanswerable": 0,
+    "declined_unanswerable": 2,
+    "answered_answerable": 46,
+    "source_hit": 41,
+    "answers_with_citation": 26,
+    "cites_right_page": 15,
+    "median_retrieval_ms": 2386.0,
+    "median_ttft_ms": 17017.5,
+    "median_total_ms": 21513.5,
+    "median_tokens_per_second": 8.300858283257893,
+    "median_prompt_tokens": 873.5,
+    "median_output_tokens": 40.0
+  },
+  "results": [
+    {
+      "id": "q01",
+      "lang": "fr",
+      "question": "Quels jeux existants ont été analysés dans l'étude de l'existant du projet NeoQuest ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        12,
+        14
+      ],
+      "expected_answer": "Super Mario Bros, Hollow Knight et Terraria.",
+      "refused_by_gate": false,
+      "best_similarity": 0.5747,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 11,
+          "chunk_id": 11,
+          "similarity": 0.5747
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 3,
+          "chunk_id": 3,
+          "similarity": 0.5735
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 4,
+          "chunk_id": 4,
+          "similarity": 0.5438
+        },
+        {
+          "n": 4,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 7,
+          "chunk_id": 7,
+          "similarity": 0.5266
+        }
+      ],
+      "source_hit": false,
+      "answer": "[1] ps_game__Copy_.pdf page 11\n[2] ps_game__Copy_.pdf page 3\n[3] ps_game__Copy_.pdf page 4\n[4] ps_game__Copy_.pdf page 7\n",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 11
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 3
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 4
+        },
+        {
+          "n": 4,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 7
+        }
+      ],
+      "cites_right_page": false,
+      "retrieval_ms": 4383,
+      "model_load_ms": 1759,
+      "ttft_ms": 16855,
+      "total_ms": 23543,
+      "prompt_tokens": 924,
+      "output_tokens": 58,
+      "tokens_per_second": 8.5227,
+      "error": null
+    },
+    {
+      "id": "q02",
+      "lang": "en",
+      "question": "In which year was Hollow Knight released, according to the game report?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        12,
+        13
+      ],
+      "expected_answer": "2017.",
+      "refused_by_gate": false,
+      "best_similarity": 0.4118,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 14,
+          "chunk_id": 14,
+          "similarity": 0.4118
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 13,
+          "chunk_id": 13,
+          "similarity": 0.3897
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 12,
+          "chunk_id": 12,
+          "similarity": 0.3577
+        },
+        {
+          "n": 4,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 7,
+          "chunk_id": 7,
+          "similarity": 0.3363
+        }
+      ],
+      "source_hit": true,
+      "answer": "Hollow Knight was released in 2017 [1].",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 14
+        }
+      ],
+      "cites_right_page": false,
+      "retrieval_ms": 2614,
+      "model_load_ms": 0,
+      "ttft_ms": 16341,
+      "total_ms": 18042,
+      "prompt_tokens": 950,
+      "output_tokens": 15,
+      "tokens_per_second": 8.229,
+      "error": null
+    },
+    {
+      "id": "q03",
+      "lang": "fr",
+      "question": "Quels défauts le rapport reproche-t-il à Hollow Knight ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        14
+      ],
+      "expected_answer": "Une difficulté élevée qui peut décourager certains joueurs et l'absence d'indications claires pour les guider.",
+      "refused_by_gate": false,
+      "best_similarity": 0.5043,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 14,
+          "chunk_id": 14,
+          "similarity": 0.5043
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 5,
+          "chunk_id": 5,
+          "similarity": 0.4402
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 13,
+          "chunk_id": 13,
+          "similarity": 0.4329
+        },
+        {
+          "n": 4,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 12,
+          "chunk_id": 12,
+          "similarity": 0.3932
+        }
+      ],
+      "source_hit": true,
+      "answer": "Introuvable dans vos documents.",
+      "model_said_not_found": true,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2165,
+      "model_load_ms": 0,
+      "ttft_ms": 15845,
+      "total_ms": 16694,
+      "prompt_tokens": 999,
+      "output_tokens": 8,
+      "tokens_per_second": 8.2505,
+      "error": null
+    },
+    {
+      "id": "q04",
+      "lang": "en",
+      "question": "What weakness does the report see in Terraria for new players?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        14
+      ],
+      "expected_answer": "It lacks linear missions and clear tutorials for new players, despite its creative freedom.",
+      "refused_by_gate": false,
+      "best_similarity": 0.4411,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 14,
+          "chunk_id": 14,
+          "similarity": 0.4411
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 13,
+          "chunk_id": 13,
+          "similarity": 0.4185
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 5,
+          "chunk_id": 5,
+          "similarity": 0.3605
+        },
+        {
+          "n": 4,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 18,
+          "chunk_id": 18,
+          "similarity": 0.3193
+        }
+      ],
+      "source_hit": true,
+      "answer": "The report identifies several weaknesses for new players regarding Terraria: [1] This game’s gameplay can be repetitive due simplicity but lacks clear guidance and clear tutorials. [2] This game’s sandbox nature can be overwhelming due there’s no linear progression and limited NPC dialogue. [2] This game’s difficulty can be high but can be overcome by exploration and skill.\n",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 14
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 13
+        }
+      ],
+      "cites_right_page": true,
+      "retrieval_ms": 2156,
+      "model_load_ms": 0,
+      "ttft_ms": 15761,
+      "total_ms": 25198,
+      "prompt_tokens": 997,
+      "output_tokens": 79,
+      "tokens_per_second": 8.2653,
+      "error": null
+    },
+    {
+      "id": "q05",
+      "lang": "fr",
+      "question": "Quels sont les événements Scrum utilisés pour organiser le développement du jeu ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        14
+      ],
+      "expected_answer": "La planification du sprint, la revue de sprint, la rétrospective de sprint et la mêlée quotidienne.",
+      "refused_by_gate": false,
+      "best_similarity": 0.5241,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 15,
+          "chunk_id": 15,
+          "similarity": 0.5241
+        },
+        {
+          "n": 2,
+          "doc": "distractor_report_120p",
+          "page": 29,
+          "chunk_id": 82,
+          "similarity": 0.5151
+        },
+        {
+          "n": 3,
+          "doc": "distractor_report_120p",
+          "page": 28,
+          "chunk_id": 81,
+          "similarity": 0.4797
+        },
+        {
+          "n": 4,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 12,
+          "chunk_id": 12,
+          "similarity": 0.4449
+        }
+      ],
+      "source_hit": false,
+      "answer": "[redacted: the prompt held text from the private distractor document]",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 15
+        },
+        {
+          "n": 2,
+          "doc": "distractor_report_120p",
+          "page": 29
+        },
+        {
+          "n": 3,
+          "doc": "distractor_report_120p",
+          "page": 28
+        }
+      ],
+      "cites_right_page": false,
+      "retrieval_ms": 2162,
+      "model_load_ms": 0,
+      "ttft_ms": 15907,
+      "total_ms": 26188,
+      "prompt_tokens": 898,
+      "output_tokens": 86,
+      "tokens_per_second": 8.2676,
+      "error": null,
+      "answer_redacted": true
+    },
+    {
+      "id": "q06",
+      "lang": "en",
+      "question": "What is the sprint retrospective used for in the project's methodology?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        14
+      ],
+      "expected_answer": "To analyse what can be improved in the following sprints.",
+      "refused_by_gate": false,
+      "best_similarity": 0.5836,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "distractor_report_120p",
+          "page": 29,
+          "chunk_id": 83,
+          "similarity": 0.5836
+        },
+        {
+          "n": 2,
+          "doc": "distractor_report_120p",
+          "page": 29,
+          "chunk_id": 82,
+          "similarity": 0.5149
+        },
+        {
+          "n": 3,
+          "doc": "distractor_report_120p",
+          "page": 27,
+          "chunk_id": 80,
+          "similarity": 0.4854
+        }
+      ],
+      "source_hit": false,
+      "answer": "[redacted: the prompt held text from the private distractor document]",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "distractor_report_120p",
+          "page": 29
+        }
+      ],
+      "cites_right_page": false,
+      "retrieval_ms": 2337,
+      "model_load_ms": 0,
+      "ttft_ms": 15811,
+      "total_ms": 18687,
+      "prompt_tokens": 840,
+      "output_tokens": 25,
+      "tokens_per_second": 8.3446,
+      "error": null,
+      "answer_redacted": true
+    },
+    {
+      "id": "q07",
+      "lang": "fr",
+      "question": "Quel est le rôle du GameManager dans NeoQuest 2D ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        16,
+        17
+      ],
+      "expected_answer": "Il gère l'état global du jeu (niveaux, progression, scores) et déclenche les événements.",
+      "refused_by_gate": false,
+      "best_similarity": 0.6023,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 16,
+          "chunk_id": 16,
+          "similarity": 0.6023
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 9,
+          "chunk_id": 9,
+          "similarity": 0.5431
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 3,
+          "chunk_id": 3,
+          "similarity": 0.5383
+        }
+      ],
+      "source_hit": true,
+      "answer": "Le GameManager est le rôle du jeu qui gère l’état global du jeu, les niveaux, la progression, les scores et l’interaction avec l’environnement et les événements du jeu. [1]",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 16
+        }
+      ],
+      "cites_right_page": true,
+      "retrieval_ms": 2154,
+      "model_load_ms": 0,
+      "ttft_ms": 15779,
+      "total_ms": 20831,
+      "prompt_tokens": 868,
+      "output_tokens": 43,
+      "tokens_per_second": 8.3144,
+      "error": null
+    },
+    {
+      "id": "q08",
+      "lang": "en",
+      "question": "Which Godot nodes are given as an example of how the UI manager is built?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        17
+      ],
+      "expected_answer": "CanvasLayer and Control nodes.",
+      "refused_by_gate": false,
+      "best_similarity": 0.5326,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 17,
+          "chunk_id": 17,
+          "similarity": 0.5326
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 27,
+          "chunk_id": 27,
+          "similarity": 0.3959
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 18,
+          "chunk_id": 18,
+          "similarity": 0.3899
+        }
+      ],
+      "source_hit": true,
+      "answer": "[1] Godot UI Manager Rôle : Affiche l’interface utilisateur, les dialogues, le compteur de pièces et le statut des missions.\n[2] Godot UI Manager\n[3] Godot UI Manager\n",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 17
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 27
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 18
+        }
+      ],
+      "cites_right_page": true,
+      "retrieval_ms": 2143,
+      "model_load_ms": 0,
+      "ttft_ms": 16585,
+      "total_ms": 22270,
+      "prompt_tokens": 936,
+      "output_tokens": 48,
+      "tokens_per_second": 8.2677,
+      "error": null
+    },
+    {
+      "id": "q09",
+      "lang": "fr",
+      "question": "Quels exemples de LLM, distant ou local, sont cités pour générer les réponses des NPC ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        17
+      ],
+      "expected_answer": "OpenAI GPT (API) et Ollama avec TinyLlama (local).",
+      "refused_by_gate": false,
+      "best_similarity": 0.6198,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "chunk_id": 29,
+          "similarity": 0.6198
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 20,
+          "chunk_id": 20,
+          "similarity": 0.5471
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 17,
+          "chunk_id": 17,
+          "similarity": 0.5071
+        }
+      ],
+      "source_hit": true,
+      "answer": "[1] ps_game__Copy_.pdf, page 28\n[2] ps_game__Copy_.pdf, page 20\n[3] ps_game__Copy_.pdf, page 17\n",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 20
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 17
+        }
+      ],
+      "cites_right_page": true,
+      "retrieval_ms": 2325,
+      "model_load_ms": 0,
+      "ttft_ms": 16894,
+      "total_ms": 22681,
+      "prompt_tokens": 943,
+      "output_tokens": 49,
+      "tokens_per_second": 8.2939,
+      "error": null
+    },
+    {
+      "id": "q10",
+      "lang": "en",
+      "question": "Which services are listed as examples for saving the player's progress in the cloud?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        17
+      ],
+      "expected_answer": "Firebase, AWS and Google Drive.",
+      "refused_by_gate": false,
+      "best_similarity": 0.3594,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 18,
+          "chunk_id": 18,
+          "similarity": 0.3594
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 17,
+          "chunk_id": 17,
+          "similarity": 0.357
+        },
+        {
+          "n": 3,
+          "doc": "distractor_report_120p",
+          "page": 93,
+          "chunk_id": 152,
+          "similarity": 0.3027
+        }
+      ],
+      "source_hit": true,
+      "answer": "[redacted: the prompt held text from the private distractor document]",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2341,
+      "model_load_ms": 0,
+      "ttft_ms": 17020,
+      "total_ms": 18063,
+      "prompt_tokens": 905,
+      "output_tokens": 9,
+      "tokens_per_second": 7.664,
+      "error": null,
+      "answer_redacted": true
+    },
+    {
+      "id": "q11",
+      "lang": "en",
+      "question": "Which non-functional requirement is about how fast the NPC dialogues must be produced?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        18
+      ],
+      "expected_answer": "Performance: LLM dialogues must be processed quickly so they don't hurt the experience.",
+      "refused_by_gate": false,
+      "best_similarity": 0.4418,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "chunk_id": 28,
+          "similarity": 0.4418
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 20,
+          "chunk_id": 20,
+          "similarity": 0.4268
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "chunk_id": 29,
+          "similarity": 0.4152
+        }
+      ],
+      "source_hit": false,
+      "answer": "The non-functional requirement about how fast the NPC dialogues must be produced can be summarized as: \"The dialogue must be generated dynamically by the LLM.\"",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2293,
+      "model_load_ms": 0,
+      "ttft_ms": 16562,
+      "total_ms": 20293,
+      "prompt_tokens": 895,
+      "output_tokens": 32,
+      "tokens_per_second": 8.3084,
+      "error": null
+    },
+    {
+      "id": "q12",
+      "lang": "fr",
+      "question": "Dans le cas d'utilisation de collecte d'objets, quel est le scénario alternatif ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        19
+      ],
+      "expected_answer": "L'inventaire est plein.",
+      "refused_by_gate": false,
+      "best_similarity": 0.5517,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 19,
+          "chunk_id": 19,
+          "similarity": 0.5517
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 20,
+          "chunk_id": 20,
+          "similarity": 0.4715
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 25,
+          "chunk_id": 25,
+          "similarity": 0.377
+        },
+        {
+          "n": 4,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 7,
+          "chunk_id": 7,
+          "similarity": 0.3087
+        },
+        {
+          "n": 5,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 17,
+          "chunk_id": 17,
+          "similarity": 0.3042
+        }
+      ],
+      "source_hit": true,
+      "answer": "Introuvable dans vos documents.",
+      "model_said_not_found": true,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2329,
+      "model_load_ms": 0,
+      "ttft_ms": 16859,
+      "total_ms": 17694,
+      "prompt_tokens": 1002,
+      "output_tokens": 8,
+      "tokens_per_second": 8.3811,
+      "error": null
+    },
+    {
+      "id": "q13",
+      "lang": "en",
+      "question": "What condition must hold before the player can start a conversation with an NPC?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        20
+      ],
+      "expected_answer": "The player must be close to the NPC.",
+      "refused_by_gate": false,
+      "best_similarity": 0.4715,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 21,
+          "chunk_id": 21,
+          "similarity": 0.4715
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 20,
+          "chunk_id": 20,
+          "similarity": 0.4588
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "chunk_id": 28,
+          "similarity": 0.4248
+        },
+        {
+          "n": 4,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 9,
+          "chunk_id": 9,
+          "similarity": 0.3862
+        }
+      ],
+      "source_hit": true,
+      "answer": "Before the player can engage in conversation with an NPC, the player must be connected at their profile.\n",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2338,
+      "model_load_ms": 0,
+      "ttft_ms": 16956,
+      "total_ms": 19469,
+      "prompt_tokens": 952,
+      "output_tokens": 22,
+      "tokens_per_second": 8.3565,
+      "error": null
+    },
+    {
+      "id": "q14",
+      "lang": "fr",
+      "question": "Que faut-il avant de pouvoir lancer ou charger une partie ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        21
+      ],
+      "expected_answer": "Le joueur doit être connecté à son profil.",
+      "refused_by_gate": false,
+      "best_similarity": 0.5046,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 21,
+          "chunk_id": 21,
+          "similarity": 0.5046
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 22,
+          "chunk_id": 22,
+          "similarity": 0.3348
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 18,
+          "chunk_id": 18,
+          "similarity": 0.3161
+        },
+        {
+          "n": 4,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 6,
+          "chunk_id": 6,
+          "similarity": 0.2907
+        }
+      ],
+      "source_hit": true,
+      "answer": "Avant de pouvoir lancer ou charger une partie, vous devez :\n\n1.  Choisir une nouvelle partie ou un chargement.\n2.  Initialiser les éléments du niveau.\n3.  Démarre la partie.\n",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2320,
+      "model_load_ms": 0,
+      "ttft_ms": 16973,
+      "total_ms": 22639,
+      "prompt_tokens": 933,
+      "output_tokens": 49,
+      "tokens_per_second": 8.4711,
+      "error": null
+    },
+    {
+      "id": "q15",
+      "lang": "en",
+      "question": "Why did the team pick Godot 4 to build the game?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        27
+      ],
+      "expected_answer": "For its flexibility, high performance and open-source nature, with a scene-and-node architecture that eases modularity and code reuse.",
+      "refused_by_gate": false,
+      "best_similarity": 0.505,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 27,
+          "chunk_id": 27,
+          "similarity": 0.505
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 26,
+          "chunk_id": 26,
+          "similarity": 0.4287
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 32,
+          "chunk_id": 33,
+          "similarity": 0.3944
+        }
+      ],
+      "source_hit": true,
+      "answer": "Godot was chosen because it offered flexibility, high performance and an open-source nature compared other engines which facilitated modularity, code reuse and maintenance [1]. Godot’s GDScript language was also beneficial for rapid development and readability [1]. This was particularly useful for developing two-dimensional games [1].",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 27
+        }
+      ],
+      "cites_right_page": true,
+      "retrieval_ms": 2320,
+      "model_load_ms": 0,
+      "ttft_ms": 17015,
+      "total_ms": 24548,
+      "prompt_tokens": 910,
+      "output_tokens": 64,
+      "tokens_per_second": 8.3639,
+      "error": null
+    },
+    {
+      "id": "q16",
+      "lang": "fr",
+      "question": "À quel langage de programmation GDScript est-il comparé ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        27
+      ],
+      "expected_answer": "À Python.",
+      "refused_by_gate": false,
+      "best_similarity": 0.3875,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 27,
+          "chunk_id": 27,
+          "similarity": 0.3875
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 33,
+          "chunk_id": 34,
+          "similarity": 0.3727
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 17,
+          "chunk_id": 17,
+          "similarity": 0.3668
+        }
+      ],
+      "source_hit": true,
+      "answer": "Godot est un moteur de jeu qui utilise GDScript comme langage pour le développement. [1]\n",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 27
+        }
+      ],
+      "cites_right_page": true,
+      "retrieval_ms": 2344,
+      "model_load_ms": 0,
+      "ttft_ms": 16740,
+      "total_ms": 19261,
+      "prompt_tokens": 910,
+      "output_tokens": 22,
+      "tokens_per_second": 8.3306,
+      "error": null
+    },
+    {
+      "id": "q17",
+      "lang": "en",
+      "question": "Which Godot class does the intelligent NPC extend?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        27
+      ],
+      "expected_answer": "CharacterBody2D.",
+      "refused_by_gate": false,
+      "best_similarity": 0.4617,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 27,
+          "chunk_id": 27,
+          "similarity": 0.4617
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "chunk_id": 28,
+          "similarity": 0.4475
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "chunk_id": 29,
+          "similarity": 0.422
+        }
+      ],
+      "source_hit": true,
+      "answer": "The intelligent NPC extends the CharacterBody2D class. [1]\n",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 27
+        }
+      ],
+      "cites_right_page": true,
+      "retrieval_ms": 2329,
+      "model_load_ms": 0,
+      "ttft_ms": 16802,
+      "total_ms": 18602,
+      "prompt_tokens": 928,
+      "output_tokens": 16,
+      "tokens_per_second": 8.3345,
+      "error": null
+    },
+    {
+      "id": "q18",
+      "lang": "fr",
+      "question": "Quels signaux permettent au NPC de savoir que le joueur entre ou sort de sa zone d'interaction ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        27,
+        28
+      ],
+      "expected_answer": "Les signaux body_entered et body_exited.",
+      "refused_by_gate": false,
+      "best_similarity": 0.5634,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "chunk_id": 28,
+          "similarity": 0.5634
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 21,
+          "chunk_id": 21,
+          "similarity": 0.4696
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "chunk_id": 29,
+          "similarity": 0.4479
+        },
+        {
+          "n": 4,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 25,
+          "chunk_id": 25,
+          "similarity": 0.4379
+        }
+      ],
+      "source_hit": true,
+      "answer": "Le NPC indique que le joueur entre ou sort de sa zone d'interaction en utilisant un signal [1].\n",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28
+        }
+      ],
+      "cites_right_page": true,
+      "retrieval_ms": 2338,
+      "model_load_ms": 0,
+      "ttft_ms": 16889,
+      "total_ms": 19654,
+      "prompt_tokens": 936,
+      "output_tokens": 24,
+      "tokens_per_second": 8.3179,
+      "error": null
+    },
+    {
+      "id": "q19",
+      "lang": "en",
+      "question": "How does the NPC call the remote LLM without freezing the game loop?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        28
+      ],
+      "expected_answer": "Asynchronously, with Godot's HTTPRequest class.",
+      "refused_by_gate": false,
+      "best_similarity": 0.6144,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "chunk_id": 29,
+          "similarity": 0.6144
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "chunk_id": 28,
+          "similarity": 0.5731
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 20,
+          "chunk_id": 20,
+          "similarity": 0.5629
+        }
+      ],
+      "source_hit": true,
+      "answer": "The NPC uses an HTTPRequest class asynchronously by leveraging Godot’s event system. [1]\n",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28
+        }
+      ],
+      "cites_right_page": true,
+      "retrieval_ms": 2335,
+      "model_load_ms": 0,
+      "ttft_ms": 16736,
+      "total_ms": 19371,
+      "prompt_tokens": 894,
+      "output_tokens": 23,
+      "tokens_per_second": 8.3503,
+      "error": null
+    },
+    {
+      "id": "q20",
+      "lang": "fr",
+      "question": "Quels sont les avantages d'un modèle de langage local par rapport à l'API distante pour les dialogues ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        28
+      ],
+      "expected_answer": "Il ne dépend pas d'Internet : meilleure confidentialité des données, latence réduite et disponibilité hors ligne.",
+      "refused_by_gate": false,
+      "best_similarity": 0.6301,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "chunk_id": 29,
+          "similarity": 0.6301
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "chunk_id": 28,
+          "similarity": 0.4407
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 29,
+          "chunk_id": 30,
+          "similarity": 0.4205
+        }
+      ],
+      "source_hit": true,
+      "answer": "Voici les avantages d'utiliser un modèle de langage local par rapport à l'API distante pour les dialogues :\n\n[1] Introuvable dans vos documents.\n[2] Les deux approches peuvent être choisies en fonction des contraintes de performance, de coût ou de connectivité.\n[3] L’intégration de ces deux méthodes met en évidence la flexibilité du moteur Godot et sa capacité à interagir aussi bien avec des services externes qu’avec des solutions locales, ouvrant ainsi la voie à des mécaniques de jeu dynamiques, robustes et évolutives.\n",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 29
+        }
+      ],
+      "cites_right_page": true,
+      "retrieval_ms": 2321,
+      "model_load_ms": 0,
+      "ttft_ms": 16792,
+      "total_ms": 31547,
+      "prompt_tokens": 908,
+      "output_tokens": 122,
+      "tokens_per_second": 8.2004,
+      "error": null
+    },
+    {
+      "id": "q21",
+      "lang": "en",
+      "question": "What does the NPC say if the request to the language model fails or returns invalid JSON?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        29
+      ],
+      "expected_answer": "It picks a random predefined fallback line, so the game never blocks or crashes.",
+      "refused_by_gate": false,
+      "best_similarity": 0.5195,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 20,
+          "chunk_id": 20,
+          "similarity": 0.5195
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 28,
+          "chunk_id": 29,
+          "similarity": 0.4911
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 29,
+          "chunk_id": 30,
+          "similarity": 0.4275
+        }
+      ],
+      "source_hit": true,
+      "answer": "[1] If the LLM doesn’t respond due to network errors or invalid JSON data, the NPC selects an arbitrary phrase. This ensures continuity by maintaining an experience while ensuring robustness by eliminating blockages or crashes.",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 20
+        }
+      ],
+      "cites_right_page": false,
+      "retrieval_ms": 2326,
+      "model_load_ms": 0,
+      "ttft_ms": 17382,
+      "total_ms": 22784,
+      "prompt_tokens": 921,
+      "output_tokens": 45,
+      "tokens_per_second": 8.1452,
+      "error": null
+    },
+    {
+      "id": "q22",
+      "lang": "fr",
+      "question": "Quelles optimisations ont été mises en place pour garder le jeu fluide ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        29
+      ],
+      "expected_answer": "Limiter les requêtes API simultanées, libérer les ressources HTTP après chaque requête et utiliser des temporisateurs pour la durée d'affichage des dialogues.",
+      "refused_by_gate": false,
+      "best_similarity": 0.4773,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 31,
+          "chunk_id": 32,
+          "similarity": 0.4773
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 30,
+          "chunk_id": 31,
+          "similarity": 0.4326
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 29,
+          "chunk_id": 30,
+          "similarity": 0.422
+        }
+      ],
+      "source_hit": true,
+      "answer": "Les optimisations mises en place pour garder le jeu fluide sont :\n*   Godot\n*   Intégration de l’intelligence artificielle\n*   Nouveaux mécanismes de jeu (quêtes secondaires, choix influençant le déroulement de l’histoire)\n*   Combat améliorés, capacités spéciales ou puzzles\n*   Multiplication et spécialisation des NPC (personnages avec personnalités distinctes)\n*   Mémoire persistante des interactions (le NPC se souvient des conversations)\n",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2303,
+      "model_load_ms": 0,
+      "ttft_ms": 16997,
+      "total_ms": 29898,
+      "prompt_tokens": 894,
+      "output_tokens": 107,
+      "tokens_per_second": 8.2159,
+      "error": null
+    },
+    {
+      "id": "q23",
+      "lang": "en",
+      "question": "What kinds of NPC roles are suggested as a future improvement?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        30
+      ],
+      "expected_answer": "NPCs with distinct personalities such as warrior, merchant, sage or guide.",
+      "refused_by_gate": false,
+      "best_similarity": 0.5414,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 30,
+          "chunk_id": 31,
+          "similarity": 0.5414
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 11,
+          "chunk_id": 11,
+          "similarity": 0.419
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 10,
+          "chunk_id": 10,
+          "similarity": 0.3969
+        }
+      ],
+      "source_hit": true,
+      "answer": "Based on the sources provided:\n\n*   Several NPC roles – guerrier, marchand, sage, guide – seem suggested as an improvement because they can be expanded upon.\n*   A memory persistent system for NPC interactions would be an improvement as well.",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2297,
+      "model_load_ms": 0,
+      "ttft_ms": 16952,
+      "total_ms": 23137,
+      "prompt_tokens": 901,
+      "output_tokens": 52,
+      "tokens_per_second": 8.2456,
+      "error": null
+    },
+    {
+      "id": "q24",
+      "lang": "fr",
+      "question": "Sur quelles plateformes le jeu pourrait-il être exporté à l'avenir ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [
+        31
+      ],
+      "expected_answer": "Windows, Linux, Android ou le Web.",
+      "refused_by_gate": false,
+      "best_similarity": 0.3996,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 31,
+          "chunk_id": 32,
+          "similarity": 0.3996
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 12,
+          "chunk_id": 12,
+          "similarity": 0.3275
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 18,
+          "chunk_id": 18,
+          "similarity": 0.2968
+        }
+      ],
+      "source_hit": true,
+      "answer": "Le jeu pourrait être exporté vers plusieurs plateformes en France et en Europe.\n",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2321,
+      "model_load_ms": 0,
+      "ttft_ms": 16918,
+      "total_ms": 18975,
+      "prompt_tokens": 909,
+      "output_tokens": 18,
+      "tokens_per_second": 8.2681,
+      "error": null
+    },
+    {
+      "id": "q25",
+      "lang": "fr",
+      "question": "Quelles sont les trois grandes familles d'approches de recommandation ?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        1
+      ],
+      "expected_answer": "Le filtrage basé sur le contenu (content-based), le filtrage collaboratif et les approches hybrides.",
+      "refused_by_gate": false,
+      "best_similarity": 0.5073,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "chunk_id": 38,
+          "similarity": 0.5073
+        },
+        {
+          "n": 2,
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "chunk_id": 37,
+          "similarity": 0.5069
+        },
+        {
+          "n": 3,
+          "doc": "etat_de_l_art.pdf",
+          "page": 2,
+          "chunk_id": 39,
+          "similarity": 0.5004
+        }
+      ],
+      "source_hit": true,
+      "answer": "Les trois grandes familles d'approches de recommandation sont :\n1) Content-based : L’approche content-based se base sur l’analyse des caractéristiques des ressources pédagogiques (mots-clés, thèmes, difficulté, format) et du profil de l’apprenant afin de recommander des contenus similaires à ceux déjà consultés ou appréciés.\n2) Collaborative : La méthode collaborative se base sur les interactions de plusieurs utilisateurs pour identifier des profils similaires et recommander des ressources ayant été utiles à des apprenants aux comportements proches.\n3) Hybride : Les systèmes hybrides combinent les approches content-based et collaboratives afin de bénéficier de leurs forces respectives tout en réduisant leurs faiblesses.",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2339,
+      "model_load_ms": 0,
+      "ttft_ms": 16987,
+      "total_ms": 35820,
+      "prompt_tokens": 849,
+      "output_tokens": 157,
+      "tokens_per_second": 8.2835,
+      "error": null
+    },
+    {
+      "id": "q26",
+      "lang": "en",
+      "question": "What problem does collaborative filtering face when a new user has little data?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        1,
+        2
+      ],
+      "expected_answer": "The cold start problem.",
+      "refused_by_gate": false,
+      "best_similarity": 0.542,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "distractor_report_120p",
+          "page": 20,
+          "chunk_id": 72,
+          "similarity": 0.542
+        },
+        {
+          "n": 2,
+          "doc": "distractor_report_120p",
+          "page": 21,
+          "chunk_id": 73,
+          "similarity": 0.433
+        },
+        {
+          "n": 3,
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "chunk_id": 37,
+          "similarity": 0.3912
+        }
+      ],
+      "source_hit": true,
+      "answer": "[redacted: the prompt held text from the private distractor document]",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "distractor_report_120p",
+          "page": 20
+        }
+      ],
+      "cites_right_page": false,
+      "retrieval_ms": 2342,
+      "model_load_ms": 0,
+      "ttft_ms": 16855,
+      "total_ms": 20106,
+      "prompt_tokens": 802,
+      "output_tokens": 28,
+      "tokens_per_second": 8.3045,
+      "error": null,
+      "answer_redacted": true
+    },
+    {
+      "id": "q27",
+      "lang": "fr",
+      "question": "Pourquoi la recommandation basée sur le contenu convient-elle bien à l'éducation ?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        1
+      ],
+      "expected_answer": "Elle propose des ressources directement liées aux centres d'intérêt et au niveau de l'apprenant.",
+      "refused_by_gate": false,
+      "best_similarity": 0.6047,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "etat_de_l_art.pdf",
+          "page": 2,
+          "chunk_id": 39,
+          "similarity": 0.6047
+        },
+        {
+          "n": 2,
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "chunk_id": 38,
+          "similarity": 0.5866
+        },
+        {
+          "n": 3,
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "chunk_id": 36,
+          "similarity": 0.5601
+        }
+      ],
+      "source_hit": true,
+      "answer": "La recommandation basée sur le contenu convient bien à l’éducation en raison de plusieurs facteurs : elle offre une personnalisation fine et fonctionne efficacement même lorsque peu d’utilisateurs sont présents dans le système. Elle permet une personnalisation fine et fonctionne efficacement même lorsque peu d’utilisateurs sont présents dans le système. [1]\n",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "etat_de_l_art.pdf",
+          "page": 2
+        }
+      ],
+      "cites_right_page": false,
+      "retrieval_ms": 2330,
+      "model_load_ms": 0,
+      "ttft_ms": 16928,
+      "total_ms": 25212,
+      "prompt_tokens": 859,
+      "output_tokens": 70,
+      "tokens_per_second": 8.3299,
+      "error": null
+    },
+    {
+      "id": "q28",
+      "lang": "en",
+      "question": "Which teaching-related factors do educational recommenders consider that e-commerce recommenders do not?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        1
+      ],
+      "expected_answer": "Cognitive progression, assessment performance and learning pace.",
+      "refused_by_gate": false,
+      "best_similarity": 0.571,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "chunk_id": 38,
+          "similarity": 0.571
+        },
+        {
+          "n": 2,
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "chunk_id": 37,
+          "similarity": 0.5072
+        },
+        {
+          "n": 3,
+          "doc": "etat_de_l_art.pdf",
+          "page": 2,
+          "chunk_id": 39,
+          "similarity": 0.4809
+        }
+      ],
+      "source_hit": true,
+      "answer": "Educational recommenders consider factors such as cognitive progression, assessment performance and learning rate (2,5).",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2309,
+      "model_load_ms": 0,
+      "ttft_ms": 16849,
+      "total_ms": 19312,
+      "prompt_tokens": 844,
+      "output_tokens": 21,
+      "tokens_per_second": 8.1226,
+      "error": null
+    },
+    {
+      "id": "q29",
+      "lang": "fr",
+      "question": "D'après le tableau comparatif, quelles sont les limites de l'approche content-based ?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        2
+      ],
+      "expected_answer": "Un manque de diversité et un risque de surspécialisation des recommandations.",
+      "refused_by_gate": false,
+      "best_similarity": 0.4318,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "etat_de_l_art.pdf",
+          "page": 2,
+          "chunk_id": 39,
+          "similarity": 0.4318
+        },
+        {
+          "n": 2,
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "chunk_id": 38,
+          "similarity": 0.3941
+        },
+        {
+          "n": 3,
+          "doc": "distractor_report_120p",
+          "page": 20,
+          "chunk_id": 72,
+          "similarity": 0.362
+        }
+      ],
+      "source_hit": true,
+      "answer": "[redacted: the prompt held text from the private distractor document]",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2326,
+      "model_load_ms": 0,
+      "ttft_ms": 16814,
+      "total_ms": 20279,
+      "prompt_tokens": 861,
+      "output_tokens": 30,
+      "tokens_per_second": 8.3689,
+      "error": null,
+      "answer_redacted": true
+    },
+    {
+      "id": "q30",
+      "lang": "en",
+      "question": "What is the main downside of hybrid recommendation systems?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        2
+      ],
+      "expected_answer": "They are complex to implement and to tune.",
+      "refused_by_gate": false,
+      "best_similarity": 0.489,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "distractor_report_120p",
+          "page": 22,
+          "chunk_id": 74,
+          "similarity": 0.489
+        },
+        {
+          "n": 2,
+          "doc": "distractor_report_120p",
+          "page": 21,
+          "chunk_id": 73,
+          "similarity": 0.488
+        },
+        {
+          "n": 3,
+          "doc": "etat_de_l_art.pdf",
+          "page": 2,
+          "chunk_id": 40,
+          "similarity": 0.4829
+        }
+      ],
+      "source_hit": true,
+      "answer": "[redacted: the prompt held text from the private distractor document]",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "distractor_report_120p",
+          "page": 22
+        },
+        {
+          "n": 2,
+          "doc": "distractor_report_120p",
+          "page": 21
+        }
+      ],
+      "cites_right_page": false,
+      "retrieval_ms": 2330,
+      "model_load_ms": 0,
+      "ttft_ms": 19616,
+      "total_ms": 25979,
+      "prompt_tokens": 794,
+      "output_tokens": 53,
+      "tokens_per_second": 8.1723,
+      "error": null,
+      "answer_redacted": true
+    },
+    {
+      "id": "q31",
+      "lang": "fr",
+      "question": "Avec quelles technologies l'application mobile et le serveur du système de recommandation sont-ils construits ?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        2
+      ],
+      "expected_answer": "Flutter pour l'application mobile et Django REST Framework pour le backend.",
+      "refused_by_gate": false,
+      "best_similarity": 0.5355,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "chunk_id": 43,
+          "similarity": 0.5355
+        },
+        {
+          "n": 2,
+          "doc": "distractor_report_120p",
+          "page": 5,
+          "chunk_id": 55,
+          "similarity": 0.5019
+        },
+        {
+          "n": 3,
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "chunk_id": 42,
+          "similarity": 0.4777
+        }
+      ],
+      "source_hit": false,
+      "answer": "[redacted: the prompt held text from the private distractor document]",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "etat_de_l_art.pdf",
+          "page": 3
+        },
+        {
+          "n": 2,
+          "doc": "distractor_report_120p",
+          "page": 5
+        },
+        {
+          "n": 3,
+          "doc": "etat_de_l_art.pdf",
+          "page": 3
+        }
+      ],
+      "cites_right_page": false,
+      "retrieval_ms": 2563,
+      "model_load_ms": 0,
+      "ttft_ms": 17351,
+      "total_ms": 21292,
+      "prompt_tokens": 885,
+      "output_tokens": 34,
+      "tokens_per_second": 8.3741,
+      "error": null,
+      "answer_redacted": true
+    },
+    {
+      "id": "q32",
+      "lang": "en",
+      "question": "Which learner data does the proposed app analyse to recommend content?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        2,
+        3
+      ],
+      "expected_answer": "Quiz scores, time spent on lessons and completion rate.",
+      "refused_by_gate": false,
+      "best_similarity": 0.5887,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "distractor_report_120p",
+          "page": 23,
+          "chunk_id": 75,
+          "similarity": 0.5887
+        },
+        {
+          "n": 2,
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "chunk_id": 41,
+          "similarity": 0.587
+        },
+        {
+          "n": 3,
+          "doc": "distractor_report_120p",
+          "page": 4,
+          "chunk_id": 54,
+          "similarity": 0.5845
+        }
+      ],
+      "source_hit": true,
+      "answer": "[redacted: the prompt held text from the private distractor document]",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "distractor_report_120p",
+          "page": 23
+        },
+        {
+          "n": 2,
+          "doc": "etat_de_l_art.pdf",
+          "page": 3
+        }
+      ],
+      "cites_right_page": true,
+      "retrieval_ms": 2421,
+      "model_load_ms": 0,
+      "ttft_ms": 16935,
+      "total_ms": 22323,
+      "prompt_tokens": 808,
+      "output_tokens": 46,
+      "tokens_per_second": 8.3518,
+      "error": null,
+      "answer_redacted": true
+    },
+    {
+      "id": "q33",
+      "lang": "fr",
+      "question": "Qu'estime le modèle de prédiction comportementale ?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        3
+      ],
+      "expected_answer": "La probabilité d'engagement de l'apprenant pour chaque ressource.",
+      "refused_by_gate": false,
+      "best_similarity": 0.4407,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "chunk_id": 41,
+          "similarity": 0.4407
+        },
+        {
+          "n": 2,
+          "doc": "distractor_report_120p",
+          "page": 64,
+          "chunk_id": 121,
+          "similarity": 0.3196
+        },
+        {
+          "n": 3,
+          "doc": "etat_de_l_art.pdf",
+          "page": 2,
+          "chunk_id": 40,
+          "similarity": 0.3177
+        }
+      ],
+      "source_hit": true,
+      "answer": "[redacted: the prompt held text from the private distractor document]",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2402,
+      "model_load_ms": 0,
+      "ttft_ms": 17166,
+      "total_ms": 25848,
+      "prompt_tokens": 858,
+      "output_tokens": 73,
+      "tokens_per_second": 8.2939,
+      "error": null,
+      "answer_redacted": true
+    },
+    {
+      "id": "q34",
+      "lang": "en",
+      "question": "How are the scores of the different AI models merged into one ranking?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        3
+      ],
+      "expected_answer": "A hybrid fusion layer orchestrated by the backend weights each model's scores to produce the final ranking.",
+      "refused_by_gate": false,
+      "best_similarity": 0.4427,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "chunk_id": 43,
+          "similarity": 0.4427
+        },
+        {
+          "n": 2,
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "chunk_id": 42,
+          "similarity": 0.4356
+        },
+        {
+          "n": 3,
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "chunk_id": 41,
+          "similarity": 0.3959
+        }
+      ],
+      "source_hit": true,
+      "answer": "The scores of different AI models are merged into one ranking by combining them through an orchestration layer. This layer assigns weights based on each model’s output. This weighting enables an improved overall ranking by leveraging user preferences and behavior. [1]\n",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "etat_de_l_art.pdf",
+          "page": 3
+        }
+      ],
+      "cites_right_page": true,
+      "retrieval_ms": 2429,
+      "model_load_ms": 0,
+      "ttft_ms": 17449,
+      "total_ms": 23451,
+      "prompt_tokens": 867,
+      "output_tokens": 50,
+      "tokens_per_second": 8.164,
+      "error": null
+    },
+    {
+      "id": "q35",
+      "lang": "fr",
+      "question": "À quoi sert le troisième modèle d'intelligence artificielle du système ?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        3
+      ],
+      "expected_answer": "À adapter le niveau pédagogique : il évalue la maîtrise de chaque thème pour proposer des contenus ni trop simples ni trop complexes.",
+      "refused_by_gate": false,
+      "best_similarity": 0.3578,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "chunk_id": 43,
+          "similarity": 0.3578
+        },
+        {
+          "n": 2,
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "chunk_id": 42,
+          "similarity": 0.343
+        },
+        {
+          "n": 3,
+          "doc": "01_ai_fundamentals.pdf",
+          "page": 1,
+          "chunk_id": 45,
+          "similarity": 0.3258
+        }
+      ],
+      "source_hit": true,
+      "answer": "Le troisième modèle d'intelligence artificielle du système est utilisé pour générer un classement final des ressources recommandées en exploitant simultanément les préférences, le comportement et le niveau de l'apprenant.\n",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2422,
+      "model_load_ms": 0,
+      "ttft_ms": 17581,
+      "total_ms": 22701,
+      "prompt_tokens": 849,
+      "output_tokens": 43,
+      "tokens_per_second": 8.2032,
+      "error": null
+    },
+    {
+      "id": "q36",
+      "lang": "en",
+      "question": "Who is the author of the cited paper on hybrid recommender systems?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [
+        3
+      ],
+      "expected_answer": "Robin Burke (2002).",
+      "refused_by_gate": false,
+      "best_similarity": 0.5347,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "distractor_report_120p",
+          "page": 22,
+          "chunk_id": 74,
+          "similarity": 0.5347
+        },
+        {
+          "n": 2,
+          "doc": "distractor_report_120p",
+          "page": 120,
+          "chunk_id": 182,
+          "similarity": 0.5101
+        }
+      ],
+      "source_hit": false,
+      "answer": "[redacted: the prompt held text from the private distractor document]",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "distractor_report_120p",
+          "page": 22
+        },
+        {
+          "n": 2,
+          "doc": "distractor_report_120p",
+          "page": 120
+        }
+      ],
+      "cites_right_page": false,
+      "retrieval_ms": 2421,
+      "model_load_ms": 0,
+      "ttft_ms": 17750,
+      "total_ms": 29391,
+      "prompt_tokens": 875,
+      "output_tokens": 99,
+      "tokens_per_second": 8.4189,
+      "error": null,
+      "answer_redacted": true
+    },
+    {
+      "id": "q37",
+      "lang": "en",
+      "question": "What are the main building blocks of a typical RAG application?",
+      "answerable": true,
+      "doc": "03_rag_architecture",
+      "pages": [
+        1
+      ],
+      "expected_answer": "A document ingestion pipeline, chunking and embedding, a retrieval layer, a language model and an application interface.",
+      "refused_by_gate": false,
+      "best_similarity": 0.6286,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "chunk_id": 48,
+          "similarity": 0.6286
+        },
+        {
+          "n": 2,
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "chunk_id": 46,
+          "similarity": 0.5214
+        },
+        {
+          "n": 3,
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "chunk_id": 47,
+          "similarity": 0.5201
+        },
+        {
+          "n": 4,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "chunk_id": 49,
+          "similarity": 0.5
+        }
+      ],
+      "source_hit": true,
+      "answer": "Here are the main building blocks of a typical RAG application based on your documents:\n\n1.  Documents are collected from sources such as PDFs, web pages, databases, or internal files.\n2.  Documents are split into smaller chunks\n3.  Chunks are converted into vector embeddings\n4.  Embeddings are stored\n5.  A user asks a question\n6.  The system retrieves relevant chunks\n7.  The retrieved context gets sent\n8.  The LLM generates an answer using that context\n",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2471,
+      "model_load_ms": 0,
+      "ttft_ms": 19512,
+      "total_ms": 32213,
+      "prompt_tokens": 869,
+      "output_tokens": 109,
+      "tokens_per_second": 8.5033,
+      "error": null
+    },
+    {
+      "id": "q38",
+      "lang": "fr",
+      "question": "Selon la source, quels traitements l'ingestion des documents peut-elle demander ?",
+      "answerable": true,
+      "doc": "03_rag_architecture",
+      "pages": [
+        1
+      ],
+      "expected_answer": "L'analyse de PDF, l'OCR, l'extraction HTML ou des requêtes en base de données.",
+      "refused_by_gate": false,
+      "best_similarity": 0.323,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 34,
+          "chunk_id": 35,
+          "similarity": 0.323
+        },
+        {
+          "n": 2,
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "chunk_id": 47,
+          "similarity": 0.2965
+        },
+        {
+          "n": 3,
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "chunk_id": 46,
+          "similarity": 0.2846
+        },
+        {
+          "n": 4,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "chunk_id": 48,
+          "similarity": 0.28
+        }
+      ],
+      "source_hit": true,
+      "answer": "L'ingestion des documents peut demander :\n\n*   [1] PDF parsing\n*   [2] OCR (Optical Character Recognition)\n*   [4] HTML extraction\n*   [5] Database queries\n",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 34
+        },
+        {
+          "n": 2,
+          "doc": "02_rag_basics.pdf",
+          "page": 1
+        },
+        {
+          "n": 4,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1
+        }
+      ],
+      "cites_right_page": true,
+      "retrieval_ms": 2659,
+      "model_load_ms": 0,
+      "ttft_ms": 17737,
+      "total_ms": 23306,
+      "prompt_tokens": 837,
+      "output_tokens": 47,
+      "tokens_per_second": 8.2599,
+      "error": null
+    },
+    {
+      "id": "q39",
+      "lang": "en",
+      "question": "Besides combining semantic and keyword search, what can narrow down retrieval results?",
+      "answerable": true,
+      "doc": "03_rag_architecture",
+      "pages": [
+        1
+      ],
+      "expected_answer": "Metadata filters.",
+      "refused_by_gate": false,
+      "best_similarity": 0.4848,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "03_rag_architecture.pdf",
+          "page": 2,
+          "chunk_id": 50,
+          "similarity": 0.4848
+        },
+        {
+          "n": 2,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "chunk_id": 49,
+          "similarity": 0.4414
+        },
+        {
+          "n": 3,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "chunk_id": 48,
+          "similarity": 0.4165
+        },
+        {
+          "n": 4,
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "chunk_id": 46,
+          "similarity": 0.3924
+        }
+      ],
+      "source_hit": true,
+      "answer": "Besides combining semantic and keyword search, what can narrow down retrieval results?\nNot found in your documents.",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2432,
+      "model_load_ms": 0,
+      "ttft_ms": 17635,
+      "total_ms": 20174,
+      "prompt_tokens": 824,
+      "output_tokens": 22,
+      "tokens_per_second": 8.2711,
+      "error": null
+    },
+    {
+      "id": "q40",
+      "lang": "fr",
+      "question": "Sur quels critères peut-on évaluer un système RAG ?",
+      "answerable": true,
+      "doc": "03_rag_architecture",
+      "pages": [
+        1
+      ],
+      "expected_answer": "La qualité de la récupération, l'ancrage dans le contexte (groundedness), la qualité de la réponse, la latence et le coût.",
+      "refused_by_gate": false,
+      "best_similarity": 0.5022,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "chunk_id": 49,
+          "similarity": 0.5022
+        },
+        {
+          "n": 2,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "chunk_id": 48,
+          "similarity": 0.4513
+        },
+        {
+          "n": 3,
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "chunk_id": 47,
+          "similarity": 0.4471
+        },
+        {
+          "n": 4,
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "chunk_id": 46,
+          "similarity": 0.4172
+        }
+      ],
+      "source_hit": true,
+      "answer": "Voici une réponse en français basée sur les sources fournies :\n\nOn peut évaluer un système RAG en évaluant plusieurs critères :\n\n*   **Qualité de la qualité :** Vérifier si le système trouve des passages utiles (retrieval quality)\n*   **Contexte :** Assurer que l'information fournie est soutenue par le contexte (groundedness)\n*   **Précision :** Vérifier si l’answer est précise et utile (answer quality)\n*   **Latence et coût :** Évaluer l’efficacité en termes de temps et de ressources (latency and cost)\n*   **Difficulté :** Identifier les défis comme le mauvais chunking (poor chunking) ou l'apparition d'informations contradictoires (inconsistent information)\n\n",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2435,
+      "model_load_ms": 0,
+      "ttft_ms": 17497,
+      "total_ms": 37799,
+      "prompt_tokens": 859,
+      "output_tokens": 169,
+      "tokens_per_second": 8.275,
+      "error": null
+    },
+    {
+      "id": "q41",
+      "lang": "en",
+      "question": "Why is retrieving a lot of text a risk for a RAG system?",
+      "answerable": true,
+      "doc": "03_rag_architecture",
+      "pages": [
+        1
+      ],
+      "expected_answer": "Too much retrieved text can exceed the useful context window.",
+      "refused_by_gate": false,
+      "best_similarity": 0.5402,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "chunk_id": 48,
+          "similarity": 0.5402
+        },
+        {
+          "n": 2,
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "chunk_id": 46,
+          "similarity": 0.5356
+        },
+        {
+          "n": 3,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "chunk_id": 49,
+          "similarity": 0.5251
+        },
+        {
+          "n": 4,
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "chunk_id": 47,
+          "similarity": 0.4893
+        }
+      ],
+      "source_hit": true,
+      "answer": "Retrieving lots of text can be risky for RAG systems because it can lead to poor chunking, irrelevant retrieval, too much retrieved text can exceed the useful context window, documents may contain outdated or contradictory information, or A RAG system can still produce incorrect answers if retrieval or generation fails.",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2418,
+      "model_load_ms": 0,
+      "ttft_ms": 17233,
+      "total_ms": 26364,
+      "prompt_tokens": 861,
+      "output_tokens": 60,
+      "tokens_per_second": 6.4616,
+      "error": null
+    },
+    {
+      "id": "q42",
+      "lang": "en",
+      "question": "List some practical techniques that improve a RAG system.",
+      "answerable": true,
+      "doc": "03_rag_architecture",
+      "pages": [
+        2
+      ],
+      "expected_answer": "Better chunking, metadata filtering, hybrid search, reranking, query rewriting, source citations, caching and automated evaluation datasets.",
+      "refused_by_gate": false,
+      "best_similarity": 0.5189,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "chunk_id": 46,
+          "similarity": 0.5189
+        },
+        {
+          "n": 2,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "chunk_id": 48,
+          "similarity": 0.5132
+        },
+        {
+          "n": 3,
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "chunk_id": 47,
+          "similarity": 0.4969
+        },
+        {
+          "n": 4,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "chunk_id": 49,
+          "similarity": 0.4791
+        }
+      ],
+      "source_hit": false,
+      "answer": "Here are some practical techniques that can improve an RAG system:\n[1] [2] [4]\n",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "02_rag_basics.pdf",
+          "page": 1
+        },
+        {
+          "n": 2,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1
+        },
+        {
+          "n": 4,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1
+        }
+      ],
+      "cites_right_page": false,
+      "retrieval_ms": 2637,
+      "model_load_ms": 0,
+      "ttft_ms": 17710,
+      "total_ms": 20614,
+      "prompt_tokens": 869,
+      "output_tokens": 25,
+      "tokens_per_second": 8.2643,
+      "error": null
+    },
+    {
+      "id": "q43",
+      "lang": "fr",
+      "question": "Que vérifie le critère de groundedness lors de l'évaluation ?",
+      "answerable": true,
+      "doc": "03_rag_architecture",
+      "pages": [
+        1
+      ],
+      "expected_answer": "Que la réponse est bien appuyée par le contexte récupéré.",
+      "refused_by_gate": true,
+      "best_similarity": 0.2723,
+      "sources": [],
+      "source_hit": null,
+      "answer": "Introuvable dans vos documents.",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2427,
+      "model_load_ms": null,
+      "ttft_ms": null,
+      "total_ms": null,
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "tokens_per_second": null,
+      "error": null
+    },
+    {
+      "id": "q44",
+      "lang": "en",
+      "question": "What is the difference between RAG and fine-tuning?",
+      "answerable": true,
+      "doc": "02_rag_basics",
+      "pages": [
+        1
+      ],
+      "expected_answer": "RAG changes the information available to the model at query time; fine-tuning changes the model's learned parameters.",
+      "refused_by_gate": false,
+      "best_similarity": 0.5941,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "chunk_id": 47,
+          "similarity": 0.5941
+        },
+        {
+          "n": 2,
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "chunk_id": 46,
+          "similarity": 0.4807
+        },
+        {
+          "n": 3,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "chunk_id": 49,
+          "similarity": 0.4437
+        },
+        {
+          "n": 4,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "chunk_id": 48,
+          "similarity": 0.4316
+        }
+      ],
+      "source_hit": true,
+      "answer": "The difference between RAG and fine-tuning lies primarily in how they leverage information. RAG uses retrieval-augmented generation – retrieving relevant information *before* generating an answer – while fine-tuning adjusts an existing model’s parameters by training on data. [1]\n",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "02_rag_basics.pdf",
+          "page": 1
+        }
+      ],
+      "cites_right_page": true,
+      "retrieval_ms": 2418,
+      "model_load_ms": 0,
+      "ttft_ms": 17407,
+      "total_ms": 24036,
+      "prompt_tokens": 873,
+      "output_tokens": 56,
+      "tokens_per_second": 8.2973,
+      "error": null
+    },
+    {
+      "id": "q45",
+      "lang": "fr",
+      "question": "Combien de documents de politique interne l'entreprise de l'exemple possède-t-elle ?",
+      "answerable": true,
+      "doc": "02_rag_basics",
+      "pages": [
+        1
+      ],
+      "expected_answer": "500.",
+      "refused_by_gate": true,
+      "best_similarity": 0.2652,
+      "sources": [],
+      "source_hit": null,
+      "answer": "Introuvable dans vos documents.",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2416,
+      "model_load_ms": null,
+      "ttft_ms": null,
+      "total_ms": null,
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "tokens_per_second": null,
+      "error": null
+    },
+    {
+      "id": "q46",
+      "lang": "en",
+      "question": "Why would a team use RAG instead of retraining its model?",
+      "answerable": true,
+      "doc": "02_rag_basics",
+      "pages": [
+        1
+      ],
+      "expected_answer": "It can use private documents without retraining, ground answers in a knowledge base, update information easily and return source references.",
+      "refused_by_gate": false,
+      "best_similarity": 0.5217,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "chunk_id": 47,
+          "similarity": 0.5217
+        },
+        {
+          "n": 2,
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "chunk_id": 46,
+          "similarity": 0.4978
+        },
+        {
+          "n": 3,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "chunk_id": 49,
+          "similarity": 0.446
+        },
+        {
+          "n": 4,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "chunk_id": 48,
+          "similarity": 0.4382
+        }
+      ],
+      "source_hit": true,
+      "answer": "A team would use RAG instead of retraining its model primarily because RAG can be used when private documents change frequently or come from private documents. This enables easier updates and provides source references.",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2414,
+      "model_load_ms": 0,
+      "ttft_ms": 17184,
+      "total_ms": 21735,
+      "prompt_tokens": 874,
+      "output_tokens": 39,
+      "tokens_per_second": 8.3506,
+      "error": null
+    },
+    {
+      "id": "q47",
+      "lang": "fr",
+      "question": "Dans le pipeline RAG de base, où les embeddings sont-ils enregistrés ?",
+      "answerable": true,
+      "doc": "02_rag_basics",
+      "pages": [
+        1
+      ],
+      "expected_answer": "Dans une base de données vectorielle ou un index de recherche.",
+      "refused_by_gate": false,
+      "best_similarity": 0.5748,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "chunk_id": 48,
+          "similarity": 0.5748
+        },
+        {
+          "n": 2,
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "chunk_id": 46,
+          "similarity": 0.546
+        },
+        {
+          "n": 3,
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "chunk_id": 47,
+          "similarity": 0.5331
+        },
+        {
+          "n": 4,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "chunk_id": 49,
+          "similarity": 0.4539
+        }
+      ],
+      "source_hit": true,
+      "answer": "Les embeddings sont enregistrés dans un vector database ou un search index.\n",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2410,
+      "model_load_ms": 0,
+      "ttft_ms": 17615,
+      "total_ms": 19446,
+      "prompt_tokens": 873,
+      "output_tokens": 16,
+      "tokens_per_second": 8.1918,
+      "error": null
+    },
+    {
+      "id": "q48",
+      "lang": "en",
+      "question": "What are the common kinds of machine learning?",
+      "answerable": true,
+      "doc": "01_ai_fundamentals",
+      "pages": [
+        1
+      ],
+      "expected_answer": "Supervised, unsupervised and reinforcement learning.",
+      "refused_by_gate": false,
+      "best_similarity": 0.3906,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "01_ai_fundamentals.pdf",
+          "page": 1,
+          "chunk_id": 45,
+          "similarity": 0.3906
+        },
+        {
+          "n": 2,
+          "doc": "distractor_report_120p",
+          "page": 21,
+          "chunk_id": 73,
+          "similarity": 0.3478
+        },
+        {
+          "n": 3,
+          "doc": "distractor_report_120p",
+          "page": 64,
+          "chunk_id": 121,
+          "similarity": 0.3372
+        }
+      ],
+      "source_hit": true,
+      "answer": "[redacted: the prompt held text from the private distractor document]",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "01_ai_fundamentals.pdf",
+          "page": 1
+        },
+        {
+          "n": 2,
+          "doc": "distractor_report_120p",
+          "page": 21
+        },
+        {
+          "n": 3,
+          "doc": "distractor_report_120p",
+          "page": 64
+        }
+      ],
+      "cites_right_page": true,
+      "retrieval_ms": 2406,
+      "model_load_ms": 0,
+      "ttft_ms": 17472,
+      "total_ms": 20508,
+      "prompt_tokens": 781,
+      "output_tokens": 26,
+      "tokens_per_second": 8.2353,
+      "error": null,
+      "answer_redacted": true
+    },
+    {
+      "id": "q49",
+      "lang": "fr",
+      "question": "Pourquoi relie-t-on souvent un modèle d'IA à des sources de connaissances externes ?",
+      "answerable": true,
+      "doc": "01_ai_fundamentals",
+      "pages": [
+        1
+      ],
+      "expected_answer": "Parce qu'il ne connaît pas automatiquement les informations privées ou récemment mises à jour d'un utilisateur.",
+      "refused_by_gate": false,
+      "best_similarity": 0.4378,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "chunk_id": 43,
+          "similarity": 0.4378
+        },
+        {
+          "n": 2,
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "chunk_id": 42,
+          "similarity": 0.382
+        },
+        {
+          "n": 3,
+          "doc": "01_ai_fundamentals.pdf",
+          "page": 1,
+          "chunk_id": 45,
+          "similarity": 0.3234
+        }
+      ],
+      "source_hit": true,
+      "answer": "On relie souvent un modèle d'IA à des sources externes pour plusieurs raisons :\n\n*   **Amélioration de la pertinence :** Les modèles d'IA peuvent être très performants mais peuvent parfois ne pas être parfaitement adaptés à un profil utilisateur spécifique. En combinant l'IA avec des sources externes (comme des bases de données ou des API), on peut ajuster le modèle pour qu'il donne des recommandations plus pertinentes et personnalisées.\n*   **Diversification :** L’IA peut être utilisée pour analyser un ensemble de données et identifier des tendances ou des modèles qui ne peuvent être détectés que par l’homme. En intégrant ces données externes à l’IA, on peut l’adapter à un ensemble plus large de données et améliorer sa précision.\n*   **Adaptation :** L’IA peut être utilisée pour apprendre un modèle qui est en constante évolution et qui peut s’adapter à un profil utilisateur en temps réel. En intégrant des données externes à l’IA, on peut l’adapter à un profil utilisateur en temps réel et améliorer sa précision.\n",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2597,
+      "model_load_ms": 0,
+      "ttft_ms": 17700,
+      "total_ms": 45170,
+      "prompt_tokens": 850,
+      "output_tokens": 227,
+      "tokens_per_second": 8.227,
+      "error": null
+    },
+    {
+      "id": "q50",
+      "lang": "en",
+      "question": "What does deep learning rely on to capture complex patterns?",
+      "answerable": true,
+      "doc": "01_ai_fundamentals",
+      "pages": [
+        1
+      ],
+      "expected_answer": "Neural networks with many layers.",
+      "refused_by_gate": false,
+      "best_similarity": 0.3825,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "01_ai_fundamentals.pdf",
+          "page": 1,
+          "chunk_id": 45,
+          "similarity": 0.3825
+        },
+        {
+          "n": 2,
+          "doc": "distractor_report_120p",
+          "page": 64,
+          "chunk_id": 121,
+          "similarity": 0.2929
+        },
+        {
+          "n": 3,
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "chunk_id": 41,
+          "similarity": 0.2843
+        }
+      ],
+      "source_hit": true,
+      "answer": "[redacted: the prompt held text from the private distractor document]",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2444,
+      "model_load_ms": 0,
+      "ttft_ms": 17605,
+      "total_ms": 19063,
+      "prompt_tokens": 820,
+      "output_tokens": 13,
+      "tokens_per_second": 8.2341,
+      "error": null,
+      "answer_redacted": true
+    },
+    {
+      "id": "u01",
+      "lang": "fr",
+      "question": "Combien coûte une licence du moteur Unity ?",
+      "answerable": false,
+      "refused_by_gate": true,
+      "best_similarity": 0.2711,
+      "sources": [],
+      "source_hit": null,
+      "answer": "Introuvable dans vos documents.",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2419,
+      "model_load_ms": null,
+      "ttft_ms": null,
+      "total_ms": null,
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "tokens_per_second": null,
+      "error": null
+    },
+    {
+      "id": "u02",
+      "lang": "en",
+      "question": "How many levels does NeoQuest 2D contain?",
+      "answerable": false,
+      "refused_by_gate": false,
+      "best_similarity": 0.5014,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 4,
+          "chunk_id": 4,
+          "similarity": 0.5014
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 3,
+          "chunk_id": 3,
+          "similarity": 0.499
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 19,
+          "chunk_id": 19,
+          "similarity": 0.4989
+        },
+        {
+          "n": 4,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 16,
+          "chunk_id": 16,
+          "similarity": 0.4943
+        }
+      ],
+      "source_hit": null,
+      "answer": "6",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2382,
+      "model_load_ms": 0,
+      "ttft_ms": 17711,
+      "total_ms": 17822,
+      "prompt_tokens": 890,
+      "output_tokens": 2,
+      "tokens_per_second": 9.0306,
+      "error": null
+    },
+    {
+      "id": "u03",
+      "lang": "en",
+      "question": "What chunk size, in tokens, does the RAG guide recommend?",
+      "answerable": false,
+      "refused_by_gate": false,
+      "best_similarity": 0.4991,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "chunk_id": 48,
+          "similarity": 0.4991
+        },
+        {
+          "n": 2,
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "chunk_id": 47,
+          "similarity": 0.4832
+        },
+        {
+          "n": 3,
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "chunk_id": 46,
+          "similarity": 0.4745
+        },
+        {
+          "n": 4,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "chunk_id": 49,
+          "similarity": 0.455
+        }
+      ],
+      "source_hit": null,
+      "answer": "The RAG system recommends chunk sizes based on an embedding model's size. [1]\n",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1
+        }
+      ],
+      "cites_right_page": null,
+      "retrieval_ms": 2467,
+      "model_load_ms": 0,
+      "ttft_ms": 17399,
+      "total_ms": 19795,
+      "prompt_tokens": 871,
+      "output_tokens": 21,
+      "tokens_per_second": 8.3481,
+      "error": null
+    },
+    {
+      "id": "u04",
+      "lang": "fr",
+      "question": "Quelle base vectorielle, comme Pinecone ou FAISS, est conseillée pour un système RAG ?",
+      "answerable": false,
+      "refused_by_gate": false,
+      "best_similarity": 0.4518,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "chunk_id": 47,
+          "similarity": 0.4518
+        },
+        {
+          "n": 2,
+          "doc": "02_rag_basics.pdf",
+          "page": 1,
+          "chunk_id": 46,
+          "similarity": 0.4463
+        },
+        {
+          "n": 3,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "chunk_id": 48,
+          "similarity": 0.4311
+        },
+        {
+          "n": 4,
+          "doc": "03_rag_architecture.pdf",
+          "page": 1,
+          "chunk_id": 49,
+          "similarity": 0.4027
+        }
+      ],
+      "source_hit": null,
+      "answer": "La base vectorielle conseillée pour un système RAG est probablement Pinecone ou FAISS. [1] [2]\n",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "02_rag_basics.pdf",
+          "page": 1
+        },
+        {
+          "n": 2,
+          "doc": "02_rag_basics.pdf",
+          "page": 1
+        }
+      ],
+      "cites_right_page": null,
+      "retrieval_ms": 2424,
+      "model_load_ms": 0,
+      "ttft_ms": 17576,
+      "total_ms": 20706,
+      "prompt_tokens": 875,
+      "output_tokens": 27,
+      "tokens_per_second": 8.3065,
+      "error": null
+    },
+    {
+      "id": "u05",
+      "lang": "en",
+      "question": "What accuracy did the educational recommendation system reach in its evaluation?",
+      "answerable": false,
+      "refused_by_gate": false,
+      "best_similarity": 0.5369,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "chunk_id": 37,
+          "similarity": 0.5369
+        },
+        {
+          "n": 2,
+          "doc": "etat_de_l_art.pdf",
+          "page": 2,
+          "chunk_id": 39,
+          "similarity": 0.5367
+        },
+        {
+          "n": 3,
+          "doc": "etat_de_l_art.pdf",
+          "page": 1,
+          "chunk_id": 38,
+          "similarity": 0.5308
+        }
+      ],
+      "source_hit": null,
+      "answer": "While I don’t have access to specific evaluation metrics or data points within [3] etat_de_l_art.pdf, I can provide an overview based on the sources provided: [1] [2] [3].  [2] states \"This method was particularly well-suited for educational contexts because it allowed for presenting resources directly related with learners' interests and their level.\" This implies an evaluation based on how well-suited those resources were. [3] suggests an evaluation based on its robustness and adaptability as well as its ability to handle diverse learners.",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 3,
+          "doc": "etat_de_l_art.pdf",
+          "page": 1
+        },
+        {
+          "n": 1,
+          "doc": "etat_de_l_art.pdf",
+          "page": 1
+        },
+        {
+          "n": 2,
+          "doc": "etat_de_l_art.pdf",
+          "page": 2
+        }
+      ],
+      "cites_right_page": null,
+      "retrieval_ms": 2390,
+      "model_load_ms": 0,
+      "ttft_ms": 17643,
+      "total_ms": 31581,
+      "prompt_tokens": 844,
+      "output_tokens": 117,
+      "tokens_per_second": 8.3228,
+      "error": null
+    },
+    {
+      "id": "u06",
+      "lang": "fr",
+      "question": "Quel modèle de reranking, par exemple un cross-encoder, est recommandé ?",
+      "answerable": false,
+      "refused_by_gate": false,
+      "best_similarity": 0.408,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "distractor_report_120p",
+          "page": 64,
+          "chunk_id": 121,
+          "similarity": 0.408
+        },
+        {
+          "n": 2,
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "chunk_id": 43,
+          "similarity": 0.3875
+        },
+        {
+          "n": 3,
+          "doc": "etat_de_l_art.pdf",
+          "page": 2,
+          "chunk_id": 39,
+          "similarity": 0.386
+        }
+      ],
+      "source_hit": null,
+      "answer": "[redacted: the prompt held text from the private distractor document]",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "distractor_report_120p",
+          "page": 64
+        }
+      ],
+      "cites_right_page": null,
+      "retrieval_ms": 2442,
+      "model_load_ms": 0,
+      "ttft_ms": 17395,
+      "total_ms": 22211,
+      "prompt_tokens": 859,
+      "output_tokens": 41,
+      "tokens_per_second": 8.3046,
+      "error": null,
+      "answer_redacted": true
+    },
+    {
+      "id": "u07",
+      "lang": "en",
+      "question": "Who introduced the transformer architecture?",
+      "answerable": false,
+      "refused_by_gate": true,
+      "best_similarity": 0.2516,
+      "sources": [],
+      "source_hit": null,
+      "answer": "Not found in your documents.",
+      "model_said_not_found": false,
+      "citations": [],
+      "cites_right_page": null,
+      "retrieval_ms": 2498,
+      "model_load_ms": null,
+      "ttft_ms": null,
+      "total_ms": null,
+      "prompt_tokens": null,
+      "output_tokens": null,
+      "tokens_per_second": null,
+      "error": null
+    },
+    {
+      "id": "u08",
+      "lang": "fr",
+      "question": "Combien de joueurs ont participé aux tests du jeu NeoQuest ?",
+      "answerable": false,
+      "refused_by_gate": false,
+      "best_similarity": 0.5105,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 3,
+          "chunk_id": 3,
+          "similarity": 0.5105
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 16,
+          "chunk_id": 16,
+          "similarity": 0.4532
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 9,
+          "chunk_id": 9,
+          "similarity": 0.4332
+        }
+      ],
+      "source_hit": null,
+      "answer": "[1] Le jeu NeoQuest est conçu pour être un jeu vidéo pour un joueur. [2] Il est conçu pour un joueur.",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 3
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 16
+        }
+      ],
+      "cites_right_page": null,
+      "retrieval_ms": 2350,
+      "model_load_ms": 0,
+      "ttft_ms": 17562,
+      "total_ms": 20911,
+      "prompt_tokens": 867,
+      "output_tokens": 29,
+      "tokens_per_second": 8.3589,
+      "error": null
+    },
+    {
+      "id": "u09",
+      "lang": "en",
+      "question": "Which version of Django REST Framework does the recommendation backend use?",
+      "answerable": false,
+      "refused_by_gate": false,
+      "best_similarity": 0.5918,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "etat_de_l_art.pdf",
+          "page": 3,
+          "chunk_id": 42,
+          "similarity": 0.5918
+        },
+        {
+          "n": 2,
+          "doc": "distractor_report_120p",
+          "page": 39,
+          "chunk_id": 95,
+          "similarity": 0.5095
+        }
+      ],
+      "source_hit": null,
+      "answer": "[redacted: the prompt held text from the private distractor document]",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "etat_de_l_art.pdf",
+          "page": 3
+        }
+      ],
+      "cites_right_page": null,
+      "retrieval_ms": 2426,
+      "model_load_ms": 0,
+      "ttft_ms": 18742,
+      "total_ms": 19899,
+      "prompt_tokens": 753,
+      "output_tokens": 11,
+      "tokens_per_second": 8.6381,
+      "error": null,
+      "answer_redacted": true
+    },
+    {
+      "id": "u10",
+      "lang": "fr",
+      "question": "En quelle année le jeu Celeste est-il sorti ?",
+      "answerable": false,
+      "refused_by_gate": false,
+      "best_similarity": 0.3143,
+      "sources": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 13,
+          "chunk_id": 13,
+          "similarity": 0.3143
+        },
+        {
+          "n": 2,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 12,
+          "chunk_id": 12,
+          "similarity": 0.3029
+        },
+        {
+          "n": 3,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 14,
+          "chunk_id": 14,
+          "similarity": 0.2483
+        },
+        {
+          "n": 4,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 7,
+          "chunk_id": 7,
+          "similarity": 0.2446
+        }
+      ],
+      "source_hit": null,
+      "answer": "Celeste est sorti en 2017. [1]\n",
+      "model_said_not_found": false,
+      "citations": [
+        {
+          "n": 1,
+          "doc": "ps_game__Copy_.pdf",
+          "page": 13
+        }
+      ],
+      "cites_right_page": null,
+      "retrieval_ms": 2492,
+      "model_load_ms": 0,
+      "ttft_ms": 17400,
+      "total_ms": 19206,
+      "prompt_tokens": 953,
+      "output_tokens": 16,
+      "tokens_per_second": 8.3051,
+      "error": null
+    }
+  ]
+}

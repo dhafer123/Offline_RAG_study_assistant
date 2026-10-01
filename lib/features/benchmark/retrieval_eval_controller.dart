@@ -1,11 +1,9 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:offline_study_assistant/app/providers.dart';
 import 'package:offline_study_assistant/core/ai/embedder.dart';
 import 'package:offline_study_assistant/core/perf.dart';
+import 'package:offline_study_assistant/features/benchmark/eval_export.dart';
 import 'package:offline_study_assistant/features/benchmark/retrieval_eval.dart';
 import 'package:offline_study_assistant/features/chat/retrieval_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -138,19 +136,9 @@ class RetrievalEvalController extends _$RetrievalEvalController {
     Map<String, Object?> report,
     RetrievalMode mode,
     DateTime now,
-  ) async {
-    final dir = Directory(ref.read(exportDirectoryProvider));
-    await dir.create(recursive: true);
-    final stamp = now
-        .toIso8601String()
-        .split('.')
-        .first
-        .replaceAll(RegExp('[-:]'), '')
-        .replaceAll('T', '-');
-    final file = File('${dir.path}/retrieval_${mode.name}_$stamp.json');
-    await file.writeAsString(
-      const JsonEncoder.withIndent('  ').convert(report),
-    );
-    return file.path;
-  }
+  ) => writeReport(
+    ref.read(exportDirectoryProvider),
+    reportFileName('retrieval_${mode.name}', now),
+    report,
+  );
 }

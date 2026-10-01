@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:offline_study_assistant/app/providers.dart';
 import 'package:offline_study_assistant/core/ai/model_manager.dart';
+import 'package:offline_study_assistant/features/benchmark/presentation/answer_eval_screen.dart';
 import 'package:offline_study_assistant/features/benchmark/presentation/llm_benchmark_screen.dart';
 import 'package:offline_study_assistant/features/benchmark/presentation/llm_debug_screen.dart';
 import 'package:offline_study_assistant/features/benchmark/presentation/retrieval_debug_screen.dart';
@@ -32,6 +33,7 @@ abstract final class AppRoutes {
   static const llmBenchmark = '/debug/llm-benchmark';
   static const retrievalDebug = '/debug/retrieval';
   static const retrievalEval = '/debug/retrieval-eval';
+  static const answerEval = '/debug/answer-eval';
 }
 
 @Riverpod(keepAlive: true)
@@ -92,6 +94,10 @@ GoRouter router(Ref ref) {
       GoRoute(
         path: AppRoutes.retrievalEval,
         builder: (context, state) => const RetrievalEvalScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.answerEval,
+        builder: (context, state) => const AnswerEvalScreen(),
       ),
     ],
   );

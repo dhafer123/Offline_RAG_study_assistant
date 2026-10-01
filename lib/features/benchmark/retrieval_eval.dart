@@ -49,6 +49,13 @@ class EvalQuestion {
   /// 1-based pages whose text answers the question.
   final List<int> pages;
   final String? answer;
+
+  /// Whether page [page] of the document titled [documentTitle] holds the
+  /// answer. Always false for unanswerable questions.
+  bool isAnsweredBy(String documentTitle, int page) =>
+      answerable &&
+      docKey(documentTitle) == doc!.toLowerCase() &&
+      pages.contains(page);
 }
 
 /// Parses `eval/questions.json`.
@@ -136,11 +143,8 @@ class QuestionResult {
   /// 1-based rank of the first chunk from the right document and page, or
   /// null if none was retrieved (always null when unanswerable).
   int? get rank {
-    if (!question.answerable) return null;
     for (var i = 0; i < hits.length; i++) {
-      final hit = hits[i];
-      if (docKey(hit.documentTitle) == question.doc!.toLowerCase() &&
-          question.pages.contains(hit.page)) {
+      if (question.isAnsweredBy(hits[i].documentTitle, hits[i].page)) {
         return i + 1;
       }
     }

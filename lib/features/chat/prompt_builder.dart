@@ -20,6 +20,18 @@ const Map<AnswerLanguage, String> notFoundReplies = {
   AnswerLanguage.french: 'Introuvable dans vos documents.',
 };
 
+final Set<String> _notFoundKeys = {
+  for (final reply in notFoundReplies.values) _lettersOnly(reply),
+};
+
+String _lettersOnly(String text) =>
+    text.toLowerCase().replaceAll(RegExp(r'[^\p{L}]', unicode: true), '');
+
+/// Whether the model's [answer] is the "not found" reply (in either
+/// language), ignoring case, punctuation and citation markers.
+bool isNotFoundReply(String answer) =>
+    _notFoundKeys.contains(_lettersOnly(answer));
+
 /// Counts (or estimates) the tokens of a text.
 typedef TokenCounter = int Function(String text);
 

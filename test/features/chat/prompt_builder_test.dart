@@ -221,6 +221,18 @@ void main() {
     });
   });
 
+  test('recognizes the not-found reply in both languages', () {
+    expect(isNotFoundReply('Not found in your documents.'), isTrue);
+    expect(isNotFoundReply('  not found in your documents '), isTrue);
+    expect(isNotFoundReply('Introuvable dans vos documents.'), isTrue);
+    expect(isNotFoundReply('Not found in your documents. [1]'), isTrue);
+    expect(isNotFoundReply('Godot was chosen [1].'), isFalse);
+    expect(
+      isNotFoundReply('Not found in your documents, but Godot is used.'),
+      isFalse,
+    );
+  });
+
   group('estimateTokens', () {
     test('counts a token per word, more for long words', () {
       expect(estimateTokens(''), 0);

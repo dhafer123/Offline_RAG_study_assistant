@@ -58,3 +58,6 @@ app.*.map.json
 *.keystore
 *.jks
 /android/key.properties
+
+# Unredacted eval exports (contain private document text), see eval/anonymize_results.py
+eval/results/private/

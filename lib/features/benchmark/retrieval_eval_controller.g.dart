@@ -87,7 +87,7 @@ final class RetrievalEvalControllerProvider
 }
 
 String _$retrievalEvalControllerHash() =>
-    r'41a20bd81d33da6c01e37c28b43bb52993ddcd1c';
+    r'd9e1c260a4c1abf5a93090fcd9788f5ace87ee48';
 
 /// Runs every question of the eval set through retrieval and exports the
 /// results as JSON (tasks 2.8 and 3.1).

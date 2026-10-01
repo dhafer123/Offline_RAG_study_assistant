@@ -177,6 +177,35 @@ The 10 unanswerable questions are 4 off-topic (u01 Unity price, u05 accuracy res
 - **The gate saves time too:** a refusal comes after retrieval only (~2.2–4.5 s), instead of ~20 s before the model's first word.
 - Both answerable questions below the threshold are French questions on English documents: cross-language similarities run lower. A per-language threshold would need more questions than this set has.
 
+## Full benchmark run (task 4.1)
+
+2026-10-01, Galaxy A16, release build, Answer eval screen (Library → retrieval debug → review icon): all 60 questions through the app's real pipeline (vector retrieval, gate 0.30, top 5 within a 1,000-token prompt, Gemma 3 1B on CPU, temperature 0.2), one after the other, model loaded once. Same 6-document index as the retrieval eval. 23 minutes for the 60 questions, no errors.
+
+File: `eval/results/answers_20261001-224516.json`. The distractor report is renamed there, and the 14 answers whose prompt held one of its chunks are redacted (`eval/anonymize_results.py`); the full export stays local in `eval/results/private/` (git-ignored) for the hand grading.
+
+**Speed (56 generated answers):**
+
+| | Median | Range |
+|---|---|---|
+| Retrieval (embed + search) | 2.39 s | 4.38 s for the first question (embedder load) |
+| Time to first token | **17.0 s** | 15.8–19.6 s (p90 17.7 s) |
+| Decode | **8.30 tok/s** | 6.46–9.03 |
+| Answer, start to end (after retrieval) | **21.5 s** | 16.7–45.2 s |
+| Prompt / answer length | 874 / 40 tokens | |
+| Model load (once) | 1.76 s | |
+
+Time to first token held steady over the 23 minutes (the 1,024-token prefill step), so the phone didn't throttle noticeably.
+
+**Automatic checks (hand grading is task 4.2):**
+
+- **Gate:** refused 4 questions (u07, u01 and the answerable q43, q45), as predicted in 3.7.
+- **Retrieval:** the right page was among the prompt's sources for 41 of the 48 answerable questions that passed the gate.
+- **Citations: weak.** Of 46 answered answerable questions, 26 cite at least one source and **15 cite the right page**. 20 answers carry no citation at all, even with the right page in the prompt (e.g. q10, q13, q22, q25).
+- **The model never says "not found" when it should.** None of the 8 unanswerable questions that passed the gate got the not-found reply: it made up answers instead, sometimes with a citation (u10 "Celeste est sorti en 2017. [1]", u02 "6", u09 names Django REST Framework without a version). Meanwhile it replied "not found" to 2 answerable questions whose right page was ranked first (q03, q12). Overall only **2/10 unanswerable questions were declined**, both by the gate.
+- **Language:** 3 of 56 answers came in the other language than the question (q01, q09 French → English; q08 English → French).
+
+These match what 3.3 hinted at: Gemma 3 1B follows the format rules (cite `[n]`, reply "not found") much less reliably than the content of the sources. Grading in 4.2 will say how many answers are actually right.
+
 ## Answers (50 answerable + 10 unanswerable)
 
 | Date | Correct | Partial | Wrong | Citation accuracy | Correct refusals (of 10) |

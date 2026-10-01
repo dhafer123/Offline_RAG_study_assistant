@@ -48,7 +48,7 @@ final class PromptSweepControllerProvider
 }
 
 String _$promptSweepControllerHash() =>
-    r'0e01ca8a8f086de276b42711f78a1fae6bfb03bd';
+    r'cfbbe7b6ab2b8dcc1155df89cda6901c6270426c';
 
 /// Measures time to first token against prompt size on the device, using
 /// the indexed chunks as source text.

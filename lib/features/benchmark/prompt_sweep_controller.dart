@@ -1,11 +1,9 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:offline_study_assistant/app/providers.dart';
 import 'package:offline_study_assistant/core/ai/llm_engine.dart';
 import 'package:offline_study_assistant/core/db/document_store.dart';
 import 'package:offline_study_assistant/core/perf.dart';
+import 'package:offline_study_assistant/features/benchmark/eval_export.dart';
 import 'package:offline_study_assistant/features/benchmark/prompt_sweep.dart';
 import 'package:offline_study_assistant/features/chat/retrieval_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -126,26 +124,18 @@ class PromptSweepController extends _$PromptSweepController {
     return chunks;
   }
 
-  Future<String> _export(List<SweepRun> runs) async {
-    final dir = Directory(ref.read(exportDirectoryProvider));
-    await dir.create(recursive: true);
+  Future<String> _export(List<SweepRun> runs) {
     final now = DateTime.now();
-    final stamp = now
-        .toIso8601String()
-        .split('.')
-        .first
-        .replaceAll(RegExp('[-:]'), '')
-        .replaceAll('T', '-');
-    final file = File('${dir.path}/prompt_sweep_$stamp.json');
     // Sizes and timings only: no prompt text, so it's safe to commit.
-    await file.writeAsString(
-      const JsonEncoder.withIndent('  ').convert({
+    return writeReport(
+      ref.read(exportDirectoryProvider),
+      reportFileName('prompt_sweep', now),
+      {
         'created': now.toUtc().toIso8601String(),
         'model': ref.read(activeLlmModelProvider).name,
         'question': sweepQuestion,
         'runs': [for (final r in runs) r.toJson()],
-      }),
+      },
     );
-    return file.path;
   }
 }

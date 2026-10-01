@@ -133,8 +133,9 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
 
 ## Week 4 (Oct 22–28): evaluate, polish, ship
 
-- [ ] **4.1 Full benchmark run**
+- [x] **4.1 Full benchmark run**
   Run all 60 questions and export answers, citations, time to first token and tokens/sec to `eval/results/*.json`.
+  *Notes:* Answer eval screen (retrieval debug → review icon) runs every question through `AnswerService` (`runAnswerEval`, pure and tested) and rewrites its JSON after each question, so a killed app loses nothing. Per question: gate decision, sources, answer, parsed citations, whether the right page was a source and was cited, whether the model said "not found", timings and token counts. `eval/anonymize_results.py` renames the private distractor and redacts the 14 answers whose prompt held its text before committing; the full export is in the git-ignored `eval/results/private/`. On the phone (23 min, no errors): median 17.0 s to the first token, 8.30 tok/s, 21.5 s per answer; only 15/46 answers cite the right page, 20 cite nothing, and the model declined none of the 8 unanswerable questions the gate let through (details in METRICS.md).
 - [ ] **4.2 Grade answers by hand**
   Mark each one correct / partial / wrong / correctly declined, and check citation accuracy.
 - [ ] **4.3 Notebook charts**

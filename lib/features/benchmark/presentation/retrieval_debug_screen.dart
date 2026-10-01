@@ -46,6 +46,13 @@ class _RetrievalDebugScreenState extends ConsumerState<RetrievalDebugScreen> {
         title: const Text('Retrieval debug'),
         actions: [
           IconButton(
+            tooltip: 'Answer eval',
+            icon: const Icon(Icons.rate_review_outlined),
+            onPressed: state.isBusy
+                ? null
+                : () => context.push(AppRoutes.answerEval),
+          ),
+          IconButton(
             tooltip: 'Retrieval eval',
             icon: const Icon(Icons.fact_check_outlined),
             onPressed: state.isBusy
