@@ -106,6 +106,15 @@ Hybrid is **6 points worse** than vector only overall (−3 questions): it fixes
 - **Possible fixes (not done in 3.1, to avoid tuning on the only eval set):** drop stop words from the FTS5 query, weight the vector list higher in the fusion, or only fuse the keyword list when its best BM25 score is strong. Any of them should be checked on new questions, not just these 50.
 - **For the gate (3.3):** the best similarity among the hybrid top 5 differs from the vector top 1 on 11 of 60 questions (vector top 1 left out of the top 5). The gate should read the vector search's top similarity, not the fused list's.
 
+## Prompt size (task 3.2)
+
+2026-10-01, measured on the host with Gemma 3's own SentencePiece tokenizer (262,144 pieces, read from the `.litertlm` model file), on the 50 chunks of the 5 eval PDFs as the app's pipeline produces them.
+
+- **Chunks:** median 4.6 characters per Gemma token (EN 4.6–6.0, FR 4.4–5.2), 1.47 tokens per word; median 200 tokens, max 352. A table-of-contents chunk is 2.4 characters per token, because Gemma splits numbers into single digits.
+- **Instructions:** 116 tokens.
+- **Prompt with 5 sources** (500 random draws of 5 chunks + an eval question): median 1,267 tokens, max 1,790. The 2,000-token budget normally keeps all 5 sources; trimming only kicks in for long, dense chunks.
+- **Estimator** (`estimateTokens`, used because the real tokenizer needs the loaded model): one token per word, plus one per 6 further letters, plus one per digit or punctuation mark. On those 500 prompts it gives 0.98–1.23× the real count (median 1.12). "Characters / 3" was 1.54× on prose and still too low on the table-of-contents chunk, so it was dropped.
+
 ## Answers (50 answerable + 10 unanswerable)
 
 | Date | Correct | Partial | Wrong | Citation accuracy | Correct refusals (of 10) |
