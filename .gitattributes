@@ -1,0 +1,2 @@
+# Byte-exact: CRLF conversion would shift the xref offsets inside PDFs.
+*.pdf binary
