@@ -75,6 +75,8 @@ Single runs, not medians: the first row through the Library screen (task 2.6), t
 
 ## Retrieval (50 answerable questions)
 
+Questions: `eval/questions.json` (50 answerable + 10 unanswerable, 5 PDFs, 31 EN / 29 FR). They were written by Claude at the author's request, not by hand; see the file's `method` field for how bias toward the retriever was limited.
+
 | Date | Method | Recall@5 |
 |---|---|---|
 | | Vector only | |

@@ -76,9 +76,10 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
   *Done when:* the UI stays smooth while a 100-page PDF indexes, and the indexing time is logged in METRICS.md.
   *Notes:* New dep: file_selector (system picker, no permission); picked PDFs are copied into `files/pdfs` (`PdfFiles`). `LibraryController` (kept alive) queues documents and indexes one at a time; `IngestionService.index(docId)` drops old chunks first, so failed documents can be retried and documents interrupted by an app kill resume on start. Delete removes rows, vectors (cascade) and our copy of the PDF. Clean + chunk run in `Isolate.run`; pdfium, embedding and SQLite already run on their own isolates. Fixed a cleaner crash on pages with fewer than 2 non-empty lines (found on the 120-page test PDF). `FrameMonitor` logs Flutter frame timings while a document indexes. 120 pages / 132 chunks: 5 min 11 s, 0.18% janky frames, 563 MB peak.
 
-- [ ] **2.7 Eval set**
+- [x] **2.7 Eval set**
   Write `eval/questions.json`: 50 answerable questions from 3–4 of your PDFs, each with `doc` + `page` + the expected answer, plus 10 unanswerable questions. Mix French and English.
   *Done when:* the file is committed. (Write the questions yourself, not with AI, so the eval stays honest.)
+  *Notes:* Written by Claude at the author's request (the AI rule was waived), disclosed in the file's `method` field and in METRICS.md. Safeguards: written from the cleaned page text before any retrieval benchmark ran on them, paraphrased instead of copied, every answer's key term checked on its listed pages by script, and unanswerable questions checked against all documents (5 of the 10 are near misses). 5 PDFs (2 FR, 3 EN): 24 questions on `ps_game`, 12 on `etat_de_l_art`, 7/4/3 on the short English ones; 31 EN / 29 FR, some cross-language. `pages` is a list (an answer can span a page break). The PFE report is left out: its content must not enter the public repo.
 
 - [ ] **2.8 Vector-only Recall@5**
   Add a benchmark screen that runs retrieval for every question and exports JSON.
@@ -155,6 +156,7 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
 ## Notes
 
 - 2026-09-30: LLM runs on CPU by default (GPU backend OOM-killed on the 4 GB Galaxy A16).
+- 2026-10-01: eval questions (2.7) written by Claude instead of by hand, at the author's request; see the safeguards in the 2.7 notes. Worth a human spot-check before quoting the numbers.
 - 2026-10-01: a 120-page PDF takes 5 min 11 s to index, 99.7% of it embedding on one core. Acceptable for now (the UI stays smooth and indexing resumes after a kill); revisit if users import many long PDFs.
 - 2026-10-01: vectors live in our own SQLite table with brute-force cosine instead of flutter_gemma_rag_sqlite (incompatible with flutter_gemma 0.16.5). Embedding takes 2.35 s per chunk on one core: watch the 100-page indexing time in 2.6.
 - 2026-10-01: drift without code generation (drift_dev conflicts with riverpod_generator on Flutter 3.38.9). Typed drift tables can come back after a Flutter upgrade.

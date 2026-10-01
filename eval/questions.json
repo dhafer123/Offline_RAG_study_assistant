@@ -1,0 +1,536 @@
+{
+  "version": 1,
+  "created": "2026-10-01",
+  "description": "Evaluation set for retrieval (Recall@5, task 2.8) and answers (tasks 4.1-4.2): 50 answerable questions about 5 course PDFs and 10 questions those PDFs cannot answer. French and English, including questions asked in the other language than their document.",
+  "method": "Written by Claude (Anthropic) at the author's request, from the cleaned text of each page (text_cleaner.dart output), before any retrieval benchmark was run on them, so no question was tuned to the retriever. Questions paraphrase the text rather than copy it. 'pages' lists every PDF page (1-based, physical page, not the printed number) whose text contains the answer; a retrieved chunk counts as a hit if it comes from 'doc' and one of 'pages'. Tables of contents are never counted as answers. Unanswerable questions were checked by searching all 5 documents for their key terms; some are deliberate near misses (the topic is mentioned, the asked fact is not).",
+  "documents": {
+    "01_ai_fundamentals": "01_ai_fundamentals.pdf (EN, 1 page)",
+    "02_rag_basics": "02_rag_basics.pdf (EN, 1 page)",
+    "03_rag_architecture": "03_rag_architecture.pdf (EN, 2 pages)",
+    "etat_de_l_art": "état_de_l_art.pdf (FR, 4 pages, LaTeX)",
+    "ps_game__Copy_": "ps_game__Copy_.pdf (FR, 34 pages, project report on a 2D game)"
+  },
+  "doc_matching": "A document matches a 'doc' key when its title, with any '.pdf' extension removed, accents stripped and lower-cased, equals the key lower-cased.",
+  "questions": [
+    {
+      "id": "q01",
+      "lang": "fr",
+      "question": "Quels jeux existants ont été analysés dans l'étude de l'existant du projet NeoQuest ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [12, 14],
+      "answer": "Super Mario Bros, Hollow Knight et Terraria."
+    },
+    {
+      "id": "q02",
+      "lang": "en",
+      "question": "In which year was Hollow Knight released, according to the game report?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [12, 13],
+      "answer": "2017."
+    },
+    {
+      "id": "q03",
+      "lang": "fr",
+      "question": "Quels défauts le rapport reproche-t-il à Hollow Knight ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [14],
+      "answer": "Une difficulté élevée qui peut décourager certains joueurs et l'absence d'indications claires pour les guider."
+    },
+    {
+      "id": "q04",
+      "lang": "en",
+      "question": "What weakness does the report see in Terraria for new players?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [14],
+      "answer": "It lacks linear missions and clear tutorials for new players, despite its creative freedom."
+    },
+    {
+      "id": "q05",
+      "lang": "fr",
+      "question": "Quels sont les événements Scrum utilisés pour organiser le développement du jeu ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [14],
+      "answer": "La planification du sprint, la revue de sprint, la rétrospective de sprint et la mêlée quotidienne."
+    },
+    {
+      "id": "q06",
+      "lang": "en",
+      "question": "What is the sprint retrospective used for in the project's methodology?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [14],
+      "answer": "To analyse what can be improved in the following sprints."
+    },
+    {
+      "id": "q07",
+      "lang": "fr",
+      "question": "Quel est le rôle du GameManager dans NeoQuest 2D ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [16, 17],
+      "answer": "Il gère l'état global du jeu (niveaux, progression, scores) et déclenche les événements."
+    },
+    {
+      "id": "q08",
+      "lang": "en",
+      "question": "Which Godot nodes are given as an example of how the UI manager is built?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [17],
+      "answer": "CanvasLayer and Control nodes."
+    },
+    {
+      "id": "q09",
+      "lang": "fr",
+      "question": "Quels exemples de LLM, distant ou local, sont cités pour générer les réponses des NPC ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [17],
+      "answer": "OpenAI GPT (API) et Ollama avec TinyLlama (local)."
+    },
+    {
+      "id": "q10",
+      "lang": "en",
+      "question": "Which services are listed as examples for saving the player's progress in the cloud?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [17],
+      "answer": "Firebase, AWS and Google Drive."
+    },
+    {
+      "id": "q11",
+      "lang": "en",
+      "question": "Which non-functional requirement is about how fast the NPC dialogues must be produced?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [18],
+      "answer": "Performance: LLM dialogues must be processed quickly so they don't hurt the experience."
+    },
+    {
+      "id": "q12",
+      "lang": "fr",
+      "question": "Dans le cas d'utilisation de collecte d'objets, quel est le scénario alternatif ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [19],
+      "answer": "L'inventaire est plein."
+    },
+    {
+      "id": "q13",
+      "lang": "en",
+      "question": "What condition must hold before the player can start a conversation with an NPC?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [20],
+      "answer": "The player must be close to the NPC."
+    },
+    {
+      "id": "q14",
+      "lang": "fr",
+      "question": "Que faut-il avant de pouvoir lancer ou charger une partie ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [21],
+      "answer": "Le joueur doit être connecté à son profil."
+    },
+    {
+      "id": "q15",
+      "lang": "en",
+      "question": "Why did the team pick Godot 4 to build the game?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [27],
+      "answer": "For its flexibility, high performance and open-source nature, with a scene-and-node architecture that eases modularity and code reuse."
+    },
+    {
+      "id": "q16",
+      "lang": "fr",
+      "question": "À quel langage de programmation GDScript est-il comparé ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [27],
+      "answer": "À Python."
+    },
+    {
+      "id": "q17",
+      "lang": "en",
+      "question": "Which Godot class does the intelligent NPC extend?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [27],
+      "answer": "CharacterBody2D."
+    },
+    {
+      "id": "q18",
+      "lang": "fr",
+      "question": "Quels signaux permettent au NPC de savoir que le joueur entre ou sort de sa zone d'interaction ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [27, 28],
+      "answer": "Les signaux body_entered et body_exited."
+    },
+    {
+      "id": "q19",
+      "lang": "en",
+      "question": "How does the NPC call the remote LLM without freezing the game loop?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [28],
+      "answer": "Asynchronously, with Godot's HTTPRequest class."
+    },
+    {
+      "id": "q20",
+      "lang": "fr",
+      "question": "Quels sont les avantages d'un modèle de langage local par rapport à l'API distante pour les dialogues ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [28],
+      "answer": "Il ne dépend pas d'Internet : meilleure confidentialité des données, latence réduite et disponibilité hors ligne."
+    },
+    {
+      "id": "q21",
+      "lang": "en",
+      "question": "What does the NPC say if the request to the language model fails or returns invalid JSON?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [29],
+      "answer": "It picks a random predefined fallback line, so the game never blocks or crashes."
+    },
+    {
+      "id": "q22",
+      "lang": "fr",
+      "question": "Quelles optimisations ont été mises en place pour garder le jeu fluide ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [29],
+      "answer": "Limiter les requêtes API simultanées, libérer les ressources HTTP après chaque requête et utiliser des temporisateurs pour la durée d'affichage des dialogues."
+    },
+    {
+      "id": "q23",
+      "lang": "en",
+      "question": "What kinds of NPC roles are suggested as a future improvement?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [30],
+      "answer": "NPCs with distinct personalities such as warrior, merchant, sage or guide."
+    },
+    {
+      "id": "q24",
+      "lang": "fr",
+      "question": "Sur quelles plateformes le jeu pourrait-il être exporté à l'avenir ?",
+      "answerable": true,
+      "doc": "ps_game__Copy_",
+      "pages": [31],
+      "answer": "Windows, Linux, Android ou le Web."
+    },
+    {
+      "id": "q25",
+      "lang": "fr",
+      "question": "Quelles sont les trois grandes familles d'approches de recommandation ?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [1],
+      "answer": "Le filtrage basé sur le contenu (content-based), le filtrage collaboratif et les approches hybrides."
+    },
+    {
+      "id": "q26",
+      "lang": "en",
+      "question": "What problem does collaborative filtering face when a new user has little data?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [1, 2],
+      "answer": "The cold start problem."
+    },
+    {
+      "id": "q27",
+      "lang": "fr",
+      "question": "Pourquoi la recommandation basée sur le contenu convient-elle bien à l'éducation ?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [1],
+      "answer": "Elle propose des ressources directement liées aux centres d'intérêt et au niveau de l'apprenant."
+    },
+    {
+      "id": "q28",
+      "lang": "en",
+      "question": "Which teaching-related factors do educational recommenders consider that e-commerce recommenders do not?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [1],
+      "answer": "Cognitive progression, assessment performance and learning pace."
+    },
+    {
+      "id": "q29",
+      "lang": "fr",
+      "question": "D'après le tableau comparatif, quelles sont les limites de l'approche content-based ?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [2],
+      "answer": "Un manque de diversité et un risque de surspécialisation des recommandations."
+    },
+    {
+      "id": "q30",
+      "lang": "en",
+      "question": "What is the main downside of hybrid recommendation systems?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [2],
+      "answer": "They are complex to implement and to tune."
+    },
+    {
+      "id": "q31",
+      "lang": "fr",
+      "question": "Avec quelles technologies l'application mobile et le serveur du système de recommandation sont-ils construits ?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [2],
+      "answer": "Flutter pour l'application mobile et Django REST Framework pour le backend."
+    },
+    {
+      "id": "q32",
+      "lang": "en",
+      "question": "Which learner data does the proposed app analyse to recommend content?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [2, 3],
+      "answer": "Quiz scores, time spent on lessons and completion rate."
+    },
+    {
+      "id": "q33",
+      "lang": "fr",
+      "question": "Qu'estime le modèle de prédiction comportementale ?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [3],
+      "answer": "La probabilité d'engagement de l'apprenant pour chaque ressource."
+    },
+    {
+      "id": "q34",
+      "lang": "en",
+      "question": "How are the scores of the different AI models merged into one ranking?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [3],
+      "answer": "A hybrid fusion layer orchestrated by the backend weights each model's scores to produce the final ranking."
+    },
+    {
+      "id": "q35",
+      "lang": "fr",
+      "question": "À quoi sert le troisième modèle d'intelligence artificielle du système ?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [3],
+      "answer": "À adapter le niveau pédagogique : il évalue la maîtrise de chaque thème pour proposer des contenus ni trop simples ni trop complexes."
+    },
+    {
+      "id": "q36",
+      "lang": "en",
+      "question": "Who is the author of the cited paper on hybrid recommender systems?",
+      "answerable": true,
+      "doc": "etat_de_l_art",
+      "pages": [3],
+      "answer": "Robin Burke (2002)."
+    },
+    {
+      "id": "q37",
+      "lang": "en",
+      "question": "What are the main building blocks of a typical RAG application?",
+      "answerable": true,
+      "doc": "03_rag_architecture",
+      "pages": [1],
+      "answer": "A document ingestion pipeline, chunking and embedding, a retrieval layer, a language model and an application interface."
+    },
+    {
+      "id": "q38",
+      "lang": "fr",
+      "question": "Selon la source, quels traitements l'ingestion des documents peut-elle demander ?",
+      "answerable": true,
+      "doc": "03_rag_architecture",
+      "pages": [1],
+      "answer": "L'analyse de PDF, l'OCR, l'extraction HTML ou des requêtes en base de données."
+    },
+    {
+      "id": "q39",
+      "lang": "en",
+      "question": "Besides combining semantic and keyword search, what can narrow down retrieval results?",
+      "answerable": true,
+      "doc": "03_rag_architecture",
+      "pages": [1],
+      "answer": "Metadata filters."
+    },
+    {
+      "id": "q40",
+      "lang": "fr",
+      "question": "Sur quels critères peut-on évaluer un système RAG ?",
+      "answerable": true,
+      "doc": "03_rag_architecture",
+      "pages": [1],
+      "answer": "La qualité de la récupération, l'ancrage dans le contexte (groundedness), la qualité de la réponse, la latence et le coût."
+    },
+    {
+      "id": "q41",
+      "lang": "en",
+      "question": "Why is retrieving a lot of text a risk for a RAG system?",
+      "answerable": true,
+      "doc": "03_rag_architecture",
+      "pages": [1],
+      "answer": "Too much retrieved text can exceed the useful context window."
+    },
+    {
+      "id": "q42",
+      "lang": "en",
+      "question": "List some practical techniques that improve a RAG system.",
+      "answerable": true,
+      "doc": "03_rag_architecture",
+      "pages": [2],
+      "answer": "Better chunking, metadata filtering, hybrid search, reranking, query rewriting, source citations, caching and automated evaluation datasets."
+    },
+    {
+      "id": "q43",
+      "lang": "fr",
+      "question": "Que vérifie le critère de groundedness lors de l'évaluation ?",
+      "answerable": true,
+      "doc": "03_rag_architecture",
+      "pages": [1],
+      "answer": "Que la réponse est bien appuyée par le contexte récupéré."
+    },
+    {
+      "id": "q44",
+      "lang": "en",
+      "question": "What is the difference between RAG and fine-tuning?",
+      "answerable": true,
+      "doc": "02_rag_basics",
+      "pages": [1],
+      "answer": "RAG changes the information available to the model at query time; fine-tuning changes the model's learned parameters."
+    },
+    {
+      "id": "q45",
+      "lang": "fr",
+      "question": "Combien de documents de politique interne l'entreprise de l'exemple possède-t-elle ?",
+      "answerable": true,
+      "doc": "02_rag_basics",
+      "pages": [1],
+      "answer": "500."
+    },
+    {
+      "id": "q46",
+      "lang": "en",
+      "question": "Why would a team use RAG instead of retraining its model?",
+      "answerable": true,
+      "doc": "02_rag_basics",
+      "pages": [1],
+      "answer": "It can use private documents without retraining, ground answers in a knowledge base, update information easily and return source references."
+    },
+    {
+      "id": "q47",
+      "lang": "fr",
+      "question": "Dans le pipeline RAG de base, où les embeddings sont-ils enregistrés ?",
+      "answerable": true,
+      "doc": "02_rag_basics",
+      "pages": [1],
+      "answer": "Dans une base de données vectorielle ou un index de recherche."
+    },
+    {
+      "id": "q48",
+      "lang": "en",
+      "question": "What are the common kinds of machine learning?",
+      "answerable": true,
+      "doc": "01_ai_fundamentals",
+      "pages": [1],
+      "answer": "Supervised, unsupervised and reinforcement learning."
+    },
+    {
+      "id": "q49",
+      "lang": "fr",
+      "question": "Pourquoi relie-t-on souvent un modèle d'IA à des sources de connaissances externes ?",
+      "answerable": true,
+      "doc": "01_ai_fundamentals",
+      "pages": [1],
+      "answer": "Parce qu'il ne connaît pas automatiquement les informations privées ou récemment mises à jour d'un utilisateur."
+    },
+    {
+      "id": "q50",
+      "lang": "en",
+      "question": "What does deep learning rely on to capture complex patterns?",
+      "answerable": true,
+      "doc": "01_ai_fundamentals",
+      "pages": [1],
+      "answer": "Neural networks with many layers."
+    },
+    {
+      "id": "u01",
+      "lang": "fr",
+      "question": "Combien coûte une licence du moteur Unity ?",
+      "answerable": false,
+      "note": "Unity is never mentioned; the game report only discusses Godot."
+    },
+    {
+      "id": "u02",
+      "lang": "en",
+      "question": "How many levels does NeoQuest 2D contain?",
+      "answerable": false,
+      "note": "Near miss: the report talks about levels but never gives a number."
+    },
+    {
+      "id": "u03",
+      "lang": "en",
+      "question": "What chunk size, in tokens, does the RAG guide recommend?",
+      "answerable": false,
+      "note": "Near miss: chunking is discussed without any size."
+    },
+    {
+      "id": "u04",
+      "lang": "fr",
+      "question": "Quelle base vectorielle, comme Pinecone ou FAISS, est conseillée pour un système RAG ?",
+      "answerable": false,
+      "note": "Near miss: vector databases are mentioned, no product is named."
+    },
+    {
+      "id": "u05",
+      "lang": "en",
+      "question": "What accuracy did the educational recommendation system reach in its evaluation?",
+      "answerable": false,
+      "note": "No evaluation results are reported."
+    },
+    {
+      "id": "u06",
+      "lang": "fr",
+      "question": "Quel modèle de reranking, par exemple un cross-encoder, est recommandé ?",
+      "answerable": false,
+      "note": "Near miss: reranking is listed as a technique, no model is named."
+    },
+    {
+      "id": "u07",
+      "lang": "en",
+      "question": "Who introduced the transformer architecture?",
+      "answerable": false,
+      "note": "Transformers are never mentioned."
+    },
+    {
+      "id": "u08",
+      "lang": "fr",
+      "question": "Combien de joueurs ont participé aux tests du jeu NeoQuest ?",
+      "answerable": false,
+      "note": "Near miss: testers are thanked, their number is never given."
+    },
+    {
+      "id": "u09",
+      "lang": "en",
+      "question": "Which version of Django REST Framework does the recommendation backend use?",
+      "answerable": false,
+      "note": "Near miss: Django REST Framework is named, no version."
+    },
+    {
+      "id": "u10",
+      "lang": "fr",
+      "question": "En quelle année le jeu Celeste est-il sorti ?",
+      "answerable": false,
+      "note": "Celeste is not one of the games studied."
+    }
+  ]
+}
