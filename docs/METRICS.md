@@ -130,6 +130,29 @@ Hybrid is **6 points worse** than vector only overall (−3 questions): it fixes
 - **Time to first token is the problem:** 45–49 s for a 1,200–1,600-token prompt (184 tokens took 4.4 s in 1.4), about 26–32 prompt tokens/s on CPU. The two prompts differ by 400 tokens but only by 4.4 s, so prefill may run in fixed-size blocks (the model file is "multi-prefill-seq"). This needs a dedicated measurement of TTFT against prompt size before the chat screen.
 - **Citations to check in 3.4:** the English answer numbered its markers [1], [2], [3] one per sentence, which may follow the sentence order rather than the sources. The French answer cited nothing.
 
+## Time to first token vs prompt size
+
+2026-10-01, Galaxy A16, release build, Gemma 3 1B int4 on CPU, LLM benchmark screen → **Run sweep**. RAG prompts built by `buildAnswerPrompt` from the indexed chunks, with a one-sentence question; model kept loaded, one warm-up, then 3 runs per size. Prompt tokens are the counts LiteRT-LM reports (chat template included). File: `eval/results/prompt_sweep_20261001-211618.json`.
+
+| Prompt tokens | Prefill size used | Time to first token (median of 3) |
+|---|---|---|
+| 242 | 256 | **4.2 s** |
+| 300 | 512 | 8.3 s |
+| 469 | 512 | **8.6 s** |
+| 546 | 1024 | 16.9 s |
+| 860 | 1024 | 16.8 s |
+| 987 | 1024 | **16.8 s** |
+| 1,412 | 2560 | 43.8 s |
+| 2,001 | 2560 | 43.7 s |
+| 2,496 | 2560 | 44.7 s (one run took 126 s) |
+
+- **Time to first token is a staircase, not a slope.** The model file was exported with fixed prefill sizes (32, 64, 128, 256, 512, 1024, 2560 tokens, found in the `.litertlm` file), and LiteRT-LM pads every prompt up to the next one. Within a step the size makes no difference (546 and 987 tokens both take 16.8 s); crossing a step costs 2–2.6× more.
+- Cost is proportional to the padded size: about **60 padded tokens/s** at every step (256 / 4.2 s, 512 / 8.5 s, 1024 / 16.8 s, 2560 / 44 s).
+- **This explains 3.3's 45–49 s:** the 1,190- and 1,587-token prompts both ran as 2,560.
+- Decoding speed doesn't depend on prompt size: 8.3–8.9 tok/s (6.5 in the 126 s outlier run, the first at 2,496 tokens: probably memory pressure or thermal throttling).
+- **Consequence for the prompt budget:** keep the real prompt at or under 1,024 tokens (~17 s), or under 512 (~8.5 s), and fill the step: going from 3 to 4 sources inside the same step is free. The 2,000-token budget from 3.2 always lands in the 2,560 step (~44 s).
+- The token estimate was 1.08–1.23× the reported count on these prompts (template included), so it errs on the safe side.
+
 ## Answers (50 answerable + 10 unanswerable)
 
 | Date | Correct | Partial | Wrong | Citation accuracy | Correct refusals (of 10) |

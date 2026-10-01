@@ -1,0 +1,250 @@
+{
+  "created": "2026-10-01T20:16:18.932397Z",
+  "model": "Gemma 3 1B",
+  "question": "In one sentence, what is source [1] about?",
+  "runs": [
+    {
+      "target": 240,
+      "estimated_tokens": 263,
+      "prompt_tokens": 242,
+      "ttft_ms": 4131,
+      "total_ms": 8232,
+      "output_tokens": 35,
+      "tokens_per_second": 8.2915665988384
+    },
+    {
+      "target": 240,
+      "estimated_tokens": 263,
+      "prompt_tokens": 242,
+      "ttft_ms": 4200,
+      "total_ms": 8137,
+      "output_tokens": 35,
+      "tokens_per_second": 8.635681671502224
+    },
+    {
+      "target": 240,
+      "estimated_tokens": 263,
+      "prompt_tokens": 242,
+      "ttft_ms": 4210,
+      "total_ms": 8297,
+      "output_tokens": 35,
+      "tokens_per_second": 8.320116990633261
+    },
+    {
+      "target": 300,
+      "estimated_tokens": 324,
+      "prompt_tokens": 300,
+      "ttft_ms": 8103,
+      "total_ms": 12274,
+      "output_tokens": 37,
+      "tokens_per_second": 8.629941630430901
+    },
+    {
+      "target": 300,
+      "estimated_tokens": 324,
+      "prompt_tokens": 300,
+      "ttft_ms": 8465,
+      "total_ms": 12807,
+      "output_tokens": 37,
+      "tokens_per_second": 8.290285259504351
+    },
+    {
+      "target": 300,
+      "estimated_tokens": 324,
+      "prompt_tokens": 300,
+      "ttft_ms": 8348,
+      "total_ms": 12679,
+      "output_tokens": 37,
+      "tokens_per_second": 8.311623066046927
+    },
+    {
+      "target": 480,
+      "estimated_tokens": 528,
+      "prompt_tokens": 469,
+      "ttft_ms": 8558,
+      "total_ms": 14198,
+      "output_tokens": 48,
+      "tokens_per_second": 8.332599059976452
+    },
+    {
+      "target": 480,
+      "estimated_tokens": 528,
+      "prompt_tokens": 469,
+      "ttft_ms": 8443,
+      "total_ms": 14102,
+      "output_tokens": 48,
+      "tokens_per_second": 8.304792236185465
+    },
+    {
+      "target": 480,
+      "estimated_tokens": 528,
+      "prompt_tokens": 469,
+      "ttft_ms": 8612,
+      "total_ms": 14220,
+      "output_tokens": 48,
+      "tokens_per_second": 8.379932593248592
+    },
+    {
+      "target": 560,
+      "estimated_tokens": 616,
+      "prompt_tokens": 546,
+      "ttft_ms": 17052,
+      "total_ms": 21566,
+      "output_tokens": 39,
+      "tokens_per_second": 8.416773832870337
+    },
+    {
+      "target": 560,
+      "estimated_tokens": 616,
+      "prompt_tokens": 546,
+      "ttft_ms": 16885,
+      "total_ms": 21426,
+      "output_tokens": 39,
+      "tokens_per_second": 8.367917053682831
+    },
+    {
+      "target": 560,
+      "estimated_tokens": 616,
+      "prompt_tokens": 546,
+      "ttft_ms": 16820,
+      "total_ms": 21363,
+      "output_tokens": 39,
+      "tokens_per_second": 8.363386502462577
+    },
+    {
+      "target": 950,
+      "estimated_tokens": 1044,
+      "prompt_tokens": 860,
+      "ttft_ms": 16764,
+      "total_ms": 20142,
+      "output_tokens": 29,
+      "tokens_per_second": 8.29008916879125
+    },
+    {
+      "target": 950,
+      "estimated_tokens": 1044,
+      "prompt_tokens": 860,
+      "ttft_ms": 16813,
+      "total_ms": 20161,
+      "output_tokens": 29,
+      "tokens_per_second": 8.364873387185193
+    },
+    {
+      "target": 950,
+      "estimated_tokens": 1044,
+      "prompt_tokens": 860,
+      "ttft_ms": 16971,
+      "total_ms": 20314,
+      "output_tokens": 29,
+      "tokens_per_second": 8.375031518533795
+    },
+    {
+      "target": 1100,
+      "estimated_tokens": 1210,
+      "prompt_tokens": 987,
+      "ttft_ms": 16819,
+      "total_ms": 20521,
+      "output_tokens": 32,
+      "tokens_per_second": 8.3728455115471
+    },
+    {
+      "target": 1100,
+      "estimated_tokens": 1210,
+      "prompt_tokens": 987,
+      "ttft_ms": 16813,
+      "total_ms": 20507,
+      "output_tokens": 32,
+      "tokens_per_second": 8.392173296754287
+    },
+    {
+      "target": 1100,
+      "estimated_tokens": 1210,
+      "prompt_tokens": 987,
+      "ttft_ms": 16733,
+      "total_ms": 20432,
+      "output_tokens": 32,
+      "tokens_per_second": 8.380348892847778
+    },
+    {
+      "target": 1500,
+      "estimated_tokens": 1649,
+      "prompt_tokens": 1412,
+      "ttft_ms": 43246,
+      "total_ms": 46366,
+      "output_tokens": 29,
+      "tokens_per_second": 8.973499014036795
+    },
+    {
+      "target": 1500,
+      "estimated_tokens": 1649,
+      "prompt_tokens": 1412,
+      "ttft_ms": 43847,
+      "total_ms": 46988,
+      "output_tokens": 29,
+      "tokens_per_second": 8.913305687230194
+    },
+    {
+      "target": 1500,
+      "estimated_tokens": 1649,
+      "prompt_tokens": 1412,
+      "ttft_ms": 44216,
+      "total_ms": 47611,
+      "output_tokens": 29,
+      "tokens_per_second": 8.246633238349789
+    },
+    {
+      "target": 2000,
+      "estimated_tokens": 2200,
+      "prompt_tokens": 2001,
+      "ttft_ms": 43806,
+      "total_ms": 47302,
+      "output_tokens": 30,
+      "tokens_per_second": 8.29502129961245
+    },
+    {
+      "target": 2000,
+      "estimated_tokens": 2200,
+      "prompt_tokens": 2001,
+      "ttft_ms": 43665,
+      "total_ms": 47133,
+      "output_tokens": 30,
+      "tokens_per_second": 8.362337186736756
+    },
+    {
+      "target": 2000,
+      "estimated_tokens": 2200,
+      "prompt_tokens": 2001,
+      "ttft_ms": 43499,
+      "total_ms": 46959,
+      "output_tokens": 30,
+      "tokens_per_second": 8.382452578442413
+    },
+    {
+      "target": 2450,
+      "estimated_tokens": 2662,
+      "prompt_tokens": 2496,
+      "ttft_ms": 126494,
+      "total_ms": 132327,
+      "output_tokens": 39,
+      "tokens_per_second": 6.515096936927175
+    },
+    {
+      "target": 2450,
+      "estimated_tokens": 2662,
+      "prompt_tokens": 2496,
+      "ttft_ms": 44651,
+      "total_ms": 49292,
+      "output_tokens": 39,
+      "tokens_per_second": 8.189030405869897
+    },
+    {
+      "target": 2450,
+      "estimated_tokens": 2662,
+      "prompt_tokens": 2496,
+      "ttft_ms": 43744,
+      "total_ms": 48331,
+      "output_tokens": 39,
+      "tokens_per_second": 8.284818092647377
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import 'package:offline_study_assistant/app/providers.dart';
 import 'package:offline_study_assistant/core/ai/llm_model_config.dart';
 import 'package:offline_study_assistant/features/benchmark/llm_benchmark.dart';
 import 'package:offline_study_assistant/features/benchmark/llm_benchmark_controller.dart';
+import 'package:offline_study_assistant/features/benchmark/prompt_sweep_controller.dart';
 
 class LlmBenchmarkScreen extends ConsumerWidget {
   const LlmBenchmarkScreen({super.key});
@@ -83,6 +84,8 @@ class LlmBenchmarkScreen extends ConsumerWidget {
                 style: theme.textTheme.bodySmall,
               ),
           ],
+          const Divider(height: 32),
+          const _PromptSweepSection(),
         ],
       ),
     );
@@ -144,6 +147,65 @@ class _ResultCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Time to first token against prompt size, with the model kept loaded.
+class _PromptSweepSection extends ConsumerWidget {
+  const _PromptSweepSection();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(promptSweepControllerProvider);
+    final controller = ref.read(promptSweepControllerProvider.notifier);
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Prompt-length sweep', style: theme.textTheme.titleMedium),
+        const SizedBox(height: 4),
+        const Text(
+          'Builds RAG prompts of 200 to 2,450 tokens from the indexed '
+          'documents and measures time to first token, 3 runs each.',
+        ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            FilledButton(
+              onPressed: state.isRunning ? null : controller.run,
+              child: const Text('Run sweep'),
+            ),
+            const SizedBox(width: 8),
+            if (state.isRunning) ...[
+              OutlinedButton(
+                onPressed: controller.cancel,
+                child: const Text('Cancel'),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                state.total == 0
+                    ? 'Warming up…'
+                    : 'Run ${state.done}/${state.total}',
+              ),
+            ],
+          ],
+        ),
+        if (state.errorMessage case final message?) ...[
+          const SizedBox(height: 8),
+          Text(message, style: TextStyle(color: theme.colorScheme.error)),
+        ],
+        const SizedBox(height: 8),
+        for (final m in state.medians)
+          Text(
+            'target ${m.target} → ${m.promptTokens ?? '?'} tokens: '
+            'TTFT ${m.ttftSeconds.toStringAsFixed(2)} s',
+          ),
+        if (state.exportPath case final path?) ...[
+          const SizedBox(height: 8),
+          SelectableText('Saved to $path', style: theme.textTheme.bodySmall),
+        ],
+      ],
     );
   }
 }
