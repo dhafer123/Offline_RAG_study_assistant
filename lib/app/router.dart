@@ -9,6 +9,7 @@ import 'package:offline_study_assistant/features/benchmark/presentation/retrieva
 import 'package:offline_study_assistant/features/chat/presentation/chat_screen.dart';
 import 'package:offline_study_assistant/features/library/presentation/library_screen.dart';
 import 'package:offline_study_assistant/features/model_setup/presentation/model_setup_screen.dart';
+import 'package:offline_study_assistant/features/viewer/presentation/pdf_viewer_screen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'router.g.dart';
@@ -17,6 +18,16 @@ abstract final class AppRoutes {
   static const library = '/';
   static const modelSetup = '/setup';
   static const chat = '/chat';
+
+  /// A document at a page, optionally highlighting a chunk.
+  static String viewer({required int docId, required int page, int? chunkId}) =>
+      Uri(
+        path: '/viewer/$docId',
+        queryParameters: {
+          'page': '$page',
+          if (chunkId != null) 'chunk': '$chunkId',
+        },
+      ).toString();
   static const llmDebug = '/debug/llm';
   static const llmBenchmark = '/debug/llm-benchmark';
   static const retrievalDebug = '/debug/retrieval';
@@ -53,6 +64,14 @@ GoRouter router(Ref ref) {
       GoRoute(
         path: AppRoutes.chat,
         builder: (context, state) => const ChatScreen(),
+      ),
+      GoRoute(
+        path: '/viewer/:docId',
+        builder: (context, state) => PdfViewerScreen(
+          docId: int.parse(state.pathParameters['docId']!),
+          page: int.tryParse(state.uri.queryParameters['page'] ?? '') ?? 1,
+          chunkId: int.tryParse(state.uri.queryParameters['chunk'] ?? ''),
+        ),
       ),
       GoRoute(
         path: AppRoutes.modelSetup,

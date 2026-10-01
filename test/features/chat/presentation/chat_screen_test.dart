@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:offline_study_assistant/app/providers.dart';
 import 'package:offline_study_assistant/features/chat/answer_service.dart';
 import 'package:offline_study_assistant/features/chat/presentation/chat_screen.dart';
@@ -24,10 +25,24 @@ void main() {
 
   Future<void> pumpChat(WidgetTester tester) async {
     service = FakeAnswerService();
+    // The viewer route is a stand-in that shows what it was opened with.
+    final router = GoRouter(
+      routes: [
+        GoRoute(path: '/', builder: (context, state) => const ChatScreen()),
+        GoRoute(
+          path: '/viewer/:docId',
+          builder: (context, state) => Text(
+            'viewer ${state.pathParameters['docId']} '
+            '${state.uri.queryParameters}',
+          ),
+        ),
+      ],
+    );
+    addTearDown(router.dispose);
     await tester.pumpWidget(
       ProviderScope(
         overrides: [answerServiceProvider.overrideWithValue(service)],
-        child: const MaterialApp(home: ChatScreen()),
+        child: MaterialApp.router(routerConfig: router),
       ),
     );
   }
@@ -100,8 +115,7 @@ void main() {
     await tester.pump();
   });
 
-  testWidgets('a chip opens the source passage', (tester) async {
-    await pumpChat(tester);
+  Future<void> answered(WidgetTester tester) async {
     await ask(tester, 'Why Godot?');
     service
       ..emit(FakeAnswerService.sourcesEvent(sources))
@@ -109,12 +123,36 @@ void main() {
       ..emit(FakeAnswerService.doneEvent('Godot is flexible [1].'));
     await service.close();
     await tester.pump();
+  }
+
+  testWidgets('a chip opens the document at the cited page and chunk', (
+    tester,
+  ) async {
+    await pumpChat(tester);
+    await answered(tester);
 
     await tester.tap(find.text('game.pdf · p. 27'));
     await tester.pumpAndSettle();
 
+    expect(find.text('viewer 1 {page: 27, chunk: 1}'), findsOne);
+  });
+
+  testWidgets('an inline marker shows the passage, with a way to open it', (
+    tester,
+  ) async {
+    await pumpChat(tester);
+    await answered(tester);
+
+    await tester.tap(find.text('1'));
+    await tester.pumpAndSettle();
+
     expect(find.text('[1] game.pdf · page 27'), findsOne);
     expect(find.text('Godot 4 was chosen for its flexibility.'), findsOne);
+
+    await tester.tap(find.text('Open page'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('viewer 1 {page: 27, chunk: 1}'), findsOne);
   });
 
   testWidgets('stop keeps what was written', (tester) async {

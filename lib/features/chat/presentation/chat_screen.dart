@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:offline_study_assistant/app/router.dart';
 import 'package:offline_study_assistant/features/chat/chat_controller.dart';
 import 'package:offline_study_assistant/features/chat/citation_parser.dart';
 
@@ -356,33 +360,58 @@ class _CitationChips extends StatelessWidget {
           ActionChip(
             avatar: const Icon(Icons.description_outlined, size: 18),
             label: Text('$title · p. $page'),
-            onPressed: () => showSources(context, cs),
+            onPressed: () => openCitation(context, cs.first),
           ),
       ],
     );
   }
 }
 
-/// Shows the passages behind [citations]. Task 3.6 adds opening the PDF.
+/// Opens the cited document at the cited page, highlighting the passage.
+void openCitation(BuildContext context, Citation citation) {
+  final chunk = citation.source.chunk;
+  unawaited(
+    context.push(
+      AppRoutes.viewer(docId: chunk.docId, page: chunk.page, chunkId: chunk.id),
+    ),
+  );
+}
+
+/// Shows the passages behind [citations], each with a way to open its page.
 Future<void> showSources(BuildContext context, List<Citation> citations) =>
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       showDragHandle: true,
-      builder: (context) {
-        final theme = Theme.of(context);
+      builder: (sheetContext) {
+        final theme = Theme.of(sheetContext);
         return DraggableScrollableSheet(
           expand: false,
           minChildSize: 0.3,
           maxChildSize: 0.9,
-          builder: (context, scroll) => ListView(
+          builder: (_, scroll) => ListView(
             controller: scroll,
             padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
             children: [
               for (final c in citations) ...[
-                Text(
-                  '[${c.number}] ${c.documentTitle} · page ${c.page}',
-                  style: theme.textTheme.titleSmall,
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        '[${c.number}] ${c.documentTitle} · page ${c.page}',
+                        style: theme.textTheme.titleSmall,
+                      ),
+                    ),
+                    TextButton.icon(
+                      icon: const Icon(Icons.open_in_new, size: 18),
+                      label: const Text('Open page'),
+                      onPressed: () {
+                        Navigator.of(sheetContext).pop();
+                        // The sheet's context is gone once it's popped.
+                        openCitation(context, c);
+                      },
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 8),
                 Text(c.source.chunk.text),

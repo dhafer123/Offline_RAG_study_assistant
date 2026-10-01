@@ -53,7 +53,7 @@ final class ChatControllerProvider
   }
 }
 
-String _$chatControllerHash() => r'19f3cdca07b435211b0bc71f297ab6b12119ebb2';
+String _$chatControllerHash() => r'5b080cec016cecc07acc50fc3994480dc8a3442a';
 
 /// The chat session: asks questions one at a time through [AnswerService].
 ///
