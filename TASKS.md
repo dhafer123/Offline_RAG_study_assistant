@@ -102,9 +102,10 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
   *Done when:* unit tests check the output and the budget.
   *Notes:* Pure `buildAnswerPrompt` in `lib/features/chat/prompt_builder.dart` returns the text plus the numbered sources (`sources[n - 1]` = `[n]`, for 3.4). Rules in English, with an explicit "Answer in French/English" from `detectQuestionLanguage` (`question_language.dart`, function-word count; matches all 60 eval questions), because a 1B model follows that better than "answer in the question's language". The not-found reply is per language (`notFoundReplies`), shared with the 3.3 gate. Reference markers in course text ("[12]", "[3, 4]") become "(12)" so they can't be mistaken for citations. Budget 2,000 tokens over the whole prompt: sources are dropped from the end, and the first one that only partly fits is cut at a word boundary (kept if ≥ 60 tokens). Token counts are estimated (the real tokenizer needs the loaded model); the estimator was calibrated against Gemma's tokenizer extracted from the model file: 0.98–1.23× real on 5-source prompts, see METRICS.md. Not yet run through the model: 3.3 does that.
 
-- [ ] **3.3 AnswerService + "not found" gate**
+- [x] **3.3 AnswerService + "not found" gate**
   Check the similarity threshold, then build the prompt and stream the answer. Put the threshold in config.
   *Done when:* an unanswerable question returns "Not found in your documents" without calling the LLM.
+  *Notes:* `AnswerService.answer(question)` streams sealed `AnswerEvent`s: `AnswerNotFound` alone, or `AnswerSources` (the numbered sources, for chips) → `AnswerToken`s → `AnswerDone` (text, load time, `GenerationMetrics`); cancelling stops generation, and failures become `AnswerException` with a user-facing message. The gate compares the best vector similarity to `AnswerConfig.similarityThreshold` (`answerConfigProvider`), **0.30 for now**: on the eval set it refuses 2/10 unanswerable and 2/50 answerable questions; 3.7 tunes it. The LLM loads only once the gate passes. Retrieval debug screen has an **Answer** button until the chat screen. On the phone: "Who introduced the transformer architecture?" → best 0.252 → "Not found in your documents.", LLM not called. Two answerable questions were answered correctly in the right language, but **time to first token was 45–49 s** for 1,200–1,600 prompt tokens (CPU prefill); see METRICS.md.
 
 - [ ] **3.4 Citation parser**
   Turn `[n]` markers into chunk → document + page. Drop numbers that match no source.
@@ -166,5 +167,7 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
 - 2026-09-30: Gemma 3 1B reaches 8.4 tok/s on CPU (Gate 1 needs 5). Compared with Qwen3 0.6B anyway (1.5): Gemma 3 1B stays the default.
 
 - 2026-10-01: switched the app to vector-only retrieval (`defaultRetrievalMode`): hybrid (3.1) scored 84% vs 90% Recall@5 because about half the eval questions are cross-language. The hybrid code stays and can still be run from the retrieval eval screen.
+
+- 2026-10-01: a full 5-source prompt (1,200–1,600 tokens) takes 45–49 s to the first token on the A16's CPU. Measure TTFT against prompt size and pick top k / budget from it before the chat screen (3.5); the 2,000-token budget assumed prefill was cheap.
 
 <!-- Add a short dated line whenever a decision changes the plan, e.g. "2026-10-05: switched to Qwen3 0.6B, Gemma 3 1B only reached 3 tok/s." -->

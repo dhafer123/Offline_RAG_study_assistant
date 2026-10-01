@@ -18,6 +18,8 @@ import 'package:offline_study_assistant/core/pdf/pdf_text_extractor.dart';
 import 'package:offline_study_assistant/core/pdf/pdfrx_text_extractor.dart';
 import 'package:offline_study_assistant/core/perf.dart';
 import 'package:offline_study_assistant/core/settings/app_settings.dart';
+import 'package:offline_study_assistant/features/chat/answer_config.dart';
+import 'package:offline_study_assistant/features/chat/answer_service.dart';
 import 'package:offline_study_assistant/features/chat/retrieval_service.dart';
 import 'package:offline_study_assistant/features/library/ingestion_service.dart';
 import 'package:offline_study_assistant/features/library/pdf_files.dart';
@@ -171,3 +173,15 @@ LlmEngine llmEngine(Ref ref) {
   ref.onDispose(engine.unload);
   return engine;
 }
+
+/// Gate threshold, top k and prompt budget. Tests and the threshold tuning
+/// (task 3.7) override it.
+@Riverpod(keepAlive: true)
+AnswerConfig answerConfig(Ref ref) => const AnswerConfig();
+
+@Riverpod(keepAlive: true)
+AnswerService answerService(Ref ref) => AnswerService(
+  retrieval: ref.watch(retrievalServiceProvider),
+  llm: ref.watch(llmEngineProvider),
+  config: ref.watch(answerConfigProvider),
+);

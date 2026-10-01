@@ -115,6 +115,21 @@ Hybrid is **6 points worse** than vector only overall (−3 questions): it fixes
 - **Prompt with 5 sources** (500 random draws of 5 chunks + an eval question): median 1,267 tokens, max 1,790. The 2,000-token budget normally keeps all 5 sources; trimming only kicks in for long, dense chunks.
 - **Estimator** (`estimateTokens`, used because the real tokenizer needs the loaded model): one token per word, plus one per 6 further letters, plus one per digit or punctuation mark. On those 500 prompts it gives 0.98–1.23× the real count (median 1.12). "Characters / 3" was 1.54× on prose and still too low on the table-of-contents chunk, so it was dropped.
 
+## First answers on the phone (task 3.3)
+
+2026-10-01, Galaxy A16, release build, retrieval debug screen → **Answer**, vector retrieval, gate threshold 0.30, 5 sources, Gemma 3 1B on CPU. Same 6-document index as the retrieval eval. Single runs, not medians: the speed benchmark over many questions is task 4.1.
+
+| Question | Gate (best similarity) | Prompt tokens (real / estimated) | Retrieval | Time to first token | Decode | Answer |
+|---|---|---|---|---|---|---|
+| "Who introduced the transformer architecture?" (u07, unanswerable) | **refused** (0.252) | – | 4.47 s (incl. embedder load) | – | – | "Not found in your documents.", LLM not called |
+| "Why did the team pick Godot 4 to build the game?" (EN question, FR document) | passed (0.505) | 1,587 / 1,758 | 2.16 s | **49.3 s** (+1.7 s model load) | 7.85 tok/s, 109 tokens | Correct, in English, cites [1]–[3] |
+| "Quel est le role du GameManager dans NeoQuest 2D ?" | passed (0.607) | 1,190 / 1,307 | 2.45 s | **44.9 s** | 7.06 tok/s, 48 tokens | Correct, in French, no citation marker |
+
+- **Memory:** peak 1.59 GB PSS with the embedder and the LLM both loaded (sampled every 2 s with `dumpsys meminfo`); no crash.
+- **The token estimate holds on the real model:** 1.10–1.11× the count LiteRT-LM reports, which also includes the chat-template tokens.
+- **Time to first token is the problem:** 45–49 s for a 1,200–1,600-token prompt (184 tokens took 4.4 s in 1.4), about 26–32 prompt tokens/s on CPU. The two prompts differ by 400 tokens but only by 4.4 s, so prefill may run in fixed-size blocks (the model file is "multi-prefill-seq"). This needs a dedicated measurement of TTFT against prompt size before the chat screen.
+- **Citations to check in 3.4:** the English answer numbered its markers [1], [2], [3] one per sentence, which may follow the sentence order rather than the sources. The French answer cited nothing.
+
 ## Answers (50 answerable + 10 unanswerable)
 
 | Date | Correct | Partial | Wrong | Citation accuracy | Correct refusals (of 10) |

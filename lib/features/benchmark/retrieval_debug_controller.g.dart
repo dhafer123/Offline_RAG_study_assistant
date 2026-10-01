@@ -8,15 +8,21 @@ part of 'retrieval_debug_controller.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// Indexes PDFs pushed to the pdfs folder and runs vector searches (task 2.5).
+/// Indexes PDFs pushed to the pdfs folder, runs vector searches (task 2.5)
+/// and answers questions through `AnswerService` (task 3.3, until the chat
+/// screen).
 
 @ProviderFor(RetrievalDebugController)
 final retrievalDebugControllerProvider = RetrievalDebugControllerProvider._();
 
-/// Indexes PDFs pushed to the pdfs folder and runs vector searches (task 2.5).
+/// Indexes PDFs pushed to the pdfs folder, runs vector searches (task 2.5)
+/// and answers questions through `AnswerService` (task 3.3, until the chat
+/// screen).
 final class RetrievalDebugControllerProvider
     extends $NotifierProvider<RetrievalDebugController, RetrievalDebugState> {
-  /// Indexes PDFs pushed to the pdfs folder and runs vector searches (task 2.5).
+  /// Indexes PDFs pushed to the pdfs folder, runs vector searches (task 2.5)
+  /// and answers questions through `AnswerService` (task 3.3, until the chat
+  /// screen).
   RetrievalDebugControllerProvider._()
     : super(
         from: null,
@@ -45,9 +51,11 @@ final class RetrievalDebugControllerProvider
 }
 
 String _$retrievalDebugControllerHash() =>
-    r'd72bc5e86fde44d8841882ca7cfb19815d5a68e0';
+    r'99650abdb3b5ae99925c53171c6628ecf945f68e';
 
-/// Indexes PDFs pushed to the pdfs folder and runs vector searches (task 2.5).
+/// Indexes PDFs pushed to the pdfs folder, runs vector searches (task 2.5)
+/// and answers questions through `AnswerService` (task 3.3, until the chat
+/// screen).
 
 abstract class _$RetrievalDebugController
     extends $Notifier<RetrievalDebugState> {

@@ -989,3 +989,93 @@ final class LlmEngineProvider
 }
 
 String _$llmEngineHash() => r'ea69d6f3d87f94d5892814a2d997e67a5c84daef';
+
+/// Gate threshold, top k and prompt budget. Tests and the threshold tuning
+/// (task 3.7) override it.
+
+@ProviderFor(answerConfig)
+final answerConfigProvider = AnswerConfigProvider._();
+
+/// Gate threshold, top k and prompt budget. Tests and the threshold tuning
+/// (task 3.7) override it.
+
+final class AnswerConfigProvider
+    extends $FunctionalProvider<AnswerConfig, AnswerConfig, AnswerConfig>
+    with $Provider<AnswerConfig> {
+  /// Gate threshold, top k and prompt budget. Tests and the threshold tuning
+  /// (task 3.7) override it.
+  AnswerConfigProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'answerConfigProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$answerConfigHash();
+
+  @$internal
+  @override
+  $ProviderElement<AnswerConfig> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  AnswerConfig create(Ref ref) {
+    return answerConfig(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AnswerConfig value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AnswerConfig>(value),
+    );
+  }
+}
+
+String _$answerConfigHash() => r'8eda979bb06cff7492878dc9713085a5bcd4ba1d';
+
+@ProviderFor(answerService)
+final answerServiceProvider = AnswerServiceProvider._();
+
+final class AnswerServiceProvider
+    extends $FunctionalProvider<AnswerService, AnswerService, AnswerService>
+    with $Provider<AnswerService> {
+  AnswerServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'answerServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$answerServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<AnswerService> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  AnswerService create(Ref ref) {
+    return answerService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AnswerService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AnswerService>(value),
+    );
+  }
+}
+
+String _$answerServiceHash() => r'f860c7c2f6adceca51dc538d0e14620343cd62b9';

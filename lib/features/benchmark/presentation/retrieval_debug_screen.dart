@@ -116,6 +116,13 @@ class _RetrievalDebugScreenState extends ConsumerState<RetrievalDebugScreen> {
                     : () => controller.search(_query.text),
                 child: const Text('Search'),
               ),
+              const SizedBox(width: 8),
+              OutlinedButton(
+                onPressed: state.isBusy
+                    ? null
+                    : () => controller.answer(_query.text),
+                child: const Text('Answer'),
+              ),
               const SizedBox(width: 16),
               if (state.status == RetrievalDebugStatus.searching)
                 const Text('Searching…')
@@ -123,6 +130,12 @@ class _RetrievalDebugScreenState extends ConsumerState<RetrievalDebugScreen> {
                 Text('${time.inMilliseconds} ms'),
             ],
           ),
+          if (state.answerInfo.isNotEmpty) ...[
+            const SizedBox(height: 16),
+            Text(state.answerInfo, style: theme.textTheme.bodySmall),
+            const SizedBox(height: 8),
+            SelectableText(state.answer, style: theme.textTheme.bodyLarge),
+          ],
           if (state.errorMessage case final message?
               when state.status == RetrievalDebugStatus.error) ...[
             const SizedBox(height: 16),

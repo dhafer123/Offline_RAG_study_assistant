@@ -5,13 +5,14 @@ import 'package:offline_study_assistant/app/providers.dart';
 import 'package:offline_study_assistant/core/ai/embedder.dart';
 import 'package:offline_study_assistant/core/db/document_store.dart';
 import 'package:offline_study_assistant/core/perf.dart';
+import 'package:offline_study_assistant/features/chat/answer_service.dart';
 import 'package:offline_study_assistant/features/chat/retrieval_service.dart';
 import 'package:offline_study_assistant/features/library/ingestion_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'retrieval_debug_controller.g.dart';
 
-enum RetrievalDebugStatus { idle, indexing, searching, error }
+enum RetrievalDebugStatus { idle, indexing, searching, answering, error }
 
 @immutable
 class RetrievalDebugState {
@@ -24,6 +25,8 @@ class RetrievalDebugState {
     this.lastIngestion,
     this.results = const [],
     this.searchTime,
+    this.answer = '',
+    this.answerInfo = '',
     this.errorMessage,
   });
 
@@ -39,11 +42,18 @@ class RetrievalDebugState {
 
   /// Embedding the question plus the search.
   final Duration? searchTime;
+
+  /// The streamed answer, or the gate's "not found" message.
+  final String answer;
+
+  /// Gate decision and timings of the last answer.
+  final String answerInfo;
   final String? errorMessage;
 
   bool get isBusy =>
       status == RetrievalDebugStatus.indexing ||
-      status == RetrievalDebugStatus.searching;
+      status == RetrievalDebugStatus.searching ||
+      status == RetrievalDebugStatus.answering;
 
   RetrievalDebugState copyWith({
     RetrievalDebugStatus? status,
@@ -54,6 +64,8 @@ class RetrievalDebugState {
     IngestionResult? lastIngestion,
     List<RetrievedChunk>? results,
     Duration? searchTime,
+    String? answer,
+    String? answerInfo,
     String? errorMessage,
   }) {
     return RetrievalDebugState(
@@ -65,12 +77,16 @@ class RetrievalDebugState {
       lastIngestion: lastIngestion ?? this.lastIngestion,
       results: results ?? this.results,
       searchTime: searchTime ?? this.searchTime,
+      answer: answer ?? this.answer,
+      answerInfo: answerInfo ?? this.answerInfo,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 }
 
-/// Indexes PDFs pushed to the pdfs folder and runs vector searches (task 2.5).
+/// Indexes PDFs pushed to the pdfs folder, runs vector searches (task 2.5)
+/// and answers questions through `AnswerService` (task 3.3, until the chat
+/// screen).
 @riverpod
 class RetrievalDebugController extends _$RetrievalDebugController {
   @override
@@ -129,7 +145,11 @@ class RetrievalDebugController extends _$RetrievalDebugController {
 
   Future<void> search(String question) async {
     if (state.isBusy || question.trim().isEmpty) return;
-    state = state.copyWith(status: RetrievalDebugStatus.searching);
+    state = state.copyWith(
+      status: RetrievalDebugStatus.searching,
+      answer: '',
+      answerInfo: '',
+    );
     try {
       final (results, time) = await Perf.time(
         () => ref.read(retrievalServiceProvider).retrieve(question),
@@ -146,12 +166,74 @@ class RetrievalDebugController extends _$RetrievalDebugController {
     }
   }
 
+  /// Answers [question]: the gate's verdict, the sources, then the streamed
+  /// answer.
+  Future<void> answer(String question) async {
+    if (state.isBusy || question.trim().isEmpty) return;
+    state = state.copyWith(
+      status: RetrievalDebugStatus.answering,
+      results: const [],
+      answer: '',
+      answerInfo: 'Retrieving…',
+    );
+    try {
+      await for (final event
+          in ref.read(answerServiceProvider).answer(question)) {
+        if (!ref.mounted) return;
+        state = switch (event) {
+          AnswerNotFound(
+            :final message,
+            :final bestSimilarity,
+            :final retrievalTime,
+          ) =>
+            state.copyWith(
+              answer: message,
+              answerInfo:
+                  'Gate: best similarity '
+                  '${bestSimilarity?.toStringAsFixed(3) ?? 'none'} < '
+                  '${ref.read(answerConfigProvider).similarityThreshold}, '
+                  'LLM not called · retrieval '
+                  '${retrievalTime.inMilliseconds} ms',
+            ),
+          AnswerSources(
+            :final prompt,
+            :final bestSimilarity,
+            :final retrievalTime,
+          ) =>
+            state.copyWith(
+              results: prompt.sources,
+              answerInfo:
+                  'Gate passed (best ${bestSimilarity.toStringAsFixed(3)}) · '
+                  'retrieval ${retrievalTime.inMilliseconds} ms · '
+                  '${prompt.sources.length} sources, '
+                  '~${prompt.estimatedTokens} prompt tokens · generating…',
+            ),
+          AnswerToken(:final text) => state.copyWith(
+            answer: state.answer + text,
+          ),
+          AnswerDone(:final modelLoadTime, :final generation) => state.copyWith(
+            answerInfo:
+                '${state.answerInfo.replaceAll(' · generating…', '')} · '
+                'load ${modelLoadTime.inMilliseconds} ms · $generation',
+          ),
+        };
+      }
+      if (ref.mounted) {
+        state = state.copyWith(status: RetrievalDebugStatus.idle);
+      }
+    } on Object catch (e) {
+      if (ref.mounted) state = _failed(e);
+    }
+  }
+
   RetrievalDebugState _failed(Object error) => state.copyWith(
     status: RetrievalDebugStatus.error,
     errorMessage: switch (error) {
       IngestionException(:final message, :final cause) =>
         cause == null ? message : '$message: $cause',
       EmbedderException(:final message) => message,
+      AnswerException(:final message, :final cause) =>
+        cause == null ? message : '$message ($cause)',
       _ => '$error',
     },
   );
