@@ -164,6 +164,6 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
 - 2026-10-01: drift without code generation (drift_dev conflicts with riverpod_generator on Flutter 3.38.9). Typed drift tables can come back after a Flutter upgrade.
 - 2026-09-30: Gemma 3 1B reaches 8.4 tok/s on CPU (Gate 1 needs 5). Compared with Qwen3 0.6B anyway (1.5): Gemma 3 1B stays the default.
 
-- 2026-10-01: hybrid retrieval (3.1) scored below vector-only (84% vs 90% Recall@5) because about half the eval questions are cross-language. Hybrid stays the default for now, as planned; decide before 3.5 whether to keep it, fix the keyword side, or switch to vector-only.
+- 2026-10-01: switched the app to vector-only retrieval (`defaultRetrievalMode`): hybrid (3.1) scored 84% vs 90% Recall@5 because about half the eval questions are cross-language. The hybrid code stays and can still be run from the retrieval eval screen.
 
 <!-- Add a short dated line whenever a decision changes the plan, e.g. "2026-10-05: switched to Qwen3 0.6B, Gemma 3 1B only reached 3 tok/s." -->

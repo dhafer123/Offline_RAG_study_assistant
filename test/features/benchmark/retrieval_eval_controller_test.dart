@@ -86,9 +86,9 @@ void main() {
 
     final file = File(state.exportPath!);
     expect(file.parent.path, exportDir.path);
-    expect(file.uri.pathSegments.last, startsWith('retrieval_hybrid_'));
+    expect(file.uri.pathSegments.last, startsWith('retrieval_vector_'));
     final report = jsonDecode(file.readAsStringSync()) as Map<String, dynamic>;
-    expect(report['method'], 'hybrid');
+    expect(report['method'], 'vector');
     expect(report['indexed_documents'], ['game.pdf']);
     expect((report['summary'] as Map)['recall_at_k'], 0.5);
   });

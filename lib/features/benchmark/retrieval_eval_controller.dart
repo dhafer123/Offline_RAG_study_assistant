@@ -22,7 +22,7 @@ enum RetrievalEvalStatus { idle, running, done, error }
 @immutable
 class RetrievalEvalState {
   const RetrievalEvalState({
-    this.mode = RetrievalMode.hybrid,
+    this.mode = defaultRetrievalMode,
     this.status = RetrievalEvalStatus.idle,
     this.done = 0,
     this.total = 0,

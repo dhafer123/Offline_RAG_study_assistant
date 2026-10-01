@@ -83,7 +83,7 @@ Questions: `eval/questions.json` (50 answerable + 10 unanswerable, 5 PDFs, 31 EN
 | 2026-10-01 | Keyword only (FTS5 BM25) | 60.0% (30/50) | 0.492 | 24 | 6 |
 | 2026-10-01 | Hybrid (vector + FTS5, RRF k = 60) | 84.0% (42/50) | 0.649 | **26** | 16 |
 
-Hybrid is **6 points worse** than vector only overall (−3 questions): it fixes the exact-term questions but loses cross-language ones. See the hybrid section below.
+Hybrid is **6 points worse** than vector only overall (−3 questions): it fixes the exact-term questions but loses cross-language ones. See the hybrid section below. **Decision (2026-10-01): the app uses vector only.**
 
 **Vector only (task 2.8)**, retrieval eval screen, release build, single run (deterministic: same index, same questions): `eval/results/retrieval_vector_20261001-123211.json`.
 

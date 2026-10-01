@@ -6,15 +6,24 @@ import 'package:offline_study_assistant/features/chat/rrf.dart';
 
 /// Which searches [RetrievalService.retrieve] runs.
 enum RetrievalMode {
-  /// Embedding similarity only.
+  /// Embedding similarity only. The app's default (see
+  /// [defaultRetrievalMode]).
   vector,
 
   /// FTS5 (BM25) only; doesn't load the embedder.
   keyword,
 
-  /// Vector and keyword results merged with RRF. The app's default.
+  /// Vector and keyword results merged with RRF.
   hybrid,
 }
+
+/// The mode the app answers with.
+///
+/// Vector only: hybrid scored 84% Recall@5 against 90% for vector only on the
+/// eval set (task 3.1, docs/METRICS.md). FTS5 can't match a question asked
+/// in the other language than the document, and in RRF its noise pushes the
+/// right vector hits out of the top 5.
+const RetrievalMode defaultRetrievalMode = RetrievalMode.vector;
 
 /// A chunk found for a question, with what a citation needs.
 @immutable
@@ -42,8 +51,9 @@ class RetrievedChunk {
 
 /// Finds the chunks most relevant to a question.
 ///
-/// Hybrid by default: the top [candidates] of the vector search and of the
-/// FTS5 search are merged with Reciprocal Rank Fusion, then cut to `k`.
+/// Vector search by default ([defaultRetrievalMode]). In hybrid mode the top
+/// [candidates] of the vector search and of the FTS5 search are merged with
+/// Reciprocal Rank Fusion, then cut to `k`.
 class RetrievalService {
   RetrievalService({
     required Embedder embedder,
@@ -67,7 +77,7 @@ class RetrievalService {
   Future<List<RetrievedChunk>> retrieve(
     String question, {
     int k = 5,
-    RetrievalMode mode = RetrievalMode.hybrid,
+    RetrievalMode mode = defaultRetrievalMode,
   }) async {
     if (question.trim().isEmpty) return const [];
 

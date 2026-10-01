@@ -3,7 +3,7 @@
 [![CI](https://github.com/dhafer123/Offline_RAG_study_assistant/actions/workflows/ci.yml/badge.svg)](https://github.com/dhafer123/Offline_RAG_study_assistant/actions/workflows/ci.yml)
 
 Ask questions about your course PDFs and get answers that cite their pages, **fully offline**.
-Retrieval (vector search + BM25, fused with RRF) and generation (Gemma 3 1B) both run on the phone.
+Retrieval (EmbeddingGemma vector search) and generation (Gemma 3 1B) both run on the phone.
 Tap a citation to open the PDF at that page.
 
 > 🚧 Work in progress. See [TASKS.md](TASKS.md) for the roadmap.
@@ -11,7 +11,7 @@ Tap a citation to open the PDF at that page.
 ## How it works
 
 1. **Indexing:** PDF → text per page → clean → chunk (~250 words) → embed (EmbeddingGemma) → SQLite (drift + sqlite-vec + FTS5).
-2. **Answering:** embed the question → vector top 20 + keyword top 20 → RRF → top 5 → grounded prompt → streamed answer with `[n]` citations.
+2. **Answering:** embed the question → vector top 5 → grounded prompt → streamed answer with `[n]` citations. Hybrid search (vector + BM25 with RRF) was measured and dropped: 84% vs 90% Recall@5, because keyword search can't match a French question to an English course or the reverse ([METRICS.md](docs/METRICS.md)).
 
 No network calls at runtime, except the one-time model download.
 

@@ -110,7 +110,10 @@ void main() {
     test('adds keyword-only matches, with no similarity', () async {
       final service = withVectorHits([(0, 0.6), (1, 0.5)]);
 
-      final results = await service.retrieve('Who is Burke?');
+      final results = await service.retrieve(
+        'Who is Burke?',
+        mode: RetrievalMode.hybrid,
+      );
 
       expect([for (final r in results) r.page], [1, 3, 2]);
       final burke = results[1];
@@ -122,7 +125,10 @@ void main() {
     test('ranks a chunk found by both searches first', () async {
       final service = withVectorHits([(0, 0.6), (1, 0.5)]);
 
-      final results = await service.retrieve('cold start users');
+      final results = await service.retrieve(
+        'cold start users',
+        mode: RetrievalMode.hybrid,
+      );
 
       expect(results.first.page, 2);
       expect(results.first.score, closeTo(1 / 62 + 1 / 61, 1e-12));
@@ -141,20 +147,22 @@ void main() {
         candidates: 7,
       );
 
-      final results = await service.retrieve('Burke', k: 1);
+      final results = await service.retrieve(
+        'Burke',
+        k: 1,
+        mode: RetrievalMode.hybrid,
+      );
 
       expect(index.ks, [7]);
       expect(results, hasLength(1));
     });
 
-    test('vector mode ignores keyword matches', () async {
+    test('defaults to vector mode, which ignores keyword matches', () async {
       final service = withVectorHits([(0, 0.6), (1, 0.5)]);
 
-      final results = await service.retrieve(
-        'Who is Burke?',
-        mode: RetrievalMode.vector,
-      );
+      final results = await service.retrieve('Who is Burke?');
 
+      expect(defaultRetrievalMode, RetrievalMode.vector);
       expect([for (final r in results) r.page], [1, 2]);
       expect([for (final r in results) r.score], [0.6, 0.5]);
     });
@@ -177,7 +185,10 @@ void main() {
     test('still works when no word of the question is indexed', () async {
       final service = withVectorHits([(1, 0.4)]);
 
-      final results = await service.retrieve('xyzzy?');
+      final results = await service.retrieve(
+        'xyzzy?',
+        mode: RetrievalMode.hybrid,
+      );
 
       expect([for (final r in results) r.page], [2]);
     });
