@@ -81,11 +81,12 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
   *Done when:* the file is committed. (Write the questions yourself, not with AI, so the eval stays honest.)
   *Notes:* Written by Claude at the author's request (the AI rule was waived), disclosed in the file's `method` field and in METRICS.md. Safeguards: written from the cleaned page text before any retrieval benchmark ran on them, paraphrased instead of copied, every answer's key term checked on its listed pages by script, and unanswerable questions checked against all documents (5 of the 10 are near misses). 5 PDFs (2 FR, 3 EN): 24 questions on `ps_game`, 12 on `etat_de_l_art`, 7/4/3 on the short English ones; 31 EN / 29 FR, some cross-language. `pages` is a list (an answer can span a page break). The PFE report is left out: its content must not enter the public repo.
 
-- [ ] **2.8 Vector-only Recall@5**
+- [x] **2.8 Vector-only Recall@5**
   Add a benchmark screen that runs retrieval for every question and exports JSON.
   *Done when:* the Recall@5 number is in METRICS.md.
+  *Notes:* Retrieval eval screen (Library → retrieval debug → checklist icon). `eval/questions.json` is bundled as an asset; pure scoring in `retrieval_eval.dart` (rank of the first chunk from the right doc + page, Recall@k, MRR, per language/doc), retriever passed in so 3.1 reuses it. JSON goes to the app's external files folder (`adb pull /sdcard/Android/data/com.dhafer.offline_study_assistant/files/eval_results/`), copied to `eval/results/`. **Recall@5 = 90.0% (45/50), MRR 0.687**, with a 120-page distractor indexed. Unanswerable questions score about as high as answerable ones (max 0.59 vs median 0.51): a threshold alone won't make a good "not found" gate (3.3/3.7).
 
-**Gate 2:** Recall@5 is measured and all tests pass.
+**Gate 2:** Recall@5 is measured and all tests pass. ✅ 2026-10-01: vector-only Recall@5 = 90.0%, 207 tests pass.
 
 ---
 

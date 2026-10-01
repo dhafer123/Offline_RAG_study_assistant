@@ -146,6 +146,58 @@ final class PdfsDirectoryProvider
 
 String _$pdfsDirectoryHash() => r'784a5d74feb55501d830997db19545be0a2e9d44';
 
+/// Where benchmark results are written. Set in `main()`: on Android, the
+/// app's external files folder, which `adb pull` can read without `run-as`
+/// (release builds aren't debuggable).
+
+@ProviderFor(exportDirectory)
+final exportDirectoryProvider = ExportDirectoryProvider._();
+
+/// Where benchmark results are written. Set in `main()`: on Android, the
+/// app's external files folder, which `adb pull` can read without `run-as`
+/// (release builds aren't debuggable).
+
+final class ExportDirectoryProvider
+    extends $FunctionalProvider<String, String, String>
+    with $Provider<String> {
+  /// Where benchmark results are written. Set in `main()`: on Android, the
+  /// app's external files folder, which `adb pull` can read without `run-as`
+  /// (release builds aren't debuggable).
+  ExportDirectoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'exportDirectoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$exportDirectoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<String> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  String create(Ref ref) {
+    return exportDirectory(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<String>(value),
+    );
+  }
+}
+
+String _$exportDirectoryHash() => r'45554c9ca07cc88061471893487a93e9aa0b7b0d';
+
 /// The SQLite database. Opened lazily on first query.
 
 @ProviderFor(appDatabase)

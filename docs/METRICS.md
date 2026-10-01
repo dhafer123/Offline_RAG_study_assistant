@@ -79,8 +79,18 @@ Questions: `eval/questions.json` (50 answerable + 10 unanswerable, 5 PDFs, 31 EN
 
 | Date | Method | Recall@5 |
 |---|---|---|
-| | Vector only | |
+| 2026-10-01 | Vector only | **90.0%** (45/50) |
 | | Hybrid (vector + FTS5, RRF) | |
+
+**Vector only (task 2.8)**, retrieval eval screen, release build, single run (deterministic: same index, same questions): `eval/results/retrieval_vector_20261001-123211.json`.
+
+- Index: the 5 eval PDFs (50 chunks) plus a 120-page French report that is not in the eval set (132 chunks), as a distractor. Its title is anonymized in the committed JSON (`distractor_report_120p`).
+- **MRR 0.687.** First correct chunk at rank 1 for 28 questions, 2 for 7, 3 for 6, 4–5 for 4; 5 misses.
+- By language: EN 23/26, FR 22/24. Cross-language questions (asked in the other language than the document): 20/24.
+- By document: `01_ai_fundamentals` 3/3, `02_rag_basics` 4/4, `03_rag_architecture` 6/7, `etat_de_l_art` 11/12, `ps_game` 21/24.
+- **Misses:** q05/q06 (Scrum events, sprint retrospective): the distractor report also describes Scrum and outranks the right page. q36 (author of the hybrid recommender paper): reference list chunks of both documents compete. q43 (French "groundedness" question on an English document): weak cross-language match, top similarity 0.27. q11 (performance requirement): matched the latency section (p. 28) instead of the requirements page (p. 18). Exact terms (Burke, groundedness, rétrospective) are what FTS5 should add in 3.1.
+- **Median 2.13 s per question**, nearly all of it embedding the question.
+- **For the "not found" gate (3.3/3.7):** best similarity per question, answerable median 0.506 (min 0.265), unanswerable median 0.475 (max 0.592). The two ranges overlap a lot: a similarity threshold alone will either refuse many answerable questions or let most unanswerable ones through.
 
 ## Answers (50 answerable + 10 unanswerable)
 

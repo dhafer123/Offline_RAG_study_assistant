@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:offline_study_assistant/app/router.dart';
 import 'package:offline_study_assistant/features/benchmark/retrieval_debug_controller.dart';
 import 'package:offline_study_assistant/features/library/ingestion_service.dart';
 
@@ -43,6 +45,13 @@ class _RetrievalDebugScreenState extends ConsumerState<RetrievalDebugScreen> {
       appBar: AppBar(
         title: const Text('Retrieval debug'),
         actions: [
+          IconButton(
+            tooltip: 'Retrieval eval',
+            icon: const Icon(Icons.fact_check_outlined),
+            onPressed: state.isBusy
+                ? null
+                : () => context.push(AppRoutes.retrievalEval),
+          ),
           IconButton(
             tooltip: 'Refresh',
             icon: const Icon(Icons.refresh),

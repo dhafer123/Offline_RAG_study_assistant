@@ -40,6 +40,13 @@ String databasePath(Ref ref) =>
 String pdfsDirectory(Ref ref) =>
     throw UnimplementedError('Override pdfsDirectoryProvider in main()');
 
+/// Where benchmark results are written. Set in `main()`: on Android, the
+/// app's external files folder, which `adb pull` can read without `run-as`
+/// (release builds aren't debuggable).
+@Riverpod(keepAlive: true)
+String exportDirectory(Ref ref) =>
+    throw UnimplementedError('Override exportDirectoryProvider in main()');
+
 /// The SQLite database. Opened lazily on first query.
 @Riverpod(keepAlive: true)
 AppDatabase appDatabase(Ref ref) {
