@@ -371,6 +371,139 @@ final class PdfTextExtractorProvider
 
 String _$pdfTextExtractorHash() => r'49f038bdbf331a5957f3ab4c3bbafc7da59135a0';
 
+/// Frame timings while a document indexes (is the UI still smooth?).
+
+@ProviderFor(frameMonitor)
+final frameMonitorProvider = FrameMonitorProvider._();
+
+/// Frame timings while a document indexes (is the UI still smooth?).
+
+final class FrameMonitorProvider
+    extends $FunctionalProvider<FrameMonitor, FrameMonitor, FrameMonitor>
+    with $Provider<FrameMonitor> {
+  /// Frame timings while a document indexes (is the UI still smooth?).
+  FrameMonitorProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'frameMonitorProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$frameMonitorHash();
+
+  @$internal
+  @override
+  $ProviderElement<FrameMonitor> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  FrameMonitor create(Ref ref) {
+    return frameMonitor(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(FrameMonitor value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<FrameMonitor>(value),
+    );
+  }
+}
+
+String _$frameMonitorHash() => r'982e9153098adb5c38cc37b0d2f2188255499974';
+
+@ProviderFor(pdfPicker)
+final pdfPickerProvider = PdfPickerProvider._();
+
+final class PdfPickerProvider
+    extends $FunctionalProvider<PdfPicker, PdfPicker, PdfPicker>
+    with $Provider<PdfPicker> {
+  PdfPickerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'pdfPickerProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$pdfPickerHash();
+
+  @$internal
+  @override
+  $ProviderElement<PdfPicker> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  PdfPicker create(Ref ref) {
+    return pdfPicker(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(PdfPicker value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<PdfPicker>(value),
+    );
+  }
+}
+
+String _$pdfPickerHash() => r'cdca0e0ee7b5f19cec8c72a5b087772f06afc562';
+
+/// The app's copies of imported PDFs.
+
+@ProviderFor(pdfFiles)
+final pdfFilesProvider = PdfFilesProvider._();
+
+/// The app's copies of imported PDFs.
+
+final class PdfFilesProvider
+    extends $FunctionalProvider<PdfFiles, PdfFiles, PdfFiles>
+    with $Provider<PdfFiles> {
+  /// The app's copies of imported PDFs.
+  PdfFilesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'pdfFilesProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$pdfFilesHash();
+
+  @$internal
+  @override
+  $ProviderElement<PdfFiles> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  PdfFiles create(Ref ref) {
+    return pdfFiles(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(PdfFiles value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<PdfFiles>(value),
+    );
+  }
+}
+
+String _$pdfFilesHash() => r'5479cceb965fd4810049f70a0e60c49bf917cb51';
+
 @ProviderFor(ingestionService)
 final ingestionServiceProvider = IngestionServiceProvider._();
 

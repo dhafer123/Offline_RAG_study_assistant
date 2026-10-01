@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:flutter/foundation.dart';
 import 'package:offline_study_assistant/core/ai/embedder.dart';
 import 'package:offline_study_assistant/core/db/document_store.dart';
@@ -75,8 +77,9 @@ class IngestionException implements Exception {
 
 /// Indexes a PDF: extract → clean → chunk → embed → store.
 ///
-/// The document row is created first with status `indexing`, then set to
-/// `ready`, or to `failed` if any step throws.
+/// Nothing CPU-heavy runs on the calling (UI) isolate: pdfium runs on pdfrx's
+/// worker isolate, cleaning and chunking in [Isolate.run], embedding on
+/// flutter_gemma's worker isolate, and SQLite on drift's background isolate.
 class IngestionService {
   IngestionService({
     required PdfTextExtractor extractor,
@@ -96,38 +99,60 @@ class IngestionService {
   final VectorIndex _index;
   final StopwatchFactory _stopwatch;
 
-  /// Indexes the PDF at [path] under [title].
+  /// Registers the PDF at [path] as a `pending` document and returns its id.
+  /// Call [index] to make it searchable.
+  Future<int> addDocument(String path, {required String title}) =>
+      _store.insertDocument(title: title, path: path);
+
+  /// Indexes document [docId]: status `indexing`, then `ready`, or `failed`
+  /// if any step throws.
+  ///
+  /// Safe to run again on the same document (retry, or resume after the app
+  /// was killed): its previous chunks and vectors are dropped first.
   ///
   /// Throws [IngestionException] if the PDF has no text at all, or wraps the
   /// extractor's, embedder's or store's error.
-  Future<IngestionResult> ingest(
-    String path, {
-    required String title,
+  Future<IngestionResult> index(
+    int docId, {
     void Function(IngestionProgress progress)? onProgress,
   }) async {
-    final docId = await _store.insertDocument(
-      title: title,
-      path: path,
-      status: DocumentStatus.indexing,
-    );
+    final doc = await _store.getDocument(docId);
+    if (doc == null) throw DocumentNotFoundException(docId);
+    await _store.updateDocument(docId, status: DocumentStatus.indexing);
     try {
-      final result = await _ingest(docId, path, onProgress);
+      // Cascades to the FTS rows and vectors.
+      await _store.deleteChunks(docId);
+      final result = await _ingest(docId, doc.path, onProgress);
       await _store.updateDocument(
         docId,
         status: DocumentStatus.ready,
         pageCount: result.pageCount,
       );
-      Perf.log('ingest "$title": $result');
+      Perf.log('ingest "${doc.title}": $result');
       return result;
     } on Object catch (e, st) {
       await _store.updateDocument(docId, status: DocumentStatus.failed);
       if (e is IngestionException) rethrow;
       Error.throwWithStackTrace(
-        IngestionException('Indexing "$title" failed', cause: e),
+        IngestionException('Indexing "${doc.title}" failed', cause: e),
         st,
       );
     }
   }
+
+  /// [addDocument] then [index].
+  Future<IngestionResult> ingest(
+    String path, {
+    required String title,
+    void Function(IngestionProgress progress)? onProgress,
+  }) async =>
+      index(await addDocument(path, title: title), onProgress: onProgress);
+
+  /// CPU-bound (~100 ms for 100 pages), so it runs off the UI isolate.
+  /// Static so the closure captures only [pages], not this service (whose
+  /// database connection can't be sent to another isolate).
+  static Future<List<NewChunk>> _cleanAndChunk(List<String> pages) =>
+      Isolate.run(() => chunkPages(cleanPages(pages)));
 
   Future<IngestionResult> _ingest(
     int docId,
@@ -155,8 +180,9 @@ class IngestionService {
     }
 
     onProgress?.call(const IngestionProgress(IngestionStage.chunking));
+    final texts = [for (final p in doc.pages) p.text];
     final (chunks, chunkTime) = await Perf.time(
-      () async => chunkPages(cleanPages([for (final p in doc.pages) p.text])),
+      () => _cleanAndChunk(texts),
       stopwatch: _stopwatch,
     );
     if (chunks.isEmpty) {

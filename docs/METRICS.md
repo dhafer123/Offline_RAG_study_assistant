@@ -48,13 +48,18 @@ Notes:
 
 | Date | Document | Pages | Chunks | Indexing time (s) |
 |---|---|---|---|---|
+| 2026-10-01 | `Rapport_PFE` (end-of-study report, FR), Library import | 120 | 132 | **310.6** (embedding 309.5) |
 | 2026-10-01 | `ps_game` (project report, FR, LaTeX) | 34 | 35 | 81.8 (embedding 81.4) |
 | 2026-10-01 | `etat_de_l_art` (FR, LaTeX) | 4 | 9 | 22.2 (embedding 22.1) |
 | 2026-10-01 | `03_rag_architecture` (EN) | 2 | 3 | 6.9 |
 | 2026-10-01 | `02_rag_basics` (EN) | 1 | 2 | 4.7 |
 | 2026-10-01 | `01_ai_fundamentals` (EN) | 1 | 1 | 2.7 |
 
-Single runs (task 2.5, retrieval debug screen), not medians; the 100-page measurement comes with task 2.6. Extraction, cleaning, chunking and saving take under 0.5 s even for 34 pages: **embedding is ~99% of indexing time.**
+Single runs, not medians: the first row through the Library screen (task 2.6), the others through the retrieval debug screen (task 2.5).
+
+**100+ page document (task 2.6):** 120 pages, 1 without text, 132 chunks. Extraction 0.65 s, cleaning and chunking 0.13 s (background isolate), embedding 309.5 s (2.34 s per chunk), saving 0.26 s: **5 min 11 s** in total. Peak RAM 563 MB RSS (`dumpsys meminfo` every ~30 s).
+
+**UI while indexing it:** the app was used the whole time (53 trips to the retrieval debug screen and back, plus a progress bar updated after every chunk). Flutter frame timings (`FrameMonitor`, collected only while a document indexes): **4,468 frames, 8 over the 16.7 ms budget (0.18%)**; build p50/p90/p99/max = 0.7/1.9/6.7/23.2 ms, raster = 2.3/6.2/11.3/36.3 ms. `dumpsys gfxinfo` can't be used for this: Flutter renders into a SurfaceView it doesn't track. Extraction, cleaning, chunking and saving take under 0.5 s even for 34 pages: **embedding is ~99% of indexing time.**
 
 ## Embeddings and vector search
 

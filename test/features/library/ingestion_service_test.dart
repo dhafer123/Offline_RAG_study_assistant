@@ -123,4 +123,38 @@ void main() {
     expect(await db.chunksForDocument(doc.id), isEmpty);
     expect(await index.count(), 0);
   });
+
+  test('addDocument registers a pending document', () async {
+    final id = await service(
+      FakePdfTextExtractor(_pages),
+    ).addDocument('/pdfs/algo.pdf', title: 'Algo');
+
+    final doc = await db.getDocument(id);
+    expect(doc!.status, DocumentStatus.pending);
+    expect(doc.title, 'Algo');
+    expect(await db.chunksForDocument(id), isEmpty);
+  });
+
+  test('indexing again replaces the chunks and vectors', () async {
+    final s = service(FakePdfTextExtractor(_pages));
+    final id = await s.addDocument('/pdfs/algo.pdf', title: 'Algo');
+
+    await s.index(id);
+    final first = await db.chunksForDocument(id);
+    await s.index(id);
+    final second = await db.chunksForDocument(id);
+
+    expect(second, hasLength(first.length));
+    expect(second.first.id, isNot(first.first.id));
+    expect(await index.count(), first.length);
+    expect(await db.searchKeyword('dijkstra'), hasLength(1));
+    expect((await db.getDocument(id))!.status, DocumentStatus.ready);
+  });
+
+  test('indexing an unknown document throws', () async {
+    await expectLater(
+      service(FakePdfTextExtractor(_pages)).index(42),
+      throwsA(isA<DocumentNotFoundException>()),
+    );
+  });
 }

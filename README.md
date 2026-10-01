@@ -56,6 +56,10 @@ The file survives reinstalls (including `flutter run --release`, which uses the 
 
 3. Tap the bug icon on the Library screen → **Generate**.
 
+### Library
+
+Tap **Import PDF** and pick a file with the system picker: the app copies it into its own storage and indexes it in the background (one document at a time, with progress). A failed document shows why and can be retried from its menu; documents interrupted by closing the app resume on the next launch. Indexing needs the embedding model files below. Expect about 2.3 s per passage on a mid-range phone (5 min for a 120-page PDF).
+
 ### Retrieval debug (embeddings + vector search)
 
 Not downloaded by the app yet either. Request access to [litert-community/embeddinggemma-300m](https://huggingface.co/litert-community/embeddinggemma-300m), download `embeddinggemma-300M_seq512_mixed-precision.tflite` and `sentencepiece.model`, and copy both to `files/models` with the same commands as above. Then copy a few PDFs to `files/pdfs`:

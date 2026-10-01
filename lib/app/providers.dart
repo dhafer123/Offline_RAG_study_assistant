@@ -16,9 +16,11 @@ import 'package:offline_study_assistant/core/db/vector_index.dart';
 import 'package:offline_study_assistant/core/net/network_monitor.dart';
 import 'package:offline_study_assistant/core/pdf/pdf_text_extractor.dart';
 import 'package:offline_study_assistant/core/pdf/pdfrx_text_extractor.dart';
+import 'package:offline_study_assistant/core/perf.dart';
 import 'package:offline_study_assistant/core/settings/app_settings.dart';
 import 'package:offline_study_assistant/features/chat/retrieval_service.dart';
 import 'package:offline_study_assistant/features/library/ingestion_service.dart';
+import 'package:offline_study_assistant/features/library/pdf_files.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'providers.g.dart';
@@ -66,6 +68,17 @@ Embedder embedder(Ref ref) {
 
 @Riverpod(keepAlive: true)
 PdfTextExtractor pdfTextExtractor(Ref ref) => PdfrxTextExtractor();
+
+/// Frame timings while a document indexes (is the UI still smooth?).
+@Riverpod(keepAlive: true)
+FrameMonitor frameMonitor(Ref ref) => SchedulerFrameMonitor();
+
+@Riverpod(keepAlive: true)
+PdfPicker pdfPicker(Ref ref) => const FileSelectorPdfPicker();
+
+/// The app's copies of imported PDFs.
+@Riverpod(keepAlive: true)
+PdfFiles pdfFiles(Ref ref) => PdfFiles(ref.watch(pdfsDirectoryProvider));
 
 @Riverpod(keepAlive: true)
 IngestionService ingestionService(Ref ref) => IngestionService(

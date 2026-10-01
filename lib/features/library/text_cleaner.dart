@@ -5,6 +5,8 @@
 /// output has one entry per input page, so citations keep the right page.
 library;
 
+import 'dart:math' as math;
+
 /// Runs all cleaning rules on the pages of one document.
 ///
 /// Order matters: accents are fixed first (a stray accent can sit between a
@@ -143,7 +145,8 @@ List<List<String>> removeRepeatedEdgeLines(
     ];
     return {
       ...nonEmpty.take(edgeLines),
-      ...nonEmpty.skip(nonEmpty.length - edgeLines),
+      // A page can have fewer non-empty lines than edgeLines (blank pages).
+      ...nonEmpty.skip(math.max(0, nonEmpty.length - edgeLines)),
     }.toList();
   }
 

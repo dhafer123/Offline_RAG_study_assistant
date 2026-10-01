@@ -45,7 +45,7 @@ final class RetrievalDebugControllerProvider
 }
 
 String _$retrievalDebugControllerHash() =>
-    r'df3b1e381557c9b8bbf442780eb41598b80ec955';
+    r'd72bc5e86fde44d8841882ca7cfb19815d5a68e0';
 
 /// Indexes PDFs pushed to the pdfs folder and runs vector searches (task 2.5).
 

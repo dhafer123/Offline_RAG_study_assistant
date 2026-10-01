@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/scheduler.dart';
 
 /// Creates the stopwatch used for a measurement. Tests pass a fake one.
 typedef StopwatchFactory = Stopwatch Function();
@@ -99,5 +100,95 @@ class GenerationTimer {
       outputTokens: outputTokens ?? _chunks,
       promptTokens: promptTokens,
     );
+  }
+}
+
+/// Build and raster times of rendered frames, to check the UI stays smooth.
+class FrameStats {
+  /// Frame budget at 60 Hz. A frame whose build or raster phase takes longer
+  /// is counted as janky (Flutter DevTools' definition).
+  static const budget = Duration(microseconds: 16667);
+
+  final _build = <int>[];
+  final _raster = <int>[];
+
+  int get count => _build.length;
+
+  void add({required Duration build, required Duration raster}) {
+    _build.add(build.inMicroseconds);
+    _raster.add(raster.inMicroseconds);
+  }
+
+  /// Frames whose build or raster phase went over [budget].
+  int get janky {
+    var n = 0;
+    for (var i = 0; i < count; i++) {
+      if (_build[i] > budget.inMicroseconds ||
+          _raster[i] > budget.inMicroseconds) {
+        n++;
+      }
+    }
+    return n;
+  }
+
+  /// [p]-th percentile (0–100) of build times, nearest rank.
+  Duration buildPercentile(double p) => _percentile(_build, p);
+
+  /// [p]-th percentile (0–100) of raster times, nearest rank.
+  Duration rasterPercentile(double p) => _percentile(_raster, p);
+
+  static Duration _percentile(List<int> micros, double p) {
+    if (micros.isEmpty) return Duration.zero;
+    final sorted = [...micros]..sort();
+    final rank = ((p / 100) * sorted.length).ceil().clamp(1, sorted.length);
+    return Duration(microseconds: sorted[rank - 1]);
+  }
+
+  @override
+  String toString() {
+    String ms(Duration d) => (d.inMicroseconds / 1000).toStringAsFixed(1);
+    return 'frames=$count janky=$janky '
+        'build p50/p90/p99/max=${ms(buildPercentile(50))}/'
+        '${ms(buildPercentile(90))}/${ms(buildPercentile(99))}/'
+        '${ms(buildPercentile(100))}ms '
+        'raster p50/p90/p99/max=${ms(rasterPercentile(50))}/'
+        '${ms(rasterPercentile(90))}/${ms(rasterPercentile(99))}/'
+        '${ms(rasterPercentile(100))}ms';
+  }
+}
+
+/// Collects [FrameStats] between [start] and [stop].
+abstract interface class FrameMonitor {
+  void start();
+
+  /// Stops collecting and returns what was rendered since [start].
+  FrameStats stop();
+}
+
+/// [FrameMonitor] fed by the engine's frame timings. They arrive in batches
+/// (about once a second in release builds), so the last second before [stop]
+/// may be missing.
+class SchedulerFrameMonitor implements FrameMonitor {
+  FrameStats? _stats;
+
+  @override
+  void start() {
+    if (_stats != null) return;
+    _stats = FrameStats();
+    SchedulerBinding.instance.addTimingsCallback(_onTimings);
+  }
+
+  @override
+  FrameStats stop() {
+    SchedulerBinding.instance.removeTimingsCallback(_onTimings);
+    final stats = _stats ?? FrameStats();
+    _stats = null;
+    return stats;
+  }
+
+  void _onTimings(List<FrameTiming> timings) {
+    for (final t in timings) {
+      _stats?.add(build: t.buildDuration, raster: t.rasterDuration);
+    }
   }
 }

@@ -93,4 +93,40 @@ void main() {
       expect(timer.finish().tokensPerSecond, isNull);
     });
   });
+
+  group('FrameStats', () {
+    Duration ms(num v) => Duration(microseconds: (v * 1000).round());
+
+    test('is empty before any frame', () {
+      final stats = FrameStats();
+
+      expect(stats.count, 0);
+      expect(stats.janky, 0);
+      expect(stats.buildPercentile(90), Duration.zero);
+    });
+
+    test('counts frames over budget in either phase as janky', () {
+      final stats = FrameStats()
+        ..add(build: ms(5), raster: ms(5))
+        ..add(build: ms(20), raster: ms(5))
+        ..add(build: ms(5), raster: ms(17))
+        ..add(build: ms(16.6), raster: ms(16.6));
+
+      expect(stats.count, 4);
+      expect(stats.janky, 2);
+    });
+
+    test('reports nearest-rank percentiles', () {
+      final stats = FrameStats();
+      for (var i = 1; i <= 10; i++) {
+        stats.add(build: ms(i), raster: ms(i * 2));
+      }
+
+      expect(stats.buildPercentile(50), ms(5));
+      expect(stats.buildPercentile(90), ms(9));
+      expect(stats.buildPercentile(100), ms(10));
+      expect(stats.rasterPercentile(50), ms(10));
+      expect(stats.toString(), startsWith('frames=10 janky=2 '));
+    });
+  });
 }

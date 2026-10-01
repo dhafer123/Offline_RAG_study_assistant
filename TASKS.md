@@ -71,9 +71,10 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
   *Done when:* you can search an indexed document from a debug screen.
   *Notes:* flutter_gemma_rag_sqlite needs flutter_gemma 1.x / Dart 3.12, and flutter_gemma 0.16.5's built-in qdrant-edge store can't search by vector or open before the first add, so `SqliteVectorIndex` stores normalized float32 vectors in a `chunk_vectors` table (schema v2, cascade-deletes with chunks) and does brute-force cosine over an in-memory copy. `GemmaEmbedder` uses EmbeddingGemma 300M seq512 on CPU (files pushed with adb, see README; not downloaded by the app yet). `IngestionService` (extract → clean → chunk → embed → store) and a vector-only `RetrievalService` started here; 2.6 adds the isolate and Library UI, 3.1 adds FTS5 + RRF. Retrieval debug screen = search icon on Library. On the phone: 5 PDFs, 50 chunks, 2.35 s per chunk (single-threaded, ~99% of indexing time), 2.15 s per search; details in METRICS.md.
 
-- [ ] **2.6 IngestionService + Library screen**
+- [x] **2.6 IngestionService + Library screen**
   Pick a PDF → extract → clean → chunk (in a background isolate) → embed → store. Show a document list with per-document progress, and support deleting a document.
   *Done when:* the UI stays smooth while a 100-page PDF indexes, and the indexing time is logged in METRICS.md.
+  *Notes:* New dep: file_selector (system picker, no permission); picked PDFs are copied into `files/pdfs` (`PdfFiles`). `LibraryController` (kept alive) queues documents and indexes one at a time; `IngestionService.index(docId)` drops old chunks first, so failed documents can be retried and documents interrupted by an app kill resume on start. Delete removes rows, vectors (cascade) and our copy of the PDF. Clean + chunk run in `Isolate.run`; pdfium, embedding and SQLite already run on their own isolates. Fixed a cleaner crash on pages with fewer than 2 non-empty lines (found on the 120-page test PDF). `FrameMonitor` logs Flutter frame timings while a document indexes. 120 pages / 132 chunks: 5 min 11 s, 0.18% janky frames, 563 MB peak.
 
 - [ ] **2.7 Eval set**
   Write `eval/questions.json`: 50 answerable questions from 3–4 of your PDFs, each with `doc` + `page` + the expected answer, plus 10 unanswerable questions. Mix French and English.
@@ -154,6 +155,7 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
 ## Notes
 
 - 2026-09-30: LLM runs on CPU by default (GPU backend OOM-killed on the 4 GB Galaxy A16).
+- 2026-10-01: a 120-page PDF takes 5 min 11 s to index, 99.7% of it embedding on one core. Acceptable for now (the UI stays smooth and indexing resumes after a kill); revisit if users import many long PDFs.
 - 2026-10-01: vectors live in our own SQLite table with brute-force cosine instead of flutter_gemma_rag_sqlite (incompatible with flutter_gemma 0.16.5). Embedding takes 2.35 s per chunk on one core: watch the 100-page indexing time in 2.6.
 - 2026-10-01: drift without code generation (drift_dev conflicts with riverpod_generator on Flutter 3.38.9). Typed drift tables can come back after a Flutter upgrade.
 - 2026-09-30: Gemma 3 1B reaches 8.4 tok/s on CPU (Gate 1 needs 5). Compared with Qwen3 0.6B anyway (1.5): Gemma 3 1B stays the default.

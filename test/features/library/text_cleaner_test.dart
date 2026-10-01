@@ -109,6 +109,28 @@ void main() {
       expect(cleaned.first.where((l) => l.trim().isNotEmpty), bodies[0]);
     });
 
+    test('handles blank and one-line pages among longer ones', () {
+      // Found on a real 120-page report: a page with a single line used to
+      // throw a RangeError.
+      final pages = [
+        ['Header', ...bodies[0]],
+        <String>[],
+        ['Header'],
+        ['', 'Figure 3'],
+        ['Header', ...bodies[1]],
+      ];
+
+      final cleaned = removeRepeatedEdgeLines(pages);
+
+      expect(cleaned, [
+        bodies[0],
+        <String>[],
+        <String>[],
+        ['', 'Figure 3'],
+        bodies[1],
+      ]);
+    });
+
     test('leaves short documents unchanged', () {
       final pages = [
         ['Header', 'one'],
