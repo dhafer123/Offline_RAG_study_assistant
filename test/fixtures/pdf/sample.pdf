@@ -1,0 +1,74 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [4 0 R 6 0 R 8 0 R 10 0 R] /Count 4 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 5 0 R >>
+endobj
+5 0 obj
+<< /Length 180 >>
+stream
+BT /F1 12 Tf 16 TL 72 720 Td
+(Binary search finds an item in a sorted array.) Tj T*
+(It halves the search interval at every step,) Tj T*
+(so it runs in logarithmic time.) Tj T*
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 7 0 R >>
+endobj
+7 0 obj
+<< /Length 72 >>
+stream
+0.8 g 72 300 468 400 re f 0 g
+BT /F1 12 Tf 16 TL 300 40 Td
+(2) Tj T*
+ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 9 0 R >>
+endobj
+9 0 obj
+<< /Length 176 >>
+stream
+BT /F1 12 Tf 16 TL 72 720 Td
+(Le tri rapide choisit un pivot et partitionne le tableau.) Tj T*
+(Sa complexité moyenne est O\(n log n\) ; le pire cas est quadratique.) Tj T*
+ET
+endstream
+endobj
+10 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 11 0 R >>
+endobj
+11 0 obj
+<< /Length 0 >>
+stream
+endstream
+endobj
+xref
+0 12
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000134 00000 n 
+0000000231 00000 n 
+0000000357 00000 n 
+0000000587 00000 n 
+0000000713 00000 n 
+0000000834 00000 n 
+0000000960 00000 n 
+0000001186 00000 n 
+0000001314 00000 n 
+trailer
+<< /Size 12 /Root 1 0 R >>
+startxref
+1363
+%%EOF

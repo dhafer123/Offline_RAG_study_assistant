@@ -51,9 +51,10 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
   *Done when:* there's a migration test and the insert and query tests pass.
   *Notes:* drift runtime only (new dep: `drift`); `drift_dev` can't resolve next to riverpod_generator on Flutter 3.38.9 (analyzer/meta pins), so the schema is SQL steps in `AppDatabase.migrationSteps` and queries are hand-written. `DocumentStore` interface in `lib/core/db/`. External-content FTS5 table `chunks_fts` (`unicode61 remove_diacritics 2`) kept in sync by triggers; chunks cascade-delete with their document. `ordinal` is the chunk's position in the whole document, pages are 1-based. `buildFtsQuery` turns a question into quoted OR terms so user text is never parsed as FTS5 syntax.
 
-- [ ] **2.2 PDF text extraction**
+- [x] **2.2 PDF text extraction**
   pdfrx extracts text per page. Detect empty pages (scanned PDFs) and flag them.
   *Done when:* it works on 3 of your real course PDFs, with a test using a small fixture PDF.
+  *Notes:* pdfrx 2.2.24 (newer needs a newer Dart). `PdfTextExtractor` interface in `lib/core/pdf/`; a page with fewer than 20 letters/digits is flagged textless, and `isScanned` means no page has text. Fixture built by `tool/make_fixture_pdf.dart`. Host tests load pdfium through `test/helpers/pdfium.dart` because `pdfrxInitialize()` hangs on Windows (start-up race in pdfrx_engine 0.3.9); `pdfium_dart` is a dev dependency for that. The extractor checks the `%PDF-` header itself because pdfrx on Windows reports every open failure as a password error. Checked on 3 course PDFs (1–2 pages each, digital, clean text) with `REAL_PDFS_DIR=... flutter test test/core/pdf/real_pdfs_test.dart`; none was scanned. pdfrx adds ~17 MB to the APK (pdfium for 3 ABIs + 4 MB WASM, to strip in 4.7).
 
 - [ ] **2.3 Text cleaner**
   Remove repeated headers and footers and page numbers, rejoin hyphenated line breaks, and normalize whitespace.
