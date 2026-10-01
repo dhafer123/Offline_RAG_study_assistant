@@ -112,9 +112,10 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
   *Done when:* unit tests cover `[1]`, `[1][3]`, `[1, 2]`, `[7]` (invalid) and no citations.
   *Notes:* Pure `parseCitations(answer, sources)` in `lib/features/chat/citation_parser.dart`: `[n]` is `sources[n - 1]` of the `AnswerPrompt`. Returns reading-order segments (`TextSegment` / `CitationSegment`, so 3.5 can draw chips inline) and the distinct cited sources in order of first citation. Also reads `[1-3]`, `[1; 3]`, `[1 and 3]`, `[Source 2]`; merges `[1] [3]`; drops invalid numbers (an emptied marker goes with the space before it). `streaming: true` hides a marker that isn't closed yet (`... engine [1`). Checked on a real answer from the phone.
 
-- [ ] **3.5 Chat screen**
+- [x] **3.5 Chat screen**
   Question input, streamed answer, citation chips, a stop button, and a loading state while the model loads.
   *Done when:* a full question → answer → chip flow works on the phone.
+  *Notes:* `ChatScreen` (Library → "Ask your documents" or the chat icon) + `ChatController` (kept alive, so leaving the screen keeps the conversation and the answer in progress). Each question is independent (no history sent to the model). Status line follows the pipeline: "Searching your documents…" → "Loading the model…" (first question only) → "Reading n sources…" (prefill, the long wait) → streamed text; `AnswerService` gained `AnswerLoadingModel` and `AnswerGenerating` events for this. `[n]` markers render as small inline tags, cited pages as chips (one per document + page); tapping either opens a sheet with the source passage until 3.6 opens the PDF. Stop keeps the partial answer. Checked on the phone, release build: "Why did the team pick Godot 4…" → correct, cites p. 27, chip opens the passage, 24.3 s to the first word (first question, model load included); "Which Godot class does the intelligent NPC extend?" → "CharacterBody2D" [1] p. 27 (the eval's expected page), 19.0 s, asked right after stopping the same question mid-prefill, so stopping doesn't break the engine.
 
 - [ ] **3.6 PDF viewer at a page**
   Tapping a chip opens the document at that page, ideally with the chunk text highlighted.

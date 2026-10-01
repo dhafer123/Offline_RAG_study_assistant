@@ -51,7 +51,7 @@ final class RetrievalDebugControllerProvider
 }
 
 String _$retrievalDebugControllerHash() =>
-    r'99650abdb3b5ae99925c53171c6628ecf945f68e';
+    r'd8c6e9e3dfa841bc93f5517d0153c8eb6ecbdf87';
 
 /// Indexes PDFs pushed to the pdfs folder, runs vector searches (task 2.5)
 /// and answers questions through `AnswerService` (task 3.3, until the chat

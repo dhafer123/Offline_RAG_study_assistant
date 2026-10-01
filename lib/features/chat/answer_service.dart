@@ -8,7 +8,8 @@ import 'package:offline_study_assistant/features/chat/question_language.dart';
 import 'package:offline_study_assistant/features/chat/retrieval_service.dart';
 
 /// What [AnswerService.answer] streams, in order: either [AnswerNotFound]
-/// alone, or [AnswerSources], then [AnswerToken]s, then [AnswerDone].
+/// alone, or [AnswerSources], [AnswerLoadingModel] (only when the model
+/// isn't loaded yet), [AnswerGenerating], [AnswerToken]s, then [AnswerDone].
 @immutable
 sealed class AnswerEvent {
   const AnswerEvent();
@@ -47,6 +48,18 @@ final class AnswerSources extends AnswerEvent {
   final Duration retrievalTime;
 
   List<RetrievedChunk> get sources => prompt.sources;
+}
+
+/// The LLM is being loaded (first question, or after it was unloaded): a
+/// few seconds before generation can start.
+final class AnswerLoadingModel extends AnswerEvent {
+  const AnswerLoadingModel();
+}
+
+/// The model is reading the prompt: the wait before the first token (~17 s
+/// on the test phone, see docs/METRICS.md).
+final class AnswerGenerating extends AnswerEvent {
+  const AnswerGenerating();
 }
 
 /// A piece of the answer as the model streams it.
@@ -148,11 +161,13 @@ class AnswerService {
       retrievalTime: retrievalTime,
     );
 
+    if (!_llm.isLoaded) yield const AnswerLoadingModel();
     final (_, loadTime) = await _guard(
       'Could not load the language model',
       () => Perf.time(_llm.load, stopwatch: _stopwatch),
     );
 
+    yield const AnswerGenerating();
     final timer = GenerationTimer(stopwatch: _stopwatch)..start();
     final answer = StringBuffer();
     try {

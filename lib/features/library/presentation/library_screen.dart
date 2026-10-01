@@ -25,6 +25,11 @@ class LibraryScreen extends ConsumerWidget {
         title: const Text('Library'),
         actions: [
           IconButton(
+            tooltip: 'Ask a question',
+            icon: const Icon(Icons.forum_outlined),
+            onPressed: () => context.push(AppRoutes.chat),
+          ),
+          IconButton(
             tooltip: 'Retrieval debug',
             icon: const Icon(Icons.manage_search),
             onPressed: () => context.push(AppRoutes.retrievalDebug),
@@ -59,12 +64,22 @@ class LibraryScreen extends ConsumerWidget {
             ),
           ),
         ),
-        _ => ListView.builder(
+        _ => ListView(
           // Room for the floating button under the last tile.
           padding: const EdgeInsets.only(bottom: 88),
-          itemCount: state.documents.length,
-          itemBuilder: (context, i) =>
-              _DocumentTile(doc: state.documents[i], state: state),
+          children: [
+            if (state.documents.any((d) => d.status == DocumentStatus.ready))
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+                child: FilledButton.icon(
+                  icon: const Icon(Icons.forum_outlined),
+                  label: const Text('Ask your documents'),
+                  onPressed: () => context.push(AppRoutes.chat),
+                ),
+              ),
+            for (final doc in state.documents)
+              _DocumentTile(doc: doc, state: state),
+          ],
         ),
       },
     );

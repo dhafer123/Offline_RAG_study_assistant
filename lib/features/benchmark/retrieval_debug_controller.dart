@@ -208,6 +208,10 @@ class RetrievalDebugController extends _$RetrievalDebugController {
                   '${prompt.sources.length} sources, '
                   '~${prompt.estimatedTokens} prompt tokens · generating…',
             ),
+          AnswerLoadingModel() => state.copyWith(
+            answerInfo: '${state.answerInfo} (loading model)',
+          ),
+          AnswerGenerating() => state,
           AnswerToken(:final text) => state.copyWith(
             answer: state.answer + text,
           ),

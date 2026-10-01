@@ -6,6 +6,7 @@ import 'package:offline_study_assistant/features/benchmark/presentation/llm_benc
 import 'package:offline_study_assistant/features/benchmark/presentation/llm_debug_screen.dart';
 import 'package:offline_study_assistant/features/benchmark/presentation/retrieval_debug_screen.dart';
 import 'package:offline_study_assistant/features/benchmark/presentation/retrieval_eval_screen.dart';
+import 'package:offline_study_assistant/features/chat/presentation/chat_screen.dart';
 import 'package:offline_study_assistant/features/library/presentation/library_screen.dart';
 import 'package:offline_study_assistant/features/model_setup/presentation/model_setup_screen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -15,6 +16,7 @@ part 'router.g.dart';
 abstract final class AppRoutes {
   static const library = '/';
   static const modelSetup = '/setup';
+  static const chat = '/chat';
   static const llmDebug = '/debug/llm';
   static const llmBenchmark = '/debug/llm-benchmark';
   static const retrievalDebug = '/debug/retrieval';
@@ -47,6 +49,10 @@ GoRouter router(Ref ref) {
       GoRoute(
         path: AppRoutes.library,
         builder: (context, state) => const LibraryScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.chat,
+        builder: (context, state) => const ChatScreen(),
       ),
       GoRoute(
         path: AppRoutes.modelSetup,

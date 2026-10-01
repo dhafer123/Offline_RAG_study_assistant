@@ -137,6 +137,8 @@ void main() {
       ]).answer('Which engine does the game use?').toList();
 
       final sources = events.first as AnswerSources;
+      expect(events[1], isA<AnswerLoadingModel>());
+      expect(events[2], isA<AnswerGenerating>());
       expect([for (final s in sources.sources) s.chunk.id], [1, 2]);
       expect(sources.bestSimilarity, 0.55);
       expect(
@@ -147,7 +149,7 @@ void main() {
       expect(done.text, 'Godot 4 [1].');
       expect(done.generation.outputTokens, 4);
       expect(done.generation.promptTokens, 900);
-      expect(events, hasLength(4));
+      expect(events, hasLength(6));
     });
 
     test('sends the built prompt to the LLM after loading it', () async {
@@ -161,6 +163,14 @@ void main() {
       expect(prompt.text, contains('[1] game.pdf, page 1\n'));
       expect(prompt.text, contains('The game is built with Godot 4.'));
       expect(prompt.text, endsWith('Which engine does the game use?'));
+    });
+
+    test('says nothing about loading when the model is loaded', () async {
+      await llm.load();
+
+      final events = await service([chunk(1, 0.5)]).answer('Q?').toList();
+
+      expect(events.whereType<AnswerLoadingModel>(), isEmpty);
     });
 
     test('retrieves the configured number of chunks', () async {
@@ -233,7 +243,7 @@ void main() {
         ),
       );
       // The sources were already shown when loading failed.
-      expect(events.single, isA<AnswerSources>());
+      expect(events, [isA<AnswerSources>(), isA<AnswerLoadingModel>()]);
     });
 
     test('a generation failure becomes an AnswerException', () {
