@@ -251,6 +251,13 @@ class _MoreMenu extends ConsumerWidget {
             title: Text('LLM debug'),
           ),
         ),
+        PopupMenuItem(
+          value: AppRoutes.botPreview,
+          child: ListTile(
+            leading: Icon(Icons.smart_toy_outlined),
+            title: Text('Bot preview'),
+          ),
+        ),
       ],
     );
   }

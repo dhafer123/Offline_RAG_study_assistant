@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:offline_study_assistant/app/providers.dart';
 import 'package:offline_study_assistant/core/ai/model_manager.dart';
 import 'package:offline_study_assistant/features/benchmark/presentation/answer_eval_screen.dart';
+import 'package:offline_study_assistant/features/benchmark/presentation/bot_preview_screen.dart';
 import 'package:offline_study_assistant/features/benchmark/presentation/llm_benchmark_screen.dart';
 import 'package:offline_study_assistant/features/benchmark/presentation/llm_debug_screen.dart';
 import 'package:offline_study_assistant/features/benchmark/presentation/retrieval_debug_screen.dart';
@@ -34,6 +35,7 @@ abstract final class AppRoutes {
   static const retrievalDebug = '/debug/retrieval';
   static const retrievalEval = '/debug/retrieval-eval';
   static const answerEval = '/debug/answer-eval';
+  static const botPreview = '/debug/bot';
 }
 
 @Riverpod(keepAlive: true)
@@ -98,6 +100,10 @@ GoRouter router(Ref ref) {
       GoRoute(
         path: AppRoutes.answerEval,
         builder: (context, state) => const AnswerEvalScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.botPreview,
+        builder: (context, state) => const BotPreviewScreen(),
       ),
     ],
   );
