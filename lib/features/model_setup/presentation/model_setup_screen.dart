@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offline_study_assistant/app/providers.dart';
+import 'package:offline_study_assistant/app/widgets/bot/bot_avatar.dart';
+import 'package:offline_study_assistant/app/widgets/bot/bot_mood.dart';
 import 'package:offline_study_assistant/core/ai/model_manager.dart';
 
 /// First launch: explains the app, then downloads the model once (task 1.6).
@@ -23,25 +25,21 @@ class ModelSetupScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: CircleAvatar(
-                  radius: 32,
-                  backgroundColor: scheme.primaryContainer,
-                  child: Icon(
-                    Icons.menu_book,
-                    size: 32,
-                    color: scheme.onPrimaryContainer,
-                  ),
-                ),
+              Center(
+                child: BotAvatar(mood: moodForModelState(state), size: 144),
               ),
-              const SizedBox(height: 20),
-              Text('Study Assistant', style: theme.textTheme.headlineMedium),
+              const SizedBox(height: 12),
+              Text(
+                "Hi, I'm your Study Assistant",
+                style: theme.textTheme.headlineMedium,
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: 8),
               Text(
-                'Ask questions about your course PDFs and get answers that '
-                'cite their pages.',
+                'Ask me questions about your course PDFs: I answer from them '
+                'and show you the pages I used.',
                 style: theme.textTheme.bodyLarge,
+                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
               const _Feature(
@@ -214,6 +212,16 @@ class _Feature extends StatelessWidget {
     );
   }
 }
+
+/// The bot's face on the setup screen: what the download is doing.
+BotMood moodForModelState(ModelState state) => switch (state) {
+  ModelChecking() => BotMood.searching,
+  ModelNotDownloaded() || ModelReady() => BotMood.happy,
+  ModelDownloading() => BotMood.thinking,
+  // Waiting for Wi-Fi isn't a failure.
+  ModelFailed(kind: ModelErrorKind.wifiRequired) => BotMood.surprised,
+  ModelFailed() => BotMood.sad,
+};
 
 /// "557 MB" (binary megabytes, as Android's storage settings show them).
 String formatMegabytes(int? bytes) {

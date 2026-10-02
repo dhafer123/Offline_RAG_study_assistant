@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:offline_study_assistant/app/providers.dart';
+import 'package:offline_study_assistant/app/widgets/bot/bot_avatar.dart';
+import 'package:offline_study_assistant/app/widgets/bot/bot_mood.dart';
 import 'package:offline_study_assistant/features/chat/answer_service.dart';
 import 'package:offline_study_assistant/features/chat/presentation/chat_screen.dart';
 import 'package:offline_study_assistant/features/chat/question_language.dart';
@@ -116,6 +118,11 @@ void main() {
     await tester.pump();
     expect(find.text('Loading the model…'), findsNothing);
     expect(find.text('Reading 2 sources…'), findsOne);
+    expect(findBot(BotMood.thinking), findsOne);
+    // The long prefill wait: the message and the counter move on.
+    await tester.pump(const Duration(seconds: 9));
+    expect(find.text('Thinking it over…'), findsOne);
+    expect(find.text('9 s'), findsOne);
 
     service.emit(const AnswerToken('Godot is flexible [1].'));
     await tester.pump();
@@ -241,3 +248,6 @@ void main() {
     expect(find.text('Ask a question about your course PDFs.'), findsOne);
   });
 }
+
+Finder findBot(BotMood mood) =>
+    find.byWidgetPredicate((w) => w is BotAvatar && w.mood == mood);

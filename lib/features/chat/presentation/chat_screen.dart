@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:offline_study_assistant/app/router.dart';
+import 'package:offline_study_assistant/app/widgets/bot/bot_avatar.dart';
+import 'package:offline_study_assistant/app/widgets/bot/bot_mood.dart';
 import 'package:offline_study_assistant/app/widgets/message_view.dart';
+import 'package:offline_study_assistant/features/chat/chat_bot.dart';
 import 'package:offline_study_assistant/features/chat/chat_controller.dart';
 import 'package:offline_study_assistant/features/chat/citation_parser.dart';
 import 'package:offline_study_assistant/features/library/library_controller.dart';
@@ -48,12 +51,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             child: exchanges.isEmpty
                 ? noDocuments
                       ? MessageView(
-                          icon: Icons.library_add_outlined,
+                          mood: BotMood.confused,
                           title: 'No documents to search yet',
                           body:
                               'Import a course PDF in the library first. '
-                              'Once it is indexed, you can ask questions '
-                              'about it here.',
+                              'Once I have read it, you can ask me about it '
+                              'here.',
                           action: FilledButton.icon(
                             icon: const Icon(Icons.arrow_back),
                             label: const Text('Go to the library'),
@@ -61,20 +64,24 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           ),
                         )
                       : const MessageView(
-                          icon: Icons.forum_outlined,
+                          mood: BotMood.happy,
                           title: 'Ask a question about your course PDFs.',
                           body:
-                              'Answers come only from your documents and '
-                              'cite the pages they use. Everything runs on '
-                              'this phone, offline.',
+                              'I answer only from your documents and show '
+                              'the pages I used. Everything runs on this '
+                              'phone, offline.',
                         )
                 // Reversed so the latest answer stays in view as it grows.
                 : ListView.builder(
                     reverse: true,
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.fromLTRB(12, 16, 16, 16),
                     itemCount: exchanges.length,
-                    itemBuilder: (context, i) =>
-                        _ExchangeView(exchange: exchanges[i]),
+                    itemBuilder: (context, i) => _ExchangeView(
+                      // Keeps each exchange's state (its wait timer) when a
+                      // new question shifts the list.
+                      key: ValueKey(state.exchanges.length - 1 - i),
+                      exchange: exchanges[i],
+                    ),
                   ),
           ),
           _InputBar(
@@ -108,6 +115,7 @@ class _InputBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return SafeArea(
       top: false,
       child: Padding(
@@ -137,6 +145,10 @@ class _InputBar extends StatelessWidget {
               IconButton.filled(
                 tooltip: 'Send',
                 icon: const Icon(Icons.send),
+                style: IconButton.styleFrom(
+                  backgroundColor: scheme.primaryContainer,
+                  foregroundColor: scheme.onPrimaryContainer,
+                ),
                 onPressed: enabled ? onSend : null,
               ),
           ],
@@ -146,16 +158,20 @@ class _InputBar extends StatelessWidget {
   }
 }
 
+/// A question (right) and the bot's answer (left, next to its avatar).
 class _ExchangeView extends StatelessWidget {
-  const _ExchangeView({required this.exchange});
+  const _ExchangeView({required this.exchange, super.key});
 
   final ChatExchange exchange;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
     final parsed = exchange.parsed;
-    final status = _statusLabel();
+    final muted = theme.textTheme.labelSmall?.copyWith(
+      color: scheme.onSurfaceVariant,
+    );
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),
@@ -168,103 +184,142 @@ class _ExchangeView extends StatelessWidget {
               constraints: const BoxConstraints(maxWidth: 320),
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               decoration: BoxDecoration(
-                color: theme.colorScheme.primaryContainer,
-                borderRadius: BorderRadius.circular(16),
+                color: scheme.primaryContainer,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(18),
+                  topRight: Radius.circular(18),
+                  bottomLeft: Radius.circular(18),
+                  bottomRight: Radius.circular(4),
+                ),
               ),
               child: Text(
                 exchange.question,
-                style: TextStyle(color: theme.colorScheme.onPrimaryContainer),
+                style: TextStyle(color: scheme.onPrimaryContainer),
               ),
             ),
           ),
           const SizedBox(height: 12),
-          if (status != null && exchange.answer.isEmpty)
-            _Progress(label: status),
-          if (exchange.phase == ExchangePhase.notFound)
-            Row(
-              children: [
-                Icon(
-                  Icons.search_off,
-                  size: 20,
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    exchange.answer,
-                    style: TextStyle(
-                      color: theme.colorScheme.onSurfaceVariant,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              BotAvatar(
+                mood: moodForExchange(exchange),
+                size: 40,
+                showBody: false,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
+                  decoration: BoxDecoration(
+                    color: scheme.surfaceContainerHigh,
+                    // The small corner points at the bot.
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(4),
+                      topRight: Radius.circular(18),
+                      bottomLeft: Radius.circular(18),
+                      bottomRight: Radius.circular(18),
                     ),
                   ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (exchange.isActive && exchange.answer.isEmpty)
+                        _Waiting(exchange: exchange)
+                      else if (exchange.phase == ExchangePhase.notFound)
+                        Text(
+                          exchange.answer,
+                          style: TextStyle(color: scheme.onSurfaceVariant),
+                        )
+                      else if (parsed.segments.isNotEmpty)
+                        _AnswerText(parsed: parsed),
+                      if (exchange.phase == ExchangePhase.stopped) ...[
+                        if (parsed.segments.isNotEmpty)
+                          const SizedBox(height: 4),
+                        Text('Stopped', style: muted),
+                      ],
+                      if (exchange.phase == ExchangePhase.error) ...[
+                        if (parsed.segments.isNotEmpty)
+                          const SizedBox(height: 4),
+                        Text(
+                          exchange.errorMessage ?? 'Something went wrong.',
+                          style: TextStyle(color: scheme.error),
+                        ),
+                      ],
+                      if (parsed.citations.isNotEmpty) ...[
+                        const SizedBox(height: 8),
+                        _CitationChips(citations: parsed.citations),
+                      ],
+                      if (exchange.generation case final g?
+                          when exchange.phase == ExchangePhase.done) ...[
+                        const SizedBox(height: 6),
+                        Text(
+                          'First word after '
+                          '${_seconds(g.timeToFirstToken)} s · '
+                          '${_seconds(g.total)} s in total',
+                          style: muted,
+                        ),
+                      ],
+                    ],
+                  ),
                 ),
-              ],
-            )
-          else if (parsed.segments.isNotEmpty)
-            _AnswerText(parsed: parsed),
-          if (exchange.phase == ExchangePhase.stopped) ...[
-            const SizedBox(height: 4),
-            Text(
-              'Stopped',
-              style: theme.textTheme.labelSmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
               ),
-            ),
-          ],
-          if (exchange.phase == ExchangePhase.error) ...[
-            const SizedBox(height: 4),
-            Text(
-              exchange.errorMessage ?? 'Something went wrong.',
-              style: TextStyle(color: theme.colorScheme.error),
-            ),
-          ],
-          if (parsed.citations.isNotEmpty) ...[
-            const SizedBox(height: 8),
-            _CitationChips(citations: parsed.citations),
-          ],
-          if (exchange.generation case final g?
-              when exchange.phase == ExchangePhase.done) ...[
-            const SizedBox(height: 4),
-            Text(
-              'First word after '
-              '${(g.timeToFirstToken.inMilliseconds / 1000).toStringAsFixed(1)}'
-              ' s · ${(g.total.inMilliseconds / 1000).toStringAsFixed(1)} s '
-              'in total',
-              style: theme.textTheme.labelSmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-          ],
+            ],
+          ),
         ],
       ),
     );
   }
 
-  String? _statusLabel() => switch (exchange.phase) {
-    ExchangePhase.searching => 'Searching your documents…',
-    ExchangePhase.loadingModel => 'Loading the model…',
-    ExchangePhase.generating =>
-      exchange.sources.length == 1
-          ? 'Reading 1 source…'
-          : 'Reading ${exchange.sources.length} sources…',
-    _ => null,
-  };
+  static String _seconds(Duration d) =>
+      (d.inMilliseconds / 1000).toStringAsFixed(1);
 }
 
-class _Progress extends StatelessWidget {
-  const _Progress({required this.label});
+/// What the bot is doing while there's no word yet, with the seconds waited.
+class _Waiting extends StatefulWidget {
+  const _Waiting({required this.exchange});
 
-  final String label;
+  final ChatExchange exchange;
+
+  @override
+  State<_Waiting> createState() => _WaitingState();
+}
+
+class _WaitingState extends State<_Waiting> {
+  int _seconds = 0;
+  late final Timer _tick;
+
+  @override
+  void initState() {
+    super.initState();
+    // Once a second: the counter and the message, nothing more.
+    _tick = Timer.periodic(
+      const Duration(seconds: 1),
+      (_) => setState(() => _seconds++),
+    );
+  }
+
+  @override
+  void dispose() {
+    _tick.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final elapsed = Duration(seconds: _seconds);
     return Row(
       children: [
-        const SizedBox.square(
-          dimension: 16,
-          child: CircularProgressIndicator(strokeWidth: 2),
+        Flexible(child: Text(waitingMessage(widget.exchange, elapsed) ?? '')),
+        const SizedBox(width: 8),
+        Text(
+          '${elapsed.inSeconds} s',
+          style: theme.textTheme.labelSmall?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+            fontFeatures: const [FontFeature.tabularFigures()],
+          ),
         ),
-        const SizedBox(width: 12),
-        Text(label),
       ],
     );
   }

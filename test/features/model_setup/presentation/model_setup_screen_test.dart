@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:offline_study_assistant/app/providers.dart';
+import 'package:offline_study_assistant/app/widgets/bot/bot_avatar.dart';
+import 'package:offline_study_assistant/app/widgets/bot/bot_mood.dart';
 import 'package:offline_study_assistant/core/ai/model_manager.dart';
 import 'package:offline_study_assistant/features/model_setup/presentation/model_setup_screen.dart';
 
@@ -41,7 +43,8 @@ void main() {
   testWidgets('explains the app before the download', (tester) async {
     await pumpScreen(tester, const ModelNotDownloaded(totalBytes: total));
 
-    expect(find.text('Study Assistant'), findsOneWidget);
+    expect(find.text("Hi, I'm your Study Assistant"), findsOneWidget);
+    expect(findBot(BotMood.happy), findsOneWidget);
     expect(find.text('Works offline'), findsOneWidget);
     expect(find.text('Private'), findsOneWidget);
     expect(find.textContaining('600 MB of free storage'), findsOneWidget);
@@ -123,9 +126,38 @@ void main() {
     expect(tester.widget<Switch>(find.byType(Switch)).value, isFalse);
   });
 
+  test("the bot's mood follows the download", () {
+    expect(moodForModelState(const ModelChecking()), BotMood.searching);
+    expect(
+      moodForModelState(const ModelNotDownloaded(totalBytes: total)),
+      BotMood.happy,
+    );
+    expect(
+      moodForModelState(
+        const ModelDownloading(receivedBytes: 1, totalBytes: total),
+      ),
+      BotMood.thinking,
+    );
+    expect(
+      moodForModelState(
+        const ModelFailed(ModelErrorKind.wifiRequired, totalBytes: total),
+      ),
+      BotMood.surprised,
+    );
+    expect(
+      moodForModelState(
+        const ModelFailed(ModelErrorKind.network, totalBytes: total),
+      ),
+      BotMood.sad,
+    );
+  });
+
   test('every error kind has a message', () {
     for (final kind in ModelErrorKind.values) {
       expect(errorMessage(kind), isNotEmpty);
     }
   });
 }
+
+Finder findBot(BotMood mood) =>
+    find.byWidgetPredicate((w) => w is BotAvatar && w.mood == mood);
