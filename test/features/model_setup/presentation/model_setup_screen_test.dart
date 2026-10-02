@@ -17,6 +17,11 @@ void main() {
   Future<void> pumpScreen(WidgetTester tester, ModelState state) async {
     manager = FakeModelManager(state);
     settings = FakeAppSettings();
+    // A phone-sized window: the screen scrolls on smaller ones.
+    tester.view
+      ..physicalSize = const Size(1080, 2400)
+      ..devicePixelRatio = 2.625;
+    addTearDown(tester.view.reset);
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
@@ -28,12 +33,26 @@ void main() {
     );
   }
 
+  Future<void> tapText(WidgetTester tester, String text) async {
+    await tester.ensureVisible(find.text(text));
+    await tester.tap(find.text(text));
+  }
+
+  testWidgets('explains the app before the download', (tester) async {
+    await pumpScreen(tester, const ModelNotDownloaded(totalBytes: total));
+
+    expect(find.text('Study Assistant'), findsOneWidget);
+    expect(find.text('Works offline'), findsOneWidget);
+    expect(find.text('Private'), findsOneWidget);
+    expect(find.textContaining('600 MB of free storage'), findsOneWidget);
+  });
+
   testWidgets('offers the download with its size', (tester) async {
     await pumpScreen(tester, const ModelNotDownloaded(totalBytes: total));
 
     expect(find.textContaining('(557 MB) is downloaded once'), findsOneWidget);
     expect(find.textContaining('Gemma Terms of Use'), findsOneWidget);
-    await tester.tap(find.text('Download (557 MB)'));
+    await tapText(tester, 'Download (557 MB)');
 
     expect(manager.downloadCalls, 1);
   });
@@ -44,7 +63,7 @@ void main() {
       const ModelNotDownloaded(partialBytes: 200 * mb, totalBytes: total),
     );
 
-    await tester.tap(find.text('Resume (200 of 557 MB)'));
+    await tapText(tester, 'Resume (200 of 557 MB)');
 
     expect(manager.downloadCalls, 1);
   });
@@ -61,7 +80,7 @@ void main() {
     );
     expect(bar.value, closeTo(0.25, 1e-9));
 
-    await tester.tap(find.text('Pause'));
+    await tapText(tester, 'Pause');
     expect(manager.pauseCalls, 1);
   });
 
@@ -88,7 +107,7 @@ void main() {
     );
 
     expect(find.text(errorMessage(ModelErrorKind.network)), findsOneWidget);
-    await tester.tap(find.text('Resume (300 of 557 MB)'));
+    await tapText(tester, 'Resume (300 of 557 MB)');
 
     expect(manager.downloadCalls, 1);
   });
@@ -96,6 +115,7 @@ void main() {
   testWidgets('the Wi-Fi only switch is saved', (tester) async {
     await pumpScreen(tester, const ModelNotDownloaded(totalBytes: total));
 
+    await tester.ensureVisible(find.byType(Switch));
     await tester.tap(find.byType(Switch));
     await tester.pump();
 

@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offline_study_assistant/app/providers.dart';
 import 'package:offline_study_assistant/core/ai/model_manager.dart';
 
-/// First launch: downloads the model once (task 1.6). The router sends every
-/// route here until the model is ready.
+/// First launch: explains the app, then downloads the model once (task 1.6).
+/// The router sends every route here until the model is ready.
 class ModelSetupScreen extends ConsumerWidget {
   const ModelSetupScreen({super.key});
 
@@ -14,37 +14,100 @@ class ModelSetupScreen extends ConsumerWidget {
     final wifiOnly = ref.watch(wifiOnlyDownloadsProvider);
     final manager = ref.read(modelManagerProvider);
     final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Set up')),
-      body: ListView(
-        padding: const EdgeInsets.all(24),
-        children: [
-          Text('Download the AI model', style: theme.textTheme.headlineSmall),
-          const SizedBox(height: 12),
-          Text(
-            'Answers are generated on your phone. The model '
-            '(${formatMegabytes(_totalBytes(state))}) is downloaded once; '
-            'after that the app works fully offline.',
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: CircleAvatar(
+                  radius: 32,
+                  backgroundColor: scheme.primaryContainer,
+                  child: Icon(
+                    Icons.menu_book,
+                    size: 32,
+                    color: scheme.onPrimaryContainer,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text('Study Assistant', style: theme.textTheme.headlineMedium),
+              const SizedBox(height: 8),
+              Text(
+                'Ask questions about your course PDFs and get answers that '
+                'cite their pages.',
+                style: theme.textTheme.bodyLarge,
+              ),
+              const SizedBox(height: 24),
+              const _Feature(
+                icon: Icons.wifi_off,
+                title: 'Works offline',
+                body:
+                    'Search and answers run on this phone. After this setup, '
+                    'no internet connection is needed.',
+              ),
+              const _Feature(
+                icon: Icons.lock_outline,
+                title: 'Private',
+                body: 'Your PDFs and questions never leave the phone.',
+              ),
+              const _Feature(
+                icon: Icons.find_in_page_outlined,
+                title: 'Checkable',
+                body:
+                    'Tap a citation to open the PDF at the page it came from.',
+              ),
+              const SizedBox(height: 8),
+              Card.outlined(
+                margin: EdgeInsets.zero,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        'One-time download',
+                        style: theme.textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'The AI model (${formatMegabytes(_totalBytes(state))}) '
+                        'is downloaded once and stays on the phone. It needs '
+                        'about 600 MB of free storage. If the download is '
+                        'interrupted, it resumes where it stopped.',
+                      ),
+                      SwitchListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: const Text('Download on Wi-Fi only'),
+                        value: wifiOnly,
+                        onChanged: (value) => ref
+                            .read(wifiOnlyDownloadsProvider.notifier)
+                            .set(value: value),
+                      ),
+                      const SizedBox(height: 8),
+                      ..._body(context, state, manager),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Gemma is provided under and subject to the Gemma Terms of Use '
+                'found at ai.google.dev/gemma/terms. By downloading it you '
+                'agree to its use restrictions '
+                '(ai.google.dev/gemma/prohibited_use_policy).',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 8),
-          Text(
-            'Gemma is provided under and subject to the Gemma Terms of Use '
-            'found at ai.google.dev/gemma/terms. By downloading it you agree '
-            'to its use restrictions (ai.google.dev/gemma/prohibited_use_policy).',
-            style: theme.textTheme.bodySmall,
-          ),
-          const SizedBox(height: 16),
-          SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            title: const Text('Download on Wi-Fi only'),
-            value: wifiOnly,
-            onChanged: (value) =>
-                ref.read(wifiOnlyDownloadsProvider.notifier).set(value: value),
-          ),
-          const SizedBox(height: 24),
-          ..._body(context, state, manager),
-        ],
+        ),
       ),
     );
   }
@@ -112,6 +175,44 @@ class ModelSetupScreen extends ConsumerWidget {
     ModelFailed(:final totalBytes) => totalBytes,
     _ => null,
   };
+}
+
+class _Feature extends StatelessWidget {
+  const _Feature({required this.icon, required this.title, required this.body});
+
+  final IconData icon;
+  final String title;
+  final String body;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: theme.colorScheme.primary),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: theme.textTheme.titleSmall),
+                const SizedBox(height: 2),
+                Text(
+                  body,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 /// "557 MB" (binary megabytes, as Android's storage settings show them).

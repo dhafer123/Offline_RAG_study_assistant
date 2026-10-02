@@ -56,7 +56,7 @@ final class LibraryControllerProvider
   }
 }
 
-String _$libraryControllerHash() => r'951d60629b3ea2e5af16a668c7d6ec1272b061c1';
+String _$libraryControllerHash() => r'ca7906cc239304cd8ec605817d0ab593ec3a36eb';
 
 /// The user's documents: import, index one at a time, retry, delete.
 ///
@@ -81,3 +81,52 @@ abstract class _$LibraryController extends $Notifier<LibraryState> {
     element.handleCreate(ref, build);
   }
 }
+
+/// Whether at least one document is indexed and can be searched; null while
+/// the library is still loading.
+
+@ProviderFor(hasReadyDocuments)
+final hasReadyDocumentsProvider = HasReadyDocumentsProvider._();
+
+/// Whether at least one document is indexed and can be searched; null while
+/// the library is still loading.
+
+final class HasReadyDocumentsProvider
+    extends $FunctionalProvider<bool?, bool?, bool?>
+    with $Provider<bool?> {
+  /// Whether at least one document is indexed and can be searched; null while
+  /// the library is still loading.
+  HasReadyDocumentsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'hasReadyDocumentsProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$hasReadyDocumentsHash();
+
+  @$internal
+  @override
+  $ProviderElement<bool?> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  bool? create(Ref ref) {
+    return hasReadyDocuments(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool?>(value),
+    );
+  }
+}
+
+String _$hasReadyDocumentsHash() => r'd15d762286d1ae1031c845ce2b60a0d476dfc6b8';

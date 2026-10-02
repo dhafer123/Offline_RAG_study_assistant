@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:offline_study_assistant/app/router.dart';
+import 'package:offline_study_assistant/app/widgets/message_view.dart';
 import 'package:offline_study_assistant/features/chat/chat_controller.dart';
 import 'package:offline_study_assistant/features/chat/citation_parser.dart';
+import 'package:offline_study_assistant/features/library/library_controller.dart';
 
 /// Ask questions about the indexed documents; answers cite their pages.
 class ChatScreen extends ConsumerStatefulWidget {
@@ -35,6 +37,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(chatControllerProvider);
     final exchanges = state.exchanges.reversed.toList();
+    // Unknown while the library loads: don't block the input for that.
+    final noDocuments = ref.watch(hasReadyDocumentsProvider) == false;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Ask your documents')),
@@ -42,7 +46,28 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         children: [
           Expanded(
             child: exchanges.isEmpty
-                ? const _EmptyChat()
+                ? noDocuments
+                      ? MessageView(
+                          icon: Icons.library_add_outlined,
+                          title: 'No documents to search yet',
+                          body:
+                              'Import a course PDF in the library first. '
+                              'Once it is indexed, you can ask questions '
+                              'about it here.',
+                          action: FilledButton.icon(
+                            icon: const Icon(Icons.arrow_back),
+                            label: const Text('Go to the library'),
+                            onPressed: () => context.go(AppRoutes.library),
+                          ),
+                        )
+                      : const MessageView(
+                          icon: Icons.forum_outlined,
+                          title: 'Ask a question about your course PDFs.',
+                          body:
+                              'Answers come only from your documents and '
+                              'cite the pages they use. Everything runs on '
+                              'this phone, offline.',
+                        )
                 // Reversed so the latest answer stays in view as it grows.
                 : ListView.builder(
                     reverse: true,
@@ -54,6 +79,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           ),
           _InputBar(
             controller: _input,
+            enabled: !noDocuments,
             busy: state.isBusy,
             onSend: _send,
             onStop: () =>
@@ -65,52 +91,17 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 }
 
-class _EmptyChat extends StatelessWidget {
-  const _EmptyChat();
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.forum_outlined,
-              size: 48,
-              color: theme.colorScheme.primary,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Ask a question about your course PDFs.',
-              style: theme.textTheme.titleMedium,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Answers come only from your documents and cite the pages '
-              'they use. Everything runs on this phone, offline.',
-              style: theme.textTheme.bodyMedium,
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class _InputBar extends StatelessWidget {
   const _InputBar({
     required this.controller,
+    required this.enabled,
     required this.busy,
     required this.onSend,
     required this.onStop,
   });
 
   final TextEditingController controller;
+  final bool enabled;
   final bool busy;
   final VoidCallback onSend;
   final VoidCallback onStop;
@@ -127,15 +118,12 @@ class _InputBar extends StatelessWidget {
             Expanded(
               child: TextField(
                 controller: controller,
+                enabled: enabled,
                 minLines: 1,
                 maxLines: 4,
                 textInputAction: TextInputAction.send,
                 onSubmitted: (_) => onSend(),
-                decoration: const InputDecoration(
-                  hintText: 'Ask a question',
-                  border: OutlineInputBorder(),
-                  isDense: true,
-                ),
+                decoration: const InputDecoration(hintText: 'Ask a question'),
               ),
             ),
             const SizedBox(width: 8),
@@ -149,7 +137,7 @@ class _InputBar extends StatelessWidget {
               IconButton.filled(
                 tooltip: 'Send',
                 icon: const Icon(Icons.send),
-                onPressed: onSend,
+                onPressed: enabled ? onSend : null,
               ),
           ],
         ),

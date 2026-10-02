@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:offline_study_assistant/app/providers.dart';
 import 'package:offline_study_assistant/app/router.dart';
+import 'package:offline_study_assistant/app/widgets/message_view.dart';
 import 'package:offline_study_assistant/core/db/document_store.dart';
+import 'package:offline_study_assistant/core/settings/app_settings.dart';
 import 'package:offline_study_assistant/features/library/ingestion_service.dart';
 import 'package:offline_study_assistant/features/library/library_controller.dart';
 
@@ -29,21 +32,7 @@ class LibraryScreen extends ConsumerWidget {
             icon: const Icon(Icons.forum_outlined),
             onPressed: () => context.push(AppRoutes.chat),
           ),
-          IconButton(
-            tooltip: 'Retrieval debug',
-            icon: const Icon(Icons.manage_search),
-            onPressed: () => context.push(AppRoutes.retrievalDebug),
-          ),
-          IconButton(
-            tooltip: 'LLM benchmark',
-            icon: const Icon(Icons.speed),
-            onPressed: () => context.push(AppRoutes.llmBenchmark),
-          ),
-          IconButton(
-            tooltip: 'LLM debug',
-            icon: const Icon(Icons.bug_report_outlined),
-            onPressed: () => context.push(AppRoutes.llmDebug),
-          ),
+          const _MoreMenu(),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -55,14 +44,27 @@ class LibraryScreen extends ConsumerWidget {
         LibraryState(loading: true) => const Center(
           child: CircularProgressIndicator(),
         ),
-        LibraryState(documents: []) => const Center(
-          child: Padding(
-            padding: EdgeInsets.all(24),
-            child: Text(
-              'No documents yet.\nImport a course PDF to get started.',
-              textAlign: TextAlign.center,
-            ),
+        LibraryState(loadFailed: true) => MessageView(
+          icon: Icons.error_outline,
+          title: "Couldn't open your library",
+          body:
+              'Your documents are still on the phone. Try again; if it '
+              'keeps failing, restart the app.',
+          isError: true,
+          action: OutlinedButton.icon(
+            icon: const Icon(Icons.refresh),
+            label: const Text('Try again'),
+            onPressed: controller.retryLoad,
           ),
+        ),
+        LibraryState(documents: []) => const MessageView(
+          icon: Icons.menu_book_outlined,
+          title: 'No documents yet',
+          body:
+              'Import a course PDF to get started. It is indexed on this '
+              'phone; then you can ask questions about it, and every answer '
+              'cites its pages.\n\nScanned PDFs (pages that are only images) '
+              "can't be read yet.",
         ),
         _ => ListView(
           // Room for the floating button under the last tile.
@@ -200,3 +202,87 @@ class _DocumentTile extends ConsumerWidget {
 }
 
 enum _Action { retry, delete }
+
+/// Appearance, plus the measurement screens used for `docs/METRICS.md`
+/// (they stay in release builds, where the numbers are taken).
+class _MoreMenu extends ConsumerWidget {
+  const _MoreMenu();
+
+  static const _appearance = 'appearance';
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return PopupMenuButton<String>(
+      tooltip: 'More',
+      onSelected: (value) async {
+        if (value == _appearance) {
+          await _chooseAppearance(context, ref);
+        } else {
+          await context.push(value);
+        }
+      },
+      itemBuilder: (context) => const [
+        PopupMenuItem(
+          value: _appearance,
+          child: ListTile(
+            leading: Icon(Icons.dark_mode_outlined),
+            title: Text('Appearance'),
+          ),
+        ),
+        PopupMenuDivider(),
+        PopupMenuItem(
+          value: AppRoutes.retrievalDebug,
+          child: ListTile(
+            leading: Icon(Icons.manage_search),
+            title: Text('Retrieval debug'),
+          ),
+        ),
+        PopupMenuItem(
+          value: AppRoutes.llmBenchmark,
+          child: ListTile(
+            leading: Icon(Icons.speed),
+            title: Text('LLM benchmark'),
+          ),
+        ),
+        PopupMenuItem(
+          value: AppRoutes.llmDebug,
+          child: ListTile(
+            leading: Icon(Icons.bug_report_outlined),
+            title: Text('LLM debug'),
+          ),
+        ),
+      ],
+    );
+  }
+
+  static Future<void> _chooseAppearance(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final chosen = await showDialog<AppThemeMode>(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: const Text('Appearance'),
+        children: [
+          RadioGroup<AppThemeMode>(
+            groupValue: ref.read(themeModeSettingProvider),
+            onChanged: (mode) => Navigator.pop(context, mode),
+            child: const Column(
+              children: [
+                RadioListTile(
+                  value: AppThemeMode.system,
+                  title: Text('Same as the phone'),
+                ),
+                RadioListTile(value: AppThemeMode.light, title: Text('Light')),
+                RadioListTile(value: AppThemeMode.dark, title: Text('Dark')),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+    if (chosen != null) {
+      await ref.read(themeModeSettingProvider.notifier).set(chosen);
+    }
+  }
+}

@@ -787,6 +787,64 @@ abstract class _$WifiOnlyDownloads extends $Notifier<bool> {
   }
 }
 
+/// Light, dark, or following the phone.
+
+@ProviderFor(ThemeModeSetting)
+final themeModeSettingProvider = ThemeModeSettingProvider._();
+
+/// Light, dark, or following the phone.
+final class ThemeModeSettingProvider
+    extends $NotifierProvider<ThemeModeSetting, AppThemeMode> {
+  /// Light, dark, or following the phone.
+  ThemeModeSettingProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'themeModeSettingProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$themeModeSettingHash();
+
+  @$internal
+  @override
+  ThemeModeSetting create() => ThemeModeSetting();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AppThemeMode value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AppThemeMode>(value),
+    );
+  }
+}
+
+String _$themeModeSettingHash() => r'99837b6c31983a19bc2a6c64911a07e0135d9f1c';
+
+/// Light, dark, or following the phone.
+
+abstract class _$ThemeModeSetting extends $Notifier<AppThemeMode> {
+  AppThemeMode build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<AppThemeMode, AppThemeMode>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AppThemeMode, AppThemeMode>,
+              AppThemeMode,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}
+
 /// Downloads the app's model; checks the file on disk as soon as it's created.
 
 @ProviderFor(modelManager)

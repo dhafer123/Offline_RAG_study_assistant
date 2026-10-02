@@ -222,7 +222,11 @@ void main() {
           isA<AnswerException>().having(
             (e) => e.message,
             'message',
-            'Could not search your documents: model missing',
+            // The technical detail is kept for the logs, not shown.
+            allOf(
+              startsWith("Couldn't search your documents."),
+              isNot(contains('model missing')),
+            ),
           ),
         ),
       );
@@ -238,7 +242,7 @@ void main() {
           isA<AnswerException>().having(
             (e) => e.message,
             'message',
-            'Could not load the language model: file not found',
+            startsWith("Couldn't load the language model."),
           ),
         ),
       );
@@ -258,7 +262,7 @@ void main() {
           isA<AnswerException>().having(
             (e) => e.message,
             'message',
-            'The model failed while answering.',
+            'The model stopped while answering. Try again.',
           ),
         ),
       );
@@ -277,7 +281,7 @@ void main() {
           isA<AnswerException>().having(
             (e) => e.message,
             'message',
-            'This question is too long.',
+            'This question is too long. Try a shorter one.',
           ),
         ),
       );

@@ -37,12 +37,21 @@ class FakeModelManager implements ModelManager {
 }
 
 class FakeAppSettings implements AppSettings {
-  FakeAppSettings({this.wifiOnlyDownloads = true});
+  FakeAppSettings({
+    this.wifiOnlyDownloads = true,
+    this.themeMode = AppThemeMode.system,
+  });
 
   @override
   bool wifiOnlyDownloads;
 
   @override
+  AppThemeMode themeMode;
+
+  @override
   Future<void> setWifiOnlyDownloads({required bool value}) async =>
       wifiOnlyDownloads = value;
+
+  @override
+  Future<void> setThemeMode(AppThemeMode mode) async => themeMode = mode;
 }

@@ -2,7 +2,7 @@
     <!-- Only for the one-time model download (ModelManager). -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="offline_study_assistant"
+        android:label="Study Assistant"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

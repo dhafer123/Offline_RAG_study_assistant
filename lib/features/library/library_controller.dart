@@ -23,9 +23,13 @@ class LibraryState {
     this.progress,
     this.errors = const {},
     this.message,
+    this.loadFailed = false,
   });
 
   final bool loading;
+
+  /// The document list couldn't be read; the screen offers to try again.
+  final bool loadFailed;
 
   /// Newest first.
   final List<Document> documents;
@@ -53,6 +57,7 @@ class LibraryState {
     IngestionProgress? Function()? progress,
     Map<int, String>? errors,
     String? Function()? message,
+    bool? loadFailed,
   }) {
     return LibraryState(
       loading: loading ?? this.loading,
@@ -62,6 +67,7 @@ class LibraryState {
       progress: progress != null ? progress() : this.progress,
       errors: errors ?? this.errors,
       message: message != null ? message() : this.message,
+      loadFailed: loadFailed ?? this.loadFailed,
     );
   }
 }
@@ -82,8 +88,23 @@ class LibraryController extends _$LibraryController {
     return const LibraryState();
   }
 
+  /// Reads the document list again after it failed to load.
+  Future<void> retryLoad() async {
+    state = state.copyWith(loading: true, loadFailed: false);
+    await _start();
+  }
+
   Future<void> _start() async {
-    final docs = await _store.listDocuments();
+    final List<Document> docs;
+    try {
+      docs = await _store.listDocuments();
+    } on Object catch (e) {
+      Perf.log('library: could not list documents: $e');
+      if (ref.mounted) {
+        state = state.copyWith(loading: false, loadFailed: true);
+      }
+      return;
+    }
     // Oldest first, as they were imported.
     for (final doc in docs.reversed) {
       if (doc.status == DocumentStatus.pending ||
@@ -106,7 +127,8 @@ class LibraryController extends _$LibraryController {
     try {
       picked = await ref.read(pdfPickerProvider).pick();
     } on Object catch (e) {
-      _say('Could not open the file picker ($e)');
+      Perf.log('library: file picker failed: $e');
+      _say("Couldn't open the file picker. Try again.");
       return;
     }
     if (picked == null) return;
@@ -122,7 +144,11 @@ class LibraryController extends _$LibraryController {
       await _reload();
       unawaited(_pump());
     } on Object catch (e) {
-      _say('Could not import "${picked.name}" ($e)');
+      Perf.log('library: import of ${picked.name} failed: $e');
+      _say(
+        "Couldn't import \"${picked.name}\". Check that there's free "
+        'storage on the phone and try again.',
+      );
     }
   }
 
@@ -142,9 +168,14 @@ class LibraryController extends _$LibraryController {
   Future<void> delete(int docId) async {
     if (docId == state.runningId) return;
     _queue.remove(docId);
-    final doc = await _store.getDocument(docId);
-    await _store.deleteDocument(docId);
-    if (doc != null) await ref.read(pdfFilesProvider).delete(doc.path);
+    try {
+      final doc = await _store.getDocument(docId);
+      await _store.deleteDocument(docId);
+      if (doc != null) await ref.read(pdfFilesProvider).delete(doc.path);
+    } on Object catch (e) {
+      Perf.log('library: delete of document $docId failed: $e');
+      _say("Couldn't delete the document. Try again.");
+    }
     if (!ref.mounted) return;
     state = state.copyWith(errors: Map.of(state.errors)..remove(docId));
     await _reload();
@@ -175,6 +206,7 @@ class LibraryController extends _$LibraryController {
                 },
               );
         } on Object catch (e) {
+          Perf.log('indexing document $docId failed: $e');
           error = describeIngestionError(e);
         } finally {
           Perf.log('frames while indexing document $docId: ${frames.stop()}');
@@ -221,6 +253,15 @@ String describeIngestionError(Object error) {
       'The embedding model could not run. Try again; if it keeps failing, '
           'restart the app.',
     null when error is IngestionException => error.message,
-    _ => 'Indexing failed (${cause ?? error}).',
+    _ => 'Indexing failed. Use Retry in the document menu to try again.',
   };
+}
+
+/// Whether at least one document is indexed and can be searched; null while
+/// the library is still loading.
+@Riverpod(keepAlive: true)
+bool? hasReadyDocuments(Ref ref) {
+  final state = ref.watch(libraryControllerProvider);
+  if (state.loading || state.loadFailed) return null;
+  return state.documents.any((d) => d.status == DocumentStatus.ready);
 }

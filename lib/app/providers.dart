@@ -123,6 +123,18 @@ class WifiOnlyDownloads extends _$WifiOnlyDownloads {
   }
 }
 
+/// Light, dark, or following the phone.
+@Riverpod(keepAlive: true)
+class ThemeModeSetting extends _$ThemeModeSetting {
+  @override
+  AppThemeMode build() => ref.watch(appSettingsProvider).themeMode;
+
+  Future<void> set(AppThemeMode mode) async {
+    state = mode;
+    await ref.read(appSettingsProvider).setThemeMode(mode);
+  }
+}
+
 /// Downloads the app's model; checks the file on disk as soon as it's created.
 @Riverpod(keepAlive: true)
 ModelManager modelManager(Ref ref) {

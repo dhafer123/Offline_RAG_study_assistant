@@ -1,0 +1,176 @@
+"""Generates the app icon (Android adaptive + legacy, iOS) from one set of shapes.
+
+The icon is a page with text lines and a speech bubble on indigo. Shapes are
+defined once on Android's 108 x 108 adaptive-icon grid (the visible area is
+the central circle of radius ~33), then written as a vector drawable and
+rendered to PNGs. Needs Pillow. Run from the repo root:
+
+    python tool/make_app_icon.py
+"""
+
+import json
+import math
+from pathlib import Path
+
+from PIL import Image, ImageDraw
+
+ROOT = Path(__file__).resolve().parent.parent
+ANDROID_RES = ROOT / "android/app/src/main/res"
+IOS_ICONS = ROOT / "ios/Runner/Assets.xcassets/AppIcon.appiconset"
+
+# Same indigo as AppTheme.seed.
+BACKGROUND = "#3949AB"
+PAGE = "#FFFFFF"
+FOLD = "#C5CAE9"
+LINES = "#9FA8DA"
+BUBBLE = "#FFCA28"
+
+
+def rounded_polygon(points, radii):
+    """Polygon whose corner i is rounded with radius radii[i] (0 = sharp)."""
+    return ("poly", points, radii)
+
+
+def rect(x0, y0, x1, y1, r):
+    return rounded_polygon([(x0, y0), (x1, y0), (x1, y1), (x0, y1)], [r] * 4)
+
+
+def circle(cx, cy, r):
+    return ("circle", (cx, cy), r)
+
+
+# (color, shape), painted in order.
+SHAPES = [
+    (PAGE, rounded_polygon(
+        [(33, 29), (55, 29), (66, 40), (66, 75), (33, 75)], [3, 0, 0, 3, 3])),
+    (FOLD, rounded_polygon([(55, 29), (66, 40), (55, 40)], [0, 0, 2])),
+    (LINES, rect(39, 46, 58, 49.5, 1.75)),
+    (LINES, rect(39, 53, 60, 56.5, 1.75)),
+    (LINES, rect(39, 60, 51, 63.5, 1.75)),
+    # A ring of background color separates the bubble from the page.
+    (BACKGROUND, circle(67, 68, 14.5)),
+    (BACKGROUND, rounded_polygon([(55, 74), (51, 85.5), (64, 79)], [0, 1.5, 0])),
+    (BUBBLE, circle(67, 68, 12)),
+    (BUBBLE, rounded_polygon([(58, 73), (55, 81.5), (64, 77)], [0, 1, 0])),
+    (BACKGROUND, circle(62, 68, 1.9)),
+    (BACKGROUND, circle(67, 68, 1.9)),
+    (BACKGROUND, circle(72, 68, 1.9)),
+]
+
+
+def _corner_segments(points, radii):
+    """For each corner: (start, control, end) of its rounding curve."""
+    n = len(points)
+    out = []
+    for i, (p, r) in enumerate(zip(points, radii)):
+        prev, nxt = points[i - 1], points[(i + 1) % n]
+        if r == 0:
+            out.append((p, p, p))
+            continue
+
+        def toward(a, b, d):
+            length = math.dist(a, b)
+            return (a[0] + (b[0] - a[0]) * d / length, a[1] + (b[1] - a[1]) * d / length)
+
+        out.append((toward(p, prev, r), p, toward(p, nxt, r)))
+    return out
+
+
+def _fmt(v):
+    return f"{v:.2f}".rstrip("0").rstrip(".")
+
+
+def path_data(shape):
+    kind = shape[0]
+    if kind == "circle":
+        (cx, cy), r = shape[1], shape[2]
+        return (f"M{_fmt(cx - r)},{_fmt(cy)} a{_fmt(r)},{_fmt(r)} 0 1,0 {_fmt(2 * r)},0 "
+                f"a{_fmt(r)},{_fmt(r)} 0 1,0 {_fmt(-2 * r)},0 Z")
+    corners = _corner_segments(shape[1], shape[2])
+    parts = [f"M{_fmt(corners[0][2][0])},{_fmt(corners[0][2][1])}"]
+    for start, ctrl, end in corners[1:] + corners[:1]:
+        parts.append(f"L{_fmt(start[0])},{_fmt(start[1])}")
+        if start != end:
+            parts.append(f"Q{_fmt(ctrl[0])},{_fmt(ctrl[1])} {_fmt(end[0])},{_fmt(end[1])}")
+    return " ".join(parts) + " Z"
+
+
+def outline(shape, steps=12):
+    """The shape as a list of points, for Pillow."""
+    kind = shape[0]
+    if kind == "circle":
+        (cx, cy), r = shape[1], shape[2]
+        return [(cx + r * math.cos(t), cy + r * math.sin(t))
+                for t in (2 * math.pi * k / 96 for k in range(96))]
+    pts = []
+    for start, ctrl, end in _corner_segments(shape[1], shape[2]):
+        if start == end:
+            pts.append(start)
+            continue
+        for k in range(steps + 1):
+            t = k / steps
+            pts.append(tuple((1 - t) ** 2 * s + 2 * (1 - t) * t * c + t ** 2 * e
+                             for s, c, e in zip(start, ctrl, end)))
+    return pts
+
+
+def render(size, crop, round_mask):
+    """Renders the grid's [crop[0], crop[1]] square to a size x size image."""
+    scale = 4  # supersampling
+    big = size * scale
+    lo, hi = crop
+    k = big / (hi - lo)
+    img = Image.new("RGBA", (big, big), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+    if round_mask:
+        draw.ellipse([0, 0, big - 1, big - 1], fill=BACKGROUND)
+    else:
+        draw.rectangle([0, 0, big, big], fill=BACKGROUND)
+    for color, shape in SHAPES:
+        draw.polygon([((x - lo) * k, (y - lo) * k) for x, y in outline(shape)], fill=color)
+    if round_mask:
+        mask = Image.new("L", (big, big), 0)
+        ImageDraw.Draw(mask).ellipse([0, 0, big - 1, big - 1], fill=255)
+        img.putalpha(mask)
+    return img.resize((size, size), Image.LANCZOS)
+
+
+def write_android():
+    paths = "\n".join(
+        f'    <path\n        android:fillColor="{color}"\n        android:pathData="{path_data(shape)}" />'
+        for color, shape in SHAPES)
+    (ANDROID_RES / "drawable/ic_launcher_foreground.xml").write_text(
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+        "<!-- Generated by tool/make_app_icon.py. -->\n"
+        '<vector xmlns:android="http://schemas.android.com/apk/res/android"\n'
+        '    android:width="108dp"\n    android:height="108dp"\n'
+        '    android:viewportWidth="108"\n    android:viewportHeight="108">\n'
+        f"{paths}\n</vector>\n", encoding="utf-8", newline="\n")
+    adaptive = (
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+        '<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">\n'
+        '    <background android:drawable="@color/ic_launcher_background" />\n'
+        '    <foreground android:drawable="@drawable/ic_launcher_foreground" />\n'
+        "</adaptive-icon>\n")
+    anydpi = ANDROID_RES / "mipmap-anydpi-v26"
+    anydpi.mkdir(exist_ok=True)
+    (anydpi / "ic_launcher.xml").write_text(adaptive, encoding="utf-8", newline="\n")
+    # Legacy icons (Android < 8): round, the grid's central 84 units.
+    for density, size in {"mdpi": 48, "hdpi": 72, "xhdpi": 96, "xxhdpi": 144, "xxxhdpi": 192}.items():
+        render(size, (12, 96), round_mask=True).save(ANDROID_RES / f"mipmap-{density}/ic_launcher.png")
+
+
+def write_ios():
+    contents = json.loads((IOS_ICONS / "Contents.json").read_text(encoding="utf-8"))
+    for image in contents["images"]:
+        points = float(image["size"].split("x")[0])
+        size = round(points * int(image["scale"].rstrip("x")))
+        # iOS masks the corners itself and rejects transparency.
+        render(size, (14, 94), round_mask=False).convert("RGB").save(IOS_ICONS / image["filename"])
+
+
+if __name__ == "__main__":
+    write_android()
+    write_ios()
+    render(512, (14, 94), round_mask=False).save(ROOT / "docs/app_icon.png")
+    print("icons written")

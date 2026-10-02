@@ -123,7 +123,8 @@ class AnswerService {
     final language = detectQuestionLanguage(question);
 
     final (chunks, retrievalTime) = await _guard(
-      'Could not search your documents',
+      "Couldn't search your documents. Try again; if it keeps failing, "
+      'restart the app.',
       () => Perf.time(
         () => _retrieval.retrieve(question, k: config.topK),
         stopwatch: _stopwatch,
@@ -153,7 +154,10 @@ class AnswerService {
         budget: config.promptBudget,
       );
     } on PromptTooLongException catch (e) {
-      throw AnswerException('This question is too long.', cause: e);
+      throw AnswerException(
+        'This question is too long. Try a shorter one.',
+        cause: e,
+      );
     }
     yield AnswerSources(
       prompt: prompt,
@@ -163,7 +167,8 @@ class AnswerService {
 
     if (!_llm.isLoaded) yield const AnswerLoadingModel();
     final (_, loadTime) = await _guard(
-      'Could not load the language model',
+      "Couldn't load the language model. Close other apps to free memory, "
+      'then try again.',
       () => Perf.time(_llm.load, stopwatch: _stopwatch),
     );
 
@@ -177,7 +182,10 @@ class AnswerService {
         yield AnswerToken(token);
       }
     } on LlmException catch (e) {
-      throw AnswerException('The model failed while answering.', cause: e);
+      throw AnswerException(
+        'The model stopped while answering. Try again.',
+        cause: e,
+      );
     }
     final usage = _llm.lastUsage;
     final metrics = timer.finish(
@@ -198,7 +206,8 @@ class AnswerService {
   }
 
   /// Runs [action], turning embedder and LLM failures into
-  /// [AnswerException]s with [message].
+  /// [AnswerException]s with [message]. The technical detail stays in the
+  /// exception's cause (logged, never shown).
   static Future<T> _guard<T>(
     String message,
     Future<T> Function() action,
@@ -206,9 +215,9 @@ class AnswerService {
     try {
       return await action();
     } on EmbedderException catch (e) {
-      throw AnswerException('$message: ${e.message}', cause: e);
+      throw AnswerException(message, cause: e);
     } on LlmException catch (e) {
-      throw AnswerException('$message: ${e.message}', cause: e);
+      throw AnswerException(message, cause: e);
     }
   }
 }

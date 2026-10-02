@@ -6,6 +6,7 @@ import 'package:offline_study_assistant/app/providers.dart';
 import 'package:offline_study_assistant/features/chat/answer_service.dart';
 import 'package:offline_study_assistant/features/chat/presentation/chat_screen.dart';
 import 'package:offline_study_assistant/features/chat/question_language.dart';
+import 'package:offline_study_assistant/features/library/library_controller.dart';
 
 import '../../../helpers/fake_answer_service.dart';
 
@@ -23,12 +24,17 @@ void main() {
     FakeAnswerService.chunk(2, 'game.pdf', 26, 'Conclusion of the design.'),
   ];
 
-  Future<void> pumpChat(WidgetTester tester) async {
+  Future<void> pumpChat(
+    WidgetTester tester, {
+    bool? hasDocuments = true,
+  }) async {
     service = FakeAnswerService();
     // The viewer route is a stand-in that shows what it was opened with.
     final router = GoRouter(
+      initialLocation: '/chat',
       routes: [
-        GoRoute(path: '/', builder: (context, state) => const ChatScreen()),
+        GoRoute(path: '/', builder: (context, state) => const Text('library')),
+        GoRoute(path: '/chat', builder: (context, state) => const ChatScreen()),
         GoRoute(
           path: '/viewer/:docId',
           builder: (context, state) => Text(
@@ -41,7 +47,10 @@ void main() {
     addTearDown(router.dispose);
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [answerServiceProvider.overrideWithValue(service)],
+        overrides: [
+          answerServiceProvider.overrideWithValue(service),
+          hasReadyDocumentsProvider.overrideWithValue(hasDocuments),
+        ],
         child: MaterialApp.router(routerConfig: router),
       ),
     );
@@ -58,6 +67,31 @@ void main() {
 
     expect(find.text('Ask a question about your course PDFs.'), findsOne);
     expect(find.byTooltip('Send'), findsOne);
+  });
+
+  testWidgets('without indexed documents, points to the library', (
+    tester,
+  ) async {
+    await pumpChat(tester, hasDocuments: false);
+
+    expect(find.text('No documents to search yet'), findsOne);
+    expect(
+      tester.widget<TextField>(find.byType(TextField)).enabled,
+      isFalse,
+    );
+
+    await tester.tap(find.text('Go to the library'));
+    await tester.pumpAndSettle();
+    expect(find.text('library'), findsOne);
+  });
+
+  testWidgets('accepts questions while the library is still loading', (
+    tester,
+  ) async {
+    await pumpChat(tester, hasDocuments: null);
+
+    expect(find.text('Ask a question about your course PDFs.'), findsOne);
+    expect(tester.widget<TextField>(find.byType(TextField)).enabled, isTrue);
   });
 
   testWidgets('streams an answer with inline markers and page chips', (

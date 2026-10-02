@@ -62,6 +62,19 @@ class FakePicker implements PdfPicker {
   Future<PickedPdf?> pick() async => results.removeAt(0);
 }
 
+/// Fails to list documents [failures] times, then works.
+class FlakyDatabase extends AppDatabase {
+  FlakyDatabase(super.executor);
+
+  int failures = 1;
+
+  @override
+  Future<List<Document>> listDocuments() async {
+    if (failures-- > 0) throw StateError('disk I/O error');
+    return super.listDocuments();
+  }
+}
+
 void main() {
   late Directory root;
   late AppDatabase db;
@@ -152,6 +165,46 @@ void main() {
     expect(await db.searchKeyword('dijkstra'), hasLength(1));
     expect(await index.count(), 1);
     expect((frames.starts, frames.stops), (1, 1));
+  });
+
+  test('a library that fails to load can be loaded again', () async {
+    await db.close();
+    db = FlakyDatabase(NativeDatabase.memory());
+    index = SqliteVectorIndex(db, dimension: 64);
+    final c = makeContainer();
+    await idle(c);
+
+    expect(stateOf(c).loadFailed, isTrue);
+    expect(c.read(hasReadyDocumentsProvider), isNull);
+
+    await controllerOf(c).retryLoad();
+
+    expect(stateOf(c).loadFailed, isFalse);
+    expect(stateOf(c).documents, isEmpty);
+    expect(c.read(hasReadyDocumentsProvider), isFalse);
+  });
+
+  test('hasReadyDocuments turns true once a document is indexed', () async {
+    final c = makeContainer();
+    expect(c.read(hasReadyDocumentsProvider), isNull);
+    await idle(c);
+    expect(c.read(hasReadyDocumentsProvider), isFalse);
+
+    willPick('Graphs.pdf', pages: ['Dijkstra finds shortest paths.']);
+    await controllerOf(c).importPdf();
+    await idle(c);
+
+    expect(c.read(hasReadyDocumentsProvider), isTrue);
+  });
+
+  test('a picker failure gives a message without technical detail', () async {
+    final c = makeContainer();
+    await idle(c);
+
+    // No scripted result: the fake picker throws a RangeError.
+    await controllerOf(c).importPdf();
+
+    expect(stateOf(c).message, "Couldn't open the file picker. Try again.");
   });
 
   test('does nothing when the user cancels the picker', () async {
@@ -270,6 +323,13 @@ void main() {
       expect(
         describeIngestionError(wrap(const EmbedderException('boom'))),
         contains('embedding model'),
+      );
+    });
+
+    test('does not show the details of an unexpected error', () {
+      expect(
+        describeIngestionError(wrap(StateError('SqliteException(5)'))),
+        allOf(startsWith('Indexing failed.'), isNot(contains('Sqlite'))),
       );
     });
 

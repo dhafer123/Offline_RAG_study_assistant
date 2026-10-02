@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Same indigo as AppTheme.seed; see tool/make_app_icon.py. -->
+    <color name="ic_launcher_background">#3949AB</color>
+    <!-- The app's light surface, so the splash fades into the first frame. -->
+    <color name="splash_background">#FBF8FF</color>
+</resources>
