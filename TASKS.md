@@ -136,10 +136,11 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
 - [x] **4.1 Full benchmark run**
   Run all 60 questions and export answers, citations, time to first token and tokens/sec to `eval/results/*.json`.
   *Notes:* Answer eval screen (retrieval debug → review icon) runs every question through `AnswerService` (`runAnswerEval`, pure and tested) and rewrites its JSON after each question, so a killed app loses nothing. Per question: gate decision, sources, answer, parsed citations, whether the right page was a source and was cited, whether the model said "not found", timings and token counts. `eval/anonymize_results.py` renames the private distractor and redacts the 14 answers whose prompt held its text before committing; the full export is in the git-ignored `eval/results/private/`. On the phone (23 min, no errors): median 17.0 s to the first token, 8.30 tok/s, 21.5 s per answer; only 15/46 answers cite the right page, 20 cite nothing, and the model declined none of the 8 unanswerable questions the gate let through (details in METRICS.md).
-- [ ] **4.2 Grade answers by hand**
+- [x] **4.2 Grade answers by hand**
   Mark each one correct / partial / wrong / correctly declined, and check citation accuracy.
-- [ ] **4.3 Notebook charts**
+- [x] **4.3 Notebook charts**
   `eval/analyze.ipynb` produces the metrics table and 2–3 charts (vector vs hybrid Recall@5, latency distribution).
+  *Notes:* Only `json` + `matplotlib` (the local pandas build is broken against numpy 2.3, and the notebook doesn't need it). Picks the newest export of each kind in `eval/results/`, recomputes Recall@5 / MRR / same- vs cross-language and the answer metrics, and asserts they match the summaries the app wrote. Three charts saved to `docs/charts/`: Recall@5 by method and language, latency per question (retrieval, time to first token, total), and time to first token against prompt size (the prefill staircase). Committed with its outputs. A last section fills the METRICS.md "Answers" table from `eval/results/grades.json` (format in the notebook); the 4.2 grades aren't in the repo yet, so that section prints a notice.
 - [ ] **4.4 UI polish**
   Empty states, error messages, dark mode, app icon and splash screen, plus a first-launch screen explaining the download.
 - [ ] **4.5 README**

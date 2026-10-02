@@ -4,6 +4,12 @@ All numbers: release build, real device, median of 10 runs unless noted.
 
 **Device:** Samsung Galaxy A16 (SM-A165F), MediaTek Helio G99 (MT6789), 4 GB RAM, Android 16
 
+Charts and the summary tables are produced from the phone exports by `eval/analyze.ipynb` (task 4.3), into `docs/charts/`.
+
+| Recall@5 by method | Latency per question | Time to first token vs prompt size |
+|---|---|---|
+| ![Recall@5 by method](charts/recall_by_method.png) | ![Latency per question](charts/latency_distribution.png) | ![Time to first token vs prompt size](charts/ttft_vs_prompt_size.png) |
+
 ## LLM speed
 
 | Date | Model | Load time (s) | Time to first token (s) | Tokens/sec | Peak RAM (MB) |
