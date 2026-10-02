@@ -3,7 +3,7 @@
     <!-- Android 12+ system splash screen, when the OS's Dark Mode setting is off. -->
     <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowSplashScreenBackground">@color/splash_background</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
         <item name="android:windowSplashScreenIconBackgroundColor">@color/ic_launcher_background</item>
     </style>
     <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">

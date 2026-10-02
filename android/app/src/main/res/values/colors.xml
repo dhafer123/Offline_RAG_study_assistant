@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- The current icon's indigo (tool/make_app_icon.py); task 4.4b step 4 replaces the icon. -->
-    <color name="ic_launcher_background">#3949AB</color>
+    <!-- The app icon's background (design/app_icon.jpg, tool/make_app_icon.py). -->
+    <color name="ic_launcher_background">#F7FAFE</color>
     <!-- The app's light surface, so the splash fades into the first frame. -->
     <color name="splash_background">#F7F9FD</color>
 </resources>
