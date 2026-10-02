@@ -34,10 +34,9 @@ final class ModelDownloading extends ModelState {
   double get fraction => totalBytes == 0 ? 0 : receivedBytes / totalBytes;
 }
 
+/// Every model file is on disk and verified.
 final class ModelReady extends ModelState {
-  const ModelReady(this.path);
-
-  final String path;
+  const ModelReady();
 }
 
 enum ModelErrorKind {

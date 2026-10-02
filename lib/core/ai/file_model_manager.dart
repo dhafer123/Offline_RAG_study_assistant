@@ -6,27 +6,30 @@ import 'package:offline_study_assistant/core/ai/model_manager.dart';
 import 'package:offline_study_assistant/core/ai/model_spec.dart';
 import 'package:offline_study_assistant/core/net/network_monitor.dart';
 
-/// [ModelManager] that keeps the model in one directory.
+/// [ModelManager] that keeps a bundle of model files in one directory and
+/// downloads them one after the other, reporting their combined progress.
 ///
-/// Files: `<name>` once verified, `<name>.part` while downloading, and
+/// Per file: `<name>` once verified, `<name>.part` while downloading, and
 /// `<name>.sha256`, a marker saying the file was verified (so startup doesn't
-/// hash 600 MB every time).
+/// hash 700 MB every time).
 class FileModelManager implements ModelManager {
   FileModelManager({
-    required this.spec,
+    required List<ModelSpec> specs,
     required String directory,
     required ModelDownloader downloader,
     required NetworkMonitor network,
     required bool Function() wifiOnly,
     Future<String> Function(String path) hashFile = sha256OfFile,
     this.progressInterval = const Duration(milliseconds: 200),
-  }) : _directory = directory,
+  }) : assert(specs.isNotEmpty, 'nothing to download'),
+       specs = List.unmodifiable(specs),
+       _directory = directory,
        _downloader = downloader,
        _network = network,
        _wifiOnly = wifiOnly,
        _hashFile = hashFile;
 
-  final ModelSpec spec;
+  final List<ModelSpec> specs;
   final String _directory;
   final ModelDownloader _downloader;
   final NetworkMonitor _network;
@@ -41,9 +44,11 @@ class FileModelManager implements ModelManager {
   DownloadCancelToken? _cancel;
   Future<void>? _running;
 
-  File get _file => File('$_directory/${spec.fileName}');
-  File get _part => File('${_file.path}.part');
-  File get _marker => File('${_file.path}.sha256');
+  int get _totalBytes => specs.fold(0, (sum, s) => sum + s.sizeBytes);
+
+  File _file(ModelSpec spec) => File('$_directory/${spec.fileName}');
+  File _part(ModelSpec spec) => File('${_file(spec).path}.part');
+  File _marker(ModelSpec spec) => File('${_file(spec).path}.sha256');
 
   @override
   ModelState get state => _state;
@@ -61,34 +66,39 @@ class FileModelManager implements ModelManager {
     if (_running != null) return;
     _emit(const ModelChecking());
     try {
-      if (_file.existsSync()) {
-        if (_file.lengthSync() == spec.sizeBytes) {
-          if (_isMarkedVerified()) return _emit(ModelReady(_file.path));
-          // E.g. a file copied by hand: verify it once.
-          _emit(const ModelChecking(verifying: true));
-          if (await _hashFile(_file.path) == spec.sha256) {
-            _marker.writeAsStringSync(spec.sha256);
-            return _emit(ModelReady(_file.path));
-          }
-        }
-        _file.deleteSync();
-        if (_marker.existsSync()) _marker.deleteSync();
+      var allReady = true;
+      for (final spec in specs) {
+        if (!await _checkOnDisk(spec)) allReady = false;
       }
+      if (allReady) return _emit(const ModelReady());
       _emit(
         ModelNotDownloaded(
-          partialBytes: _partialBytes(),
-          totalBytes: spec.sizeBytes,
+          partialBytes: _bytesOnDisk(),
+          totalBytes: _totalBytes,
         ),
       );
     } on FileSystemException catch (e) {
-      _emit(
-        ModelFailed(
-          ModelErrorKind.storage,
-          totalBytes: spec.sizeBytes,
-          detail: '$e',
-        ),
-      );
+      _fail(ModelErrorKind.storage, '$e');
     }
+  }
+
+  /// Whether [spec]'s file is complete and verified. A wrong file is
+  /// deleted; a right one without a marker (copied by hand) is hashed once.
+  Future<bool> _checkOnDisk(ModelSpec spec) async {
+    final file = _file(spec);
+    final marker = _marker(spec);
+    if (!file.existsSync()) return false;
+    if (file.lengthSync() == spec.sizeBytes) {
+      if (_isMarkedVerified(spec)) return true;
+      _emit(const ModelChecking(verifying: true));
+      if (await _hashFile(file.path) == spec.sha256) {
+        marker.writeAsStringSync(spec.sha256);
+        return true;
+      }
+    }
+    file.deleteSync();
+    if (marker.existsSync()) marker.deleteSync();
+    return false;
   }
 
   @override
@@ -115,52 +125,20 @@ class FileModelManager implements ModelManager {
 
     try {
       Directory(_directory).createSync(recursive: true);
-      _emit(
-        ModelDownloading(
-          receivedBytes: _partialBytes(),
-          totalBytes: spec.sizeBytes,
-        ),
-      );
-      final sinceProgress = Stopwatch()..start();
-      final completed = await _downloader.download(
-        url: spec.url,
-        partFile: _part,
-        totalBytes: spec.sizeBytes,
-        cancel: cancel,
-        onProgress: (received) {
-          if (sinceProgress.elapsed < progressInterval) return;
-          sinceProgress.reset();
-          _emit(
-            ModelDownloading(
-              receivedBytes: received,
-              totalBytes: spec.sizeBytes,
-            ),
-          );
-        },
-      );
-
-      if (!completed) {
+      for (final spec in specs) {
+        if (_isComplete(spec)) continue;
+        final done = await _downloadOne(spec, cancel);
+        if (done) continue;
+        // Cancelled: paused by the user, or Wi-Fi was lost.
         if (lostWifi) return _fail(ModelErrorKind.wifiRequired);
         return _emit(
           ModelNotDownloaded(
-            partialBytes: _partialBytes(),
-            totalBytes: spec.sizeBytes,
+            partialBytes: _bytesOnDisk(),
+            totalBytes: _totalBytes,
           ),
         );
       }
-
-      _emit(const ModelChecking(verifying: true));
-      final hash = await _hashFile(_part.path);
-      if (hash != spec.sha256) {
-        _part.deleteSync();
-        return _fail(
-          ModelErrorKind.checksum,
-          'Expected ${spec.sha256}, got $hash',
-        );
-      }
-      _part.renameSync(_file.path);
-      _marker.writeAsStringSync(spec.sha256);
-      _emit(ModelReady(_file.path));
+      _emit(const ModelReady());
     } on ModelDownloadException catch (e) {
       _fail(e.kind, e.message);
     } on FileSystemException catch (e) {
@@ -171,23 +149,84 @@ class FileModelManager implements ModelManager {
     }
   }
 
+  /// Downloads and verifies one file. False if cancelled.
+  Future<bool> _downloadOne(ModelSpec spec, DownloadCancelToken cancel) async {
+    // Bytes of the files before this one, already complete.
+    final before = _bytesOnDisk() - _partBytes(spec);
+    final part = _part(spec);
+    _emit(
+      ModelDownloading(
+        receivedBytes: _bytesOnDisk(),
+        totalBytes: _totalBytes,
+      ),
+    );
+    final sinceProgress = Stopwatch()..start();
+    final completed = await _downloader.download(
+      url: spec.url,
+      partFile: part,
+      totalBytes: spec.sizeBytes,
+      cancel: cancel,
+      onProgress: (received) {
+        if (sinceProgress.elapsed < progressInterval) return;
+        sinceProgress.reset();
+        _emit(
+          ModelDownloading(
+            receivedBytes: before + received,
+            totalBytes: _totalBytes,
+          ),
+        );
+      },
+    );
+    if (!completed) return false;
+
+    _emit(const ModelChecking(verifying: true));
+    final hash = await _hashFile(part.path);
+    if (hash != spec.sha256) {
+      part.deleteSync();
+      throw ModelDownloadException(
+        ModelErrorKind.checksum,
+        '${spec.fileName}: expected ${spec.sha256}, got $hash',
+      );
+    }
+    part.renameSync(_file(spec).path);
+    _marker(spec).writeAsStringSync(spec.sha256);
+    return true;
+  }
+
   void _fail(ModelErrorKind kind, [String? detail]) {
     _emit(
       ModelFailed(
         kind,
-        partialBytes: _partialBytes(),
-        totalBytes: spec.sizeBytes,
+        partialBytes: _bytesOnDisk(),
+        totalBytes: _totalBytes,
         detail: detail,
       ),
     );
   }
 
-  bool _isMarkedVerified() =>
-      _marker.existsSync() && _marker.readAsStringSync().trim() == spec.sha256;
+  bool _isMarkedVerified(ModelSpec spec) {
+    final marker = _marker(spec);
+    return marker.existsSync() &&
+        marker.readAsStringSync().trim() == spec.sha256;
+  }
 
-  int _partialBytes() {
+  bool _isComplete(ModelSpec spec) =>
+      _file(spec).existsSync() && _isMarkedVerified(spec);
+
+  /// Complete files plus the parts of interrupted ones: where a download
+  /// resumes from.
+  int _bytesOnDisk() {
+    var bytes = 0;
+    for (final spec in specs) {
+      bytes += _isComplete(spec) ? spec.sizeBytes : _partBytes(spec);
+    }
+    return bytes;
+  }
+
+  int _partBytes(ModelSpec spec) {
     try {
-      return _part.existsSync() ? _part.lengthSync() : 0;
+      final part = _part(spec);
+      return part.existsSync() ? part.lengthSync() : 0;
     } on FileSystemException {
       return 0;
     }

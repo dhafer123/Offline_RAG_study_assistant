@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:offline_study_assistant/app/branding.dart';
 import 'package:offline_study_assistant/app/providers.dart';
 import 'package:offline_study_assistant/app/widgets/bot/bot_avatar.dart';
 import 'package:offline_study_assistant/app/widgets/bot/bot_mood.dart';
@@ -30,8 +31,16 @@ class ModelSetupScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                "Hi, I'm your Study Assistant",
+                "Hi, I'm ${Branding.botName}!",
                 style: theme.textTheme.headlineMedium,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Your study assistant in ${Branding.appName}',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: scheme.primary,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8),
@@ -74,9 +83,10 @@ class ModelSetupScreen extends ConsumerWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'The AI model (${formatMegabytes(_totalBytes(state))}) '
-                        'is downloaded once and stays on the phone. It needs '
-                        'about 600 MB of free storage. If the download is '
+                        'The AI models '
+                        '(${formatMegabytes(_totalBytes(state))}) are '
+                        'downloaded once and stay on the phone. They need '
+                        'about 800 MB of free storage. If the download is '
                         'interrupted, it resumes where it stopped.',
                       ),
                       SwitchListTile(
@@ -120,7 +130,7 @@ class ModelSetupScreen extends ConsumerWidget {
       ModelChecking(:final verifying) => [
         const LinearProgressIndicator(),
         const SizedBox(height: 8),
-        Text(verifying ? 'Verifying the model…' : 'Checking the model…'),
+        Text(verifying ? 'Verifying the models…' : 'Checking the models…'),
       ],
       ModelNotDownloaded(:final partialBytes, :final totalBytes) => [
         FilledButton.icon(
@@ -163,7 +173,7 @@ class ModelSetupScreen extends ConsumerWidget {
           onPressed: manager.download,
         ),
       ],
-      ModelReady() => [const Text('The model is ready.')],
+      ModelReady() => [const Text('The models are ready.')],
     };
   }
 
@@ -225,7 +235,7 @@ BotMood moodForModelState(ModelState state) => switch (state) {
 
 /// "557 MB" (binary megabytes, as Android's storage settings show them).
 String formatMegabytes(int? bytes) {
-  if (bytes == null) return 'about 560 MB';
+  if (bytes == null) return 'about 730 MB';
   return '${(bytes / (1024 * 1024)).round()} MB';
 }
 
@@ -245,5 +255,5 @@ String errorMessage(ModelErrorKind kind) => switch (kind) {
   ModelErrorKind.checksum =>
     'The downloaded file was damaged, so it was deleted. Try again.',
   ModelErrorKind.storage =>
-    "Couldn't save the model. Free up about 600 MB of storage and try again.",
+    "Couldn't save the models. Free up about 800 MB of storage and try again.",
 };

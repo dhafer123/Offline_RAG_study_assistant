@@ -53,7 +53,7 @@ void main() {
     expect(find.byType(ModelSetupScreen), findsOneWidget);
     expect(find.byType(LibraryScreen), findsNothing);
 
-    manager.emit(const ModelReady('/models/model.litertlm'));
+    manager.emit(const ModelReady());
     await tester.pumpAndSettle();
 
     expect(find.byType(LibraryScreen), findsOneWidget);

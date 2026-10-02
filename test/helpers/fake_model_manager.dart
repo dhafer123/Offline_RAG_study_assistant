@@ -5,7 +5,7 @@ import 'package:offline_study_assistant/core/settings/app_settings.dart';
 
 /// [ModelManager] whose state tests set directly.
 class FakeModelManager implements ModelManager {
-  FakeModelManager([this._state = const ModelReady('/models/model.litertlm')]);
+  FakeModelManager([this._state = const ModelReady()]);
 
   ModelState _state;
   final _states = StreamController<ModelState>.broadcast();

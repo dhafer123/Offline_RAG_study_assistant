@@ -66,9 +66,9 @@ void main() {
     return true;
   }
 
-  FileModelManager createManager() {
+  FileModelManager createManager({List<ModelSpec>? specs}) {
     final manager = FileModelManager(
-      spec: spec,
+      specs: specs ?? [spec],
       directory: dir.path,
       downloader: downloader,
       network: network,
@@ -136,7 +136,6 @@ void main() {
       await manager.refresh();
 
       expect(manager.state, isA<ModelReady>());
-      expect((manager.state as ModelReady).path, model.path);
       expect(hashCalls, 0);
     });
 
@@ -363,6 +362,144 @@ void main() {
       await manager.download();
 
       expect(downloader.calls, 0);
+    });
+  });
+
+  group('a bundle of files', () {
+    // The LLM and the embedder are separate files downloaded one after the
+    // other, with one combined progress.
+    final second = Uint8List.fromList(List.generate(500, (i) => (i * 7) % 256));
+    final secondSpec = ModelSpec(
+      fileName: 'embedder.tflite',
+      url: Uri.parse('https://example.com/embedder.tflite'),
+      sizeBytes: second.length,
+      sha256: sha256.convert(second).toString(),
+    );
+    final total = data.length + second.length;
+    late File secondFile;
+    late List<String> downloaded;
+
+    /// Completes each file with its own bytes.
+    Future<bool> completesEach(
+      File partFile,
+      DownloadCancelToken cancel,
+      void Function(int)? onProgress,
+    ) async {
+      final bytes = partFile.path.contains('embedder') ? second : data;
+      downloaded.add(partFile.uri.pathSegments.last);
+      final existing = partFile.existsSync() ? partFile.lengthSync() : 0;
+      partFile.writeAsBytesSync(bytes.sublist(existing), mode: FileMode.append);
+      onProgress?.call(bytes.length);
+      return true;
+    }
+
+    setUp(() {
+      secondFile = File('${dir.path}/embedder.tflite');
+      downloaded = [];
+      downloader.behavior = completesEach;
+    });
+
+    test('downloads every file in order, with combined progress', () async {
+      final manager = createManager(specs: [spec, secondSpec]);
+      await manager.refresh();
+      expect(
+        manager.state,
+        isA<ModelNotDownloaded>().having((s) => s.totalBytes, 'total', total),
+      );
+
+      await manager.download();
+
+      expect(downloaded, ['model.litertlm.part', 'embedder.tflite.part']);
+      expect(manager.state, isA<ModelReady>());
+      expect(secondFile.readAsBytesSync(), second);
+      expect(File('${secondFile.path}.sha256').existsSync(), isTrue);
+      final progress = states
+          .whereType<ModelDownloading>()
+          .map((s) => s.receivedBytes)
+          .toList();
+      expect(progress, containsAllInOrder([data.length, total]));
+      expect(
+        states.whereType<ModelDownloading>().map((s) => s.totalBytes).toSet(),
+        {total},
+      );
+    });
+
+    test('only the missing files are downloaded', () async {
+      model.writeAsBytesSync(data);
+      marker.writeAsStringSync(spec.sha256);
+      final manager = createManager(specs: [spec, secondSpec]);
+
+      await manager.refresh();
+      expect(
+        manager.state,
+        isA<ModelNotDownloaded>().having(
+          (s) => s.partialBytes,
+          'partialBytes',
+          data.length,
+        ),
+      );
+      await manager.download();
+
+      expect(downloaded, ['embedder.tflite.part']);
+      expect(manager.state, isA<ModelReady>());
+    });
+
+    test('a pause in the second file resumes there', () async {
+      final paused = Completer<void>();
+      downloader.behavior = (partFile, cancel, onProgress) async {
+        if (!partFile.path.contains('embedder')) {
+          return completesEach(partFile, cancel, onProgress);
+        }
+        partFile.writeAsBytesSync(second.sublist(0, 200));
+        paused.complete();
+        await cancel.whenCancelled;
+        return false;
+      };
+      final manager = createManager(specs: [spec, secondSpec]);
+      final running = manager.download();
+      await paused.future;
+
+      await manager.pause();
+      await running;
+
+      expect(
+        manager.state,
+        isA<ModelNotDownloaded>().having(
+          (s) => s.partialBytes,
+          'partialBytes',
+          data.length + 200,
+        ),
+      );
+
+      downloader.behavior = completesEach;
+      await manager.download();
+
+      expect(downloaded, ['model.litertlm.part', 'embedder.tflite.part']);
+      expect(manager.state, isA<ModelReady>());
+      expect(secondFile.readAsBytesSync(), second);
+    });
+
+    test('a bad second file fails the checksum and keeps the first', () async {
+      downloader.behavior = (partFile, cancel, onProgress) async {
+        if (!partFile.path.contains('embedder')) {
+          return completesEach(partFile, cancel, onProgress);
+        }
+        partFile.writeAsBytesSync(Uint8List(second.length));
+        return true;
+      };
+      final manager = createManager(specs: [spec, secondSpec]);
+
+      await manager.download();
+
+      expect(
+        manager.state,
+        isA<ModelFailed>()
+            .having((s) => s.kind, 'kind', ModelErrorKind.checksum)
+            .having((s) => s.partialBytes, 'partialBytes', data.length)
+            .having((s) => s.detail, 'detail', contains('embedder.tflite')),
+      );
+      expect(model.existsSync(), isTrue);
+      expect(File('${secondFile.path}.part').existsSync(), isFalse);
     });
   });
 }

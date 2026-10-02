@@ -845,17 +845,20 @@ abstract class _$ThemeModeSetting extends $Notifier<AppThemeMode> {
   }
 }
 
-/// Downloads the app's model; checks the file on disk as soon as it's created.
+/// Downloads the app's models (LLM + embedder) as one bundle; checks the
+/// files on disk as soon as it's created.
 
 @ProviderFor(modelManager)
 final modelManagerProvider = ModelManagerProvider._();
 
-/// Downloads the app's model; checks the file on disk as soon as it's created.
+/// Downloads the app's models (LLM + embedder) as one bundle; checks the
+/// files on disk as soon as it's created.
 
 final class ModelManagerProvider
     extends $FunctionalProvider<ModelManager, ModelManager, ModelManager>
     with $Provider<ModelManager> {
-  /// Downloads the app's model; checks the file on disk as soon as it's created.
+  /// Downloads the app's models (LLM + embedder) as one bundle; checks the
+  /// files on disk as soon as it's created.
   ModelManagerProvider._()
     : super(
         from: null,
@@ -889,7 +892,7 @@ final class ModelManagerProvider
   }
 }
 
-String _$modelManagerHash() => r'da3e9ead79564ace94cd81fdc5fe47c9e7f7c472';
+String _$modelManagerHash() => r'fbbad849ef5694f85c0a1cd74affa13bea7e2556';
 
 /// The model's current [ModelState], rebuilt on every change.
 

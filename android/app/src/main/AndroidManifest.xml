@@ -2,7 +2,7 @@
     <!-- Only for the one-time model download (ModelManager). -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="Study Assistant"
+        android:label="PageWise"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -2,10 +2,10 @@
   <img src="docs/app_icon.png" width="96" alt="App icon: a robot reading a book">
 </p>
 
-<h1 align="center">Offline Study Assistant</h1>
+<h1 align="center">PageWise</h1>
 
 <p align="center">
-  Ask questions about your course PDFs and get answers that cite their pages, <b>fully offline</b>.<br>
+  <b>Your offline study assistant.</b> Ask questions about your course PDFs and get answers that cite their pages, <b>fully offline</b>.<br>
   Search and generation both run on the phone. Tap a citation to open the PDF at that page.
 </p>
 
@@ -31,7 +31,7 @@
 - **Say "not found".** Questions with no close passage are refused before the LLM runs.
 - **No network at runtime.** The only connection is the one-time model download. No analytics, no cloud API.
 
-A small assistant bot shows what's happening: searching, thinking during the ~17 s the model takes to read the sources, answering, or confused when nothing was found.
+Lumi, the assistant bot, shows what's happening: searching, thinking during the ~17 s the model takes to read the sources, answering, or confused when nothing was found.
 
 ## Architecture
 

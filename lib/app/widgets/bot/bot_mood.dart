@@ -1,3 +1,5 @@
+import 'package:offline_study_assistant/app/branding.dart';
+
 /// What the assistant bot is showing. Each mood is a face; some animate.
 enum BotMood {
   /// Waiting. Blinks now and then.
@@ -43,16 +45,16 @@ enum BotMood {
     _ => false,
   };
 
-  /// For screen readers.
+  /// For screen readers: the bot's name and what it's doing.
   String get label => switch (this) {
-    idle => 'Assistant',
-    happy => 'Assistant, happy',
-    thinking => 'Assistant, thinking',
-    reading => 'Assistant, reading',
-    searching => 'Assistant, searching',
-    talking => 'Assistant, answering',
-    confused => 'Assistant, confused',
-    sad => 'Assistant, sad',
-    surprised => 'Assistant, surprised',
+    idle => Branding.botName,
+    happy => '${Branding.botName}, happy',
+    thinking => '${Branding.botName}, thinking',
+    reading => '${Branding.botName}, reading',
+    searching => '${Branding.botName}, searching',
+    talking => '${Branding.botName}, answering',
+    confused => '${Branding.botName}, confused',
+    sad => '${Branding.botName}, sad',
+    surprised => '${Branding.botName}, surprised',
   };
 }

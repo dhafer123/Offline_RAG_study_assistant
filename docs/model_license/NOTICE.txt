@@ -1,8 +1,10 @@
 Gemma is provided under and subject to the Gemma Terms of Use found at ai.google.dev/gemma/terms
 
-The model file distributed with this project
-(Gemma3-1B-IT_multi-prefill-seq_q4_ekv4096.litertlm, from
-huggingface.co/litert-community/Gemma3-1B-IT) is unmodified.
+The model files distributed with this project are unmodified:
+- Gemma3-1B-IT_multi-prefill-seq_q4_ekv4096.litertlm, from
+  huggingface.co/litert-community/Gemma3-1B-IT
+- embeddinggemma-300M_seq512_mixed-precision.tflite and sentencepiece.model,
+  from huggingface.co/litert-community/embeddinggemma-300m
 
 Use of Gemma is subject to the use restrictions in Section 3.2 of the Gemma
 Terms of Use, including the Gemma Prohibited Use Policy

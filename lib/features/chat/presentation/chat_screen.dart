@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:offline_study_assistant/app/branding.dart';
 import 'package:offline_study_assistant/app/router.dart';
 import 'package:offline_study_assistant/app/widgets/bot/bot_avatar.dart';
 import 'package:offline_study_assistant/app/widgets/bot/bot_mood.dart';
@@ -67,9 +68,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           mood: BotMood.happy,
                           title: 'Ask a question about your course PDFs.',
                           body:
-                              'I answer only from your documents and show '
-                              'the pages I used. Everything runs on this '
-                              'phone, offline.',
+                              "I'm ${Branding.botName}. I answer only from "
+                              'your documents and show the pages I used. '
+                              'Everything runs on this phone, offline.',
                         )
                 // Reversed so the latest answer stays in view as it grows.
                 : ListView.builder(

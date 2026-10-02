@@ -135,11 +135,12 @@ class ThemeModeSetting extends _$ThemeModeSetting {
   }
 }
 
-/// Downloads the app's model; checks the file on disk as soon as it's created.
+/// Downloads the app's models (LLM + embedder) as one bundle; checks the
+/// files on disk as soon as it's created.
 @Riverpod(keepAlive: true)
 ModelManager modelManager(Ref ref) {
   final manager = FileModelManager(
-    spec: ModelSpec.gemma3,
+    specs: ModelSpec.all,
     directory: ref.watch(modelsDirectoryProvider),
     downloader: HttpModelDownloader(),
     network: ref.watch(networkMonitorProvider),

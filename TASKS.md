@@ -152,9 +152,13 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
 - [x] **4.5 README**
   GIF at the top, architecture diagram, metrics table with the phone model, how to run it, the v2 list, and a license.
   *Notes:* `docs/demo.gif` (526 KB) built from phone screenshots with Pillow (no ffmpeg): library → question → bot searching/thinking (wait sped up ×5, labelled) → cited answer → PDF opened with the passage highlighted; recorded with only the public course PDFs indexed. Four screenshots in `docs/screenshots/`. Architecture and the two pipelines as Mermaid diagrams (GitHub renders them). Results table + the 4.3 charts. Corrected stale claims: vectors are in a SQLite table with brute-force cosine (not sqlite-vec), the debug screens moved to the ⋮ menu, and the model file isn't on the `models-v1` release yet (README says to copy it by hand). License: MIT for the code; the Gemma models stay under the Gemma Terms of Use.
-- [ ] **4.6 Demo video** (60–90 s)
+- [ ] **4.6 Demo video** (60–90 s, after 4.7a: it starts from a fresh install)
   Import a PDF → turn on airplane mode → ask 3 questions → tap a citation.
-- [ ] **4.7 Release**
+- [x] **4.7a Fresh install works** (before the demo)
+  The app downloads every model file (LLM + embedder) on first launch; the files are on the `models-v1` release; a smaller APK.
+  *Done when:* after an uninstall, a fresh install downloads the models, then imports a PDF and answers a question in airplane mode.
+  *Notes:* `FileModelManager` takes a bundle (`ModelSpec.all`: LLM 557 MB + EmbeddingGemma 171 MB + tokenizer 4.5 MB = 733 MB), downloaded one file after the other with one combined progress, skipping verified files and resuming in the interrupted one; `ModelReady` no longer carries a path. The three files are on the `models-v1` pre-release (sizes, SHA-256 and HTTP Range checked). APK: `--split-per-abi` plus excluding flutter_gemma's unused native libraries (image models, Qualcomm NPU, WebGPU, qdrant; `packaging.jniLibs.excludes`): arm64 210 → 94.6 MB, checked on the phone (models verified, an answer with embedder + LLM). Also added before the demo: the app is named **PageWise**, the bot **Lumi** (`lib/app/branding.dart`), and a 2 s animated splash (`SplashOverlay`: Lumi pops in, name and tagline, fade; tap skips, off with "remove animations"). Checked end to end by the author on the phone: uninstall, fresh install, welcome screen, 733 MB download, then airplane mode, import and a cited answer.
+- [ ] **4.7b Release**
   Signed APK on GitHub Releases, then a Play Store internal or closed test.
 - [ ] **4.8 Update CV and LinkedIn**
   Add the real numbers to the CV line.

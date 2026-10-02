@@ -10,7 +10,7 @@ import 'package:offline_study_assistant/features/model_setup/presentation/model_
 import '../../../helpers/fake_model_manager.dart';
 
 void main() {
-  const total = 584417280; // 557 MB
+  const total = 768233071; // 733 MB, the three files
   const mb = 1024 * 1024;
 
   late FakeModelManager manager;
@@ -43,19 +43,20 @@ void main() {
   testWidgets('explains the app before the download', (tester) async {
     await pumpScreen(tester, const ModelNotDownloaded(totalBytes: total));
 
-    expect(find.text("Hi, I'm your Study Assistant"), findsOneWidget);
+    expect(find.text("Hi, I'm Lumi!"), findsOneWidget);
+    expect(find.text('Your study assistant in PageWise'), findsOneWidget);
     expect(findBot(BotMood.happy), findsOneWidget);
     expect(find.text('Works offline'), findsOneWidget);
     expect(find.text('Private'), findsOneWidget);
-    expect(find.textContaining('600 MB of free storage'), findsOneWidget);
+    expect(find.textContaining('800 MB of free storage'), findsOneWidget);
   });
 
   testWidgets('offers the download with its size', (tester) async {
     await pumpScreen(tester, const ModelNotDownloaded(totalBytes: total));
 
-    expect(find.textContaining('(557 MB) is downloaded once'), findsOneWidget);
+    expect(find.textContaining('(733 MB) are downloaded once'), findsOneWidget);
     expect(find.textContaining('Gemma Terms of Use'), findsOneWidget);
-    await tapText(tester, 'Download (557 MB)');
+    await tapText(tester, 'Download (733 MB)');
 
     expect(manager.downloadCalls, 1);
   });
@@ -66,7 +67,7 @@ void main() {
       const ModelNotDownloaded(partialBytes: 200 * mb, totalBytes: total),
     );
 
-    await tapText(tester, 'Resume (200 of 557 MB)');
+    await tapText(tester, 'Resume (200 of 733 MB)');
 
     expect(manager.downloadCalls, 1);
   });
@@ -74,14 +75,14 @@ void main() {
   testWidgets('shows progress and can pause', (tester) async {
     await pumpScreen(
       tester,
-      const ModelDownloading(receivedBytes: total ~/ 4, totalBytes: total),
+      const ModelDownloading(receivedBytes: 366 * mb, totalBytes: total),
     );
 
-    expect(find.text('139 of 557 MB · 25%'), findsOneWidget);
+    expect(find.text('366 of 733 MB · 49%'), findsOneWidget);
     final bar = tester.widget<LinearProgressIndicator>(
       find.byType(LinearProgressIndicator),
     );
-    expect(bar.value, closeTo(0.25, 1e-9));
+    expect(bar.value, closeTo(366 * mb / total, 1e-9));
 
     await tapText(tester, 'Pause');
     expect(manager.pauseCalls, 1);
@@ -89,12 +90,12 @@ void main() {
 
   testWidgets('follows state changes', (tester) async {
     await pumpScreen(tester, const ModelChecking());
-    expect(find.text('Checking the model…'), findsOneWidget);
+    expect(find.text('Checking the models…'), findsOneWidget);
 
     manager.emit(const ModelChecking(verifying: true));
     await tester.pump();
 
-    expect(find.text('Verifying the model…'), findsOneWidget);
+    expect(find.text('Verifying the models…'), findsOneWidget);
   });
 
   testWidgets('explains a failure and retries from the kept bytes', (
@@ -110,7 +111,7 @@ void main() {
     );
 
     expect(find.text(errorMessage(ModelErrorKind.network)), findsOneWidget);
-    await tapText(tester, 'Resume (300 of 557 MB)');
+    await tapText(tester, 'Resume (300 of 733 MB)');
 
     expect(manager.downloadCalls, 1);
   });
