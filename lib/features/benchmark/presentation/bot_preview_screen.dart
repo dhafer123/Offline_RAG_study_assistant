@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:offline_study_assistant/app/theme.dart';
 import 'package:offline_study_assistant/app/widgets/bot/bot_avatar.dart';
 import 'package:offline_study_assistant/app/widgets/bot/bot_mood.dart';
 import 'package:offline_study_assistant/app/widgets/bot/bot_painter.dart';
@@ -115,8 +116,8 @@ class _BotPreviewScreenState extends State<BotPreviewScreen> {
                     margin: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
                       color: brightness == Brightness.light
-                          ? const Color(0xFFFBF8FF)
-                          : const Color(0xFF131318),
+                          ? AppTheme.light.colorScheme.surface
+                          : AppTheme.dark.colorScheme.surface,
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Center(child: BotAvatar(mood: _mood, size: 96)),
