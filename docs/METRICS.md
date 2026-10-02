@@ -202,7 +202,7 @@ File: `eval/results/answers_20261001-224516.json`. The distractor report is rena
 
 Time to first token held steady over the 23 minutes (the 1,024-token prefill step), so the phone didn't throttle noticeably.
 
-**Automatic checks (hand grading is task 4.2):**
+**Automatic checks (grading is task 4.2, below):**
 
 - **Gate:** refused 4 questions (u07, u01 and the answerable q43, q45), as predicted in 3.7.
 - **Retrieval:** the right page was among the prompt's sources for 41 of the 48 answerable questions that passed the gate.
@@ -210,9 +210,19 @@ Time to first token held steady over the 23 minutes (the 1,024-token prefill ste
 - **The model never says "not found" when it should.** None of the 8 unanswerable questions that passed the gate got the not-found reply: it made up answers instead, sometimes with a citation (u10 "Celeste est sorti en 2017. [1]", u02 "6", u09 names Django REST Framework without a version). Meanwhile it replied "not found" to 2 answerable questions whose right page was ranked first (q03, q12). Overall only **2/10 unanswerable questions were declined**, both by the gate.
 - **Language:** 3 of 56 answers came in the other language than the question (q01, q09 French → English; q08 English → French).
 
-These match what 3.3 hinted at: Gemma 3 1B follows the format rules (cite `[n]`, reply "not found") much less reliably than the content of the sources. Grading in 4.2 will say how many answers are actually right.
+These match what 3.3 hinted at: Gemma 3 1B follows the format rules (cite `[n]`, reply "not found") much less reliably than the content of the sources. The grading in 4.2 (next section) puts it at 21/50 correct.
 
 ## Answers (50 answerable + 10 unanswerable)
 
-| Date | Correct | Partial | Wrong | Citation accuracy | Correct refusals (of 10) |
-|---|---|---|---|---|---|
+| Date | Correct | Partial | Wrong | Declined (answerable) | Citation accuracy | Correct refusals (of 10) |
+|---|---|---|---|---|---|---|
+| 2026-10-02 | **21/50 (42%)** | 9/50 | 15/50 | 5/50 | **14/22 (64%)** | 3/10 |
+
+Graded (task 4.2) from the 4.1 run (`eval/results/answers_20261001-224516.json`); grades and a note per question in `eval/results/grades.json`, table produced by `eval/analyze.ipynb`. **Graded by Claude at the author's request, not by hand**: each answer compared with the question's expected answer in the unredacted export, and every doubtful citation checked against the PDF page text. Like the questions (2.7), worth a human spot-check before quoting.
+
+- **Rubric.** Correct: every key fact of the expected answer and nothing wrong added. Partial: some key facts, or right facts mixed with wrong ones. Wrong: no key fact, including 4 answers that only list source references (q01, q09, q31, q42). Declined: "not found", from the gate (q43, q45) or the model (q03, q12, q39). Correct refusals count the unanswerable questions that got no invented answer.
+- **Retrieval is not the bottleneck.** With the right page in the prompt (41 questions), 21 answers are correct and 7 partial; without it (7), none is correct. But 10 answers are wrong and 3 declined with the right page in the prompt: the 1B model misreads or ignores sources it has.
+- **English answers are much better.** 15/26 correct for English questions, 6/22 for French ones (past the gate). English questions on the French documents do well (14 of the 22 cross-language answers are correct), so it's the model writing French, not retrieving it, that fails: answers that list steps instead of the asked fact (q14, q22), or that drift (q24 "plateformes en France et en Europe").
+- **Citation accuracy 14/22**: of the 26 answers with a citation, 14 cite a page that supports them, 8 don't (q02 and q21 are right answers citing the wrong page; 4 cite without saying anything), 4 cite only the private distractor report and couldn't be checked. 24 of the 46 answers with content cite nothing, so a correct citation backs only 14 of 46 answers (30%).
+- **Refusals: 3/10.** The gate's 2 plus u05, which says it has no evaluation figures instead of inventing one (a soft decline the automatic check didn't count). The other 7 invent: a number (u02 "6"), a year (u10 "2017", Hollow Knight's), or a recommendation the guide doesn't make (u03, u04, u06). q39 is a decline the automatic check missed (it repeats the question before "Not found").
+- **What would help most** (v2, each to be checked on new questions): an answer-language rule tested on French prompts or answering in English with a translated summary, a stricter prompt or a larger model for the "not found" rule, and forcing a citation per sentence.
