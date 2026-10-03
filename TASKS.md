@@ -38,7 +38,7 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
 - [x] **1.6 ModelManager**
   First-launch download with a progress bar, resume after interruption, checksum check, and a Wi-Fi-only option. Handle states: not downloaded → downloading → ready → error.
   *Done when:* a fresh install downloads the model, then the app works in airplane mode.
-  *Notes:* Model hosted on this repo's `models-v1` GitHub release (Gemma is gated on Hugging Face; a token can't ship in the app), with NOTICE + Gemma terms in `docs/model_license/`. Own `dart:io` downloader (HTTP Range resume, manual redirects), SHA-256 in an isolate, `.sha256` marker so startup doesn't re-hash. Setup screen gates all routes until ready. New deps: crypto, path_provider, shared_preferences, connectivity_plus. Added INTERNET to the main manifest. **Pending:** the release asset isn't uploaded yet, so the fresh-install → airplane-mode check on the phone hasn't been run.
+  *Notes:* Model hosted on this repo's `models-v1` GitHub release (Gemma is gated on Hugging Face; a token can't ship in the app), with NOTICE + Gemma terms in `docs/model_license/`. Own `dart:io` downloader (HTTP Range resume, manual redirects), SHA-256 in an isolate, `.sha256` marker so startup doesn't re-hash. Setup screen gates all routes until ready. New deps: crypto, path_provider, shared_preferences, connectivity_plus. Added INTERNET to the main manifest. The release asset was uploaded in 4.7a (2026-10-02), with the embedder files; the fresh-install → airplane-mode check passed on the phone then.
 
 **Gate 1:** at least 5 tok/s on your phone and no crash, with the chosen model.
 
@@ -152,14 +152,16 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
 - [x] **4.5 README**
   GIF at the top, architecture diagram, metrics table with the phone model, how to run it, the v2 list, and a license.
   *Notes:* `docs/demo.gif` (526 KB) built from phone screenshots with Pillow (no ffmpeg): library → question → bot searching/thinking (wait sped up ×5, labelled) → cited answer → PDF opened with the passage highlighted; recorded with only the public course PDFs indexed. Four screenshots in `docs/screenshots/`. Architecture and the two pipelines as Mermaid diagrams (GitHub renders them). Results table + the 4.3 charts. Corrected stale claims: vectors are in a SQLite table with brute-force cosine (not sqlite-vec), the debug screens moved to the ⋮ menu, and the model file isn't on the `models-v1` release yet (README says to copy it by hand). License: MIT for the code; the Gemma models stay under the Gemma Terms of Use.
-- [ ] **4.6 Demo video** (60–90 s, after 4.7a: it starts from a fresh install)
+- [x] **4.6 Demo video** (60–90 s, after 4.7a: it starts from a fresh install)
   Import a PDF → turn on airplane mode → ask 3 questions → tap a citation.
+  *Notes:* Recorded by the author on the Galaxy A16 from a fresh install (splash → welcome → download → airplane mode → import → questions → citation). Still to publish (Gate 4) and link from the README.
 - [x] **4.7a Fresh install works** (before the demo)
   The app downloads every model file (LLM + embedder) on first launch; the files are on the `models-v1` release; a smaller APK.
   *Done when:* after an uninstall, a fresh install downloads the models, then imports a PDF and answers a question in airplane mode.
   *Notes:* `FileModelManager` takes a bundle (`ModelSpec.all`: LLM 557 MB + EmbeddingGemma 171 MB + tokenizer 4.5 MB = 733 MB), downloaded one file after the other with one combined progress, skipping verified files and resuming in the interrupted one; `ModelReady` no longer carries a path. The three files are on the `models-v1` pre-release (sizes, SHA-256 and HTTP Range checked). APK: `--split-per-abi` plus excluding flutter_gemma's unused native libraries (image models, Qualcomm NPU, WebGPU, qdrant; `packaging.jniLibs.excludes`): arm64 210 → 94.6 MB, checked on the phone (models verified, an answer with embedder + LLM). Also added before the demo: the app is named **PageWise**, the bot **Lumi** (`lib/app/branding.dart`), and a 2 s animated splash (`SplashOverlay`: Lumi pops in, name and tagline, fade; tap skips, off with "remove animations"). Checked end to end by the author on the phone: uninstall, fresh install, welcome screen, 733 MB download, then airplane mode, import and a cited answer.
 - [ ] **4.7b Release**
-  Signed APK on GitHub Releases, then a Play Store internal or closed test.
+  Signed APK on GitHub Releases (release signing key, final app ID decided first: it can't change later without becoming a separate app).
+  *Moved:* the Play Store internal test waits for a Play developer account (v2 backlog).
 - [ ] **4.8 Update CV and LinkedIn**
   Add the real numbers to the CV line.
 
@@ -169,6 +171,7 @@ Legend: `[ ]` todo · `[x]` done · **Gate** = must pass before the next week st
 
 ## v2 backlog (don't start before Gate 4)
 
+- Play Store internal test (needs a developer account): app bundle, store listing, privacy policy, Data safety form, and a "report this answer" action for Play's AI-generated content policy
 - OCR for scanned PDFs (ML Kit text recognition)
 - Flashcards and quizzes generated from a chapter
 - Chat history per course, multi-turn follow-ups

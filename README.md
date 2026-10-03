@@ -90,7 +90,8 @@ All numbers from a **Samsung Galaxy A16** (SM-A165F, MediaTek Helio G99, 4 GB RA
 | **Refusals** | 3 of 10 unanswerable questions declined (2 by the similarity gate)* |
 | **Indexing** | 2.35 s per passage; a 120-page PDF in 5 min 11 s, with 0.18% janky frames meanwhile |
 | **Memory** | ~1.17 GB peak with the LLM, 1.59 GB with the LLM and the embedder loaded |
-| **Model** | Gemma 3 1B int4, 557 MB; loads in 0.86 s |
+| **Download** | 733 MB of models once (Gemma 3 1B int4 557 MB + EmbeddingGemma 171 MB); LLM loads in 0.86 s |
+| **APK** | 95 MB (arm64) |
 
 <sub>*Eval set: 50 answerable + 10 unanswerable questions over 5 course PDFs, 31 English / 29 French ([eval/questions.json](eval/questions.json)), with a 120-page unrelated report indexed as a distractor. The questions and the answer grades were written by Claude at the author's request and checked by script against the PDFs; see the safeguards in METRICS.md.</sub>
 
@@ -111,6 +112,12 @@ flutter pub get
 flutter run --release        # measure performance in release mode only
 ```
 
+To build an installable APK (one per CPU type; `arm64-v8a` for most phones, 95 MB):
+
+```bash
+flutter build apk --release --split-per-abi
+```
+
 Generated files (`*.g.dart`) are committed. After changing a provider, regenerate them:
 
 ```bash
@@ -119,7 +126,9 @@ dart run build_runner build --force-jit --delete-conflicting-outputs
 
 ### Model files
 
-The app downloads the LLM on first launch (557 MB, Wi-Fi only by default), checks its SHA-256 and resumes interrupted downloads. **The file isn't published on the [`models-v1` release](https://github.com/dhafer123/Offline_RAG_study_assistant/releases/tag/models-v1) yet**, and the embedding model isn't downloaded by the app yet either, so for now copy the files by hand:
+On first launch the app downloads its three model files as one bundle (733 MB, Wi-Fi only by default) from this repo's [`models-v1` release](https://github.com/dhafer123/Offline_RAG_study_assistant/releases/tag/models-v1): Gemma 3 1B (557 MB), EmbeddingGemma (171 MB) and its tokenizer. Each file's SHA-256 is checked, and an interrupted download resumes where it stopped. After that the app works in airplane mode.
+
+**Skipping the download during development** (optional): copy the files into the app's storage by hand; the app verifies them once on the next launch.
 
 1. Request access on Hugging Face (Gemma models are gated) and download:
    - [litert-community/Gemma3-1B-IT](https://huggingface.co/litert-community/Gemma3-1B-IT): `Gemma3-1B-IT_multi-prefill-seq_q4_ekv4096.litertlm`
@@ -192,8 +201,7 @@ Pure logic (text cleaner, chunker, RRF, prompt builder, citation parser, the bot
 ## v2
 
 - **Better answers in French**, and a stricter "not found" (test a larger or newer model, per-sentence citations), checked on new questions.
-- **Download the embedding model** in the app, and publish the model files, so a fresh install works without adb.
-- **Smaller APK**: split per ABI or ship an app bundle (the universal APK is 303 MB, mostly native libraries).
+- **Play Store release** (internal test first), with an in-app way to report a bad answer, as Play's AI-generated content policy asks.
 - **Faster indexing**: the embedder runs on one core (2.35 s per passage); a newer flutter_gemma could use more threads or the GPU.
 - **OCR for scanned PDFs** (ML Kit text recognition).
 - **Flashcards and quizzes** generated from a chapter.
